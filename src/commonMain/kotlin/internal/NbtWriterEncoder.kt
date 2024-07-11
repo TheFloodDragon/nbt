@@ -3,16 +3,15 @@ package net.benwoodworth.knbt.internal
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.SerializationStrategy
-import kotlinx.serialization.builtins.ByteArraySerializer
-import kotlinx.serialization.builtins.IntArraySerializer
-import kotlinx.serialization.builtins.LongArraySerializer
 import kotlinx.serialization.descriptors.PolymorphicKind
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.internal.AbstractPolymorphicSerializer
 import kotlinx.serialization.modules.SerializersModule
-import net.benwoodworth.knbt.*
+import net.benwoodworth.knbt.AbstractNbtEncoder
+import net.benwoodworth.knbt.NbtFormat
+import net.benwoodworth.knbt.NbtTag
 import net.benwoodworth.knbt.internal.NbtTagType.*
 
 @OptIn(ExperimentalSerializationApi::class)
@@ -29,7 +28,7 @@ internal class NbtWriterEncoder(
 
     private val structureTypeStack = ArrayDeque<NbtTagType>()
 
-    private var elementListKind: NbtListKind? = null
+    private var serializerListKind: NbtListKind? = null
     private val listTypeStack = ArrayDeque<NbtTagType>() // TAG_End when uninitialized
     private var listSize: Int = 0
 
@@ -57,7 +56,7 @@ internal class NbtWriterEncoder(
         }
 
         if (descriptor.getElementDescriptor(index).kind == StructureKind.LIST) {
-            elementListKind = descriptor.getElementNbtListKind(context, index)
+            serializerListKind = descriptor.getElementNbtListKind(context, index)
         }
 
         return true
@@ -157,7 +156,7 @@ internal class NbtWriterEncoder(
 
     override fun beginCollection(descriptor: SerialDescriptor, collectionSize: Int): CompositeEncoder =
         if (descriptor.kind == StructureKind.LIST) {
-            when (elementListKind ?: descriptor.getNbtListKind(context)) {
+            when (serializerListKind ?: descriptor.getNbtListKind(context)) {
                 NbtListKind.List -> beginList(collectionSize)
                 NbtListKind.ByteArray -> beginByteArray(collectionSize)
                 NbtListKind.IntArray -> beginIntArray(collectionSize)
