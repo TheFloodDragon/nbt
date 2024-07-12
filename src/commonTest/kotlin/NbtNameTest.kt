@@ -3,7 +3,6 @@ package net.benwoodworth.knbt
 import com.benwoodworth.parameterize.ParameterizeScope
 import com.benwoodworth.parameterize.parameter
 import com.benwoodworth.parameterize.parameterOf
-import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -228,11 +227,11 @@ class NbtNameTest {
      * Delegating to a [NbtName.Dynamic] serializer requires the delegating serializer to also be [NbtName.Dynamic], and
      * if not, the delegation is considered invalid.
      */
-    private val DelegatingSerializer.isDelegateInvalid: Boolean
+    private val DelegatingSerializer.isDelegateInvalidWithDynamic: Boolean
         get() = delegate != null && !isDynamic && delegate.isDynamic
 
-    private fun DelegatingSerializer.hasInvalidDelegation(): Boolean =
-        isDelegateInvalid || (delegate != null && delegate.hasInvalidDelegation())
+    private fun DelegatingSerializer.hasInvalidDelegationWithDynamic(): Boolean =
+        isDelegateInvalidWithDynamic || (delegate != null && delegate.hasInvalidDelegationWithDynamic())
 
     @Test
     fun serializer_without_invalid_delegation_should_not_fail() = parameterizeTest {
@@ -242,7 +241,7 @@ class NbtNameTest {
         val serializableType by parameterOfSerializableTypeEdgeCases()
 
         val serializer by parameterOfDelegationCombinations(serializableType, 3)
-        assume(!serializer.hasInvalidDelegation())
+        assume(!serializer.hasInvalidDelegationWithDynamic())
 
         if (nbt.toString() != "Decode NbtTag" ||
             serializableType.name != "Collection (non-sequentially)" ||
@@ -263,7 +262,7 @@ class NbtNameTest {
         val serializableType by parameterOfSerializableTypeEdgeCases()
 
         val serializer by parameterOfDelegationCombinations(serializableType, 3)
-        assume(serializer.hasInvalidDelegation())
+        assume(serializer.hasInvalidDelegationWithDynamic())
 
         val failure = assertFailsWith<NbtException> {
             nbt.verifyEncoderOrDecoder(serializer, Unit, serializableType.valueTag)
@@ -271,7 +270,7 @@ class NbtNameTest {
 
         val expectedMessage = run {
             tailrec fun DelegatingSerializer.getFirstInvalidDelegation(): DelegatingSerializer =
-                if (isDelegateInvalid) this else delegate!!.getFirstInvalidDelegation()
+                if (isDelegateInvalidWithDynamic) this else delegate!!.getFirstInvalidDelegation()
 
             serializer.getFirstInvalidDelegation()
                 .let { dynamicDelegationRequirementMessage(it.descriptor, it.delegate!!.descriptor) }
