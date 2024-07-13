@@ -188,6 +188,12 @@ internal abstract class BaseNbtDecoder : AbstractNbtDecoder() {
     }
     //endregion
 
+    @ExperimentalNbtApi
+    override fun decodeNbtName(): String? {
+        context.checkDynamicallySerializingNbtName()
+        return null // TODO Implement
+    }
+
     final override fun decodeNbtTag(): NbtTag {
         val tagType = decodeNbtTagTypeMarker()
 
