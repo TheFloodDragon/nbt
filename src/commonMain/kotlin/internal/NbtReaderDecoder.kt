@@ -26,21 +26,19 @@ internal abstract class BaseNbtDecoder : AbstractNbtDecoder() {
     protected var elementListKind: NbtListKind? = null
 
     private var decodedNbtNameInfo: NbtReader.CompoundEntryInfo? = null
-    private val decodedNbtNameStack = ArrayDeque<String?>()
 
     private fun decodeNbtTagTypeMarker(): NbtTagType =
         decodedNbtNameInfo?.type ?: entryType
 
     private fun beginDecodingValue(type: NbtTagType) {
         val actualType = decodeNbtTagTypeMarker()
-        clearNamedTagForNextValue()
 
         if (type != actualType) {
             throw NbtDecodingException(context, "Expected $type, but was $actualType")
         }
     }
 
-    protected fun endDecodingValue() {
+    private fun endDecodingValue() {
         endNamedTagIfNamed()
     }
 
@@ -67,16 +65,11 @@ internal abstract class BaseNbtDecoder : AbstractNbtDecoder() {
         decodedNbtNameInfo = entry
     }
 
-    private fun clearNamedTagForNextValue() {
-        decodedNbtNameStack += decodedNbtNameInfo?.name
-        decodedNbtNameInfo = null
-    }
-
     /**
      * Called after a value finishes decoding,
      */
     private fun endNamedTagIfNamed() {
-        val name = decodedNbtNameStack.removeLast() ?: return
+        val name = decodedNbtNameInfo?.name ?: return
 
         val entry = reader.beginCompoundEntry()
         if (entry.type != TAG_End) {
@@ -84,6 +77,7 @@ internal abstract class BaseNbtDecoder : AbstractNbtDecoder() {
         }
 
         reader.endCompound()
+        decodedNbtNameInfo = null
     }
 
     //region Primitive NBT types
