@@ -113,21 +113,6 @@ internal abstract class BaseNbtDecoder : AbstractNbtDecoder() {
 
         return string[0]
     }
-
-    private fun decodeByteArray(): ByteArray {
-        beginDecodingValue(TAG_Byte_Array)
-        return reader.readByteArray()
-    }
-
-    private fun decodeIntArray(): IntArray {
-        beginDecodingValue(TAG_Int_Array)
-        return reader.readIntArray()
-    }
-
-    private fun decodeLongArray(): LongArray {
-        beginDecodingValue(TAG_Long_Array)
-        return reader.readLongArray()
-    }
     //endregion
 
     //region Structure begin*() functions
@@ -212,15 +197,8 @@ internal abstract class BaseNbtDecoder : AbstractNbtDecoder() {
 
     @OptIn(InternalSerializationApi::class)
     override fun <T> decodeSerializableValue(deserializer: DeserializationStrategy<T>): T {
-        fun isArraySerializer(arraySerializer: SerializationStrategy<*>, arrayKind: NbtListKind): Boolean =
-            deserializer == arraySerializer && (elementListKind == null || elementListKind == arrayKind)
-
         @Suppress("UNCHECKED_CAST")
         return when {
-            isArraySerializer(ByteArraySerializer(), NbtListKind.ByteArray) -> decodeByteArray() as T
-            isArraySerializer(IntArraySerializer(), NbtListKind.IntArray) -> decodeIntArray() as T
-            isArraySerializer(LongArraySerializer(), NbtListKind.LongArray) -> decodeLongArray() as T
-
             deserializer is AbstractPolymorphicSerializer<*> ->
                 throw UnsupportedOperationException(
                     "Unable to serialize type with serial name '${deserializer.descriptor.serialName}'. " +
