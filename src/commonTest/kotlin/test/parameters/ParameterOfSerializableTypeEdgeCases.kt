@@ -3,11 +3,16 @@ package net.benwoodworth.knbt.test.parameters
 import com.benwoodworth.parameterize.ParameterizeScope
 import com.benwoodworth.parameterize.parameter
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.InternalSerializationApi
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.NothingSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.PolymorphicKind
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildSerialDescriptor
+import kotlinx.serialization.descriptors.element
 import kotlinx.serialization.encoding.*
 import kotlinx.serialization.encoding.CompositeDecoder.Companion.DECODE_DONE
 import net.benwoodworth.knbt.*
@@ -22,6 +27,23 @@ data class SerializableTypeEdgeCase(
 ) {
     override fun toString(): String = name
 }
+
+fun SerializableTypeEdgeCase.serializer(descriptor: SerialDescriptor = baseDescriptor): KSerializer<Unit> =
+    object : KSerializer<Unit> {
+        override val descriptor: SerialDescriptor
+            get() = descriptor
+
+        override fun serialize(encoder: Encoder, value: Unit): Unit =
+            encoder.encodeValue(descriptor)
+
+        override fun deserialize(decoder: Decoder): Unit =
+            decoder.decodeValue(descriptor)
+
+        override fun equals(other: Any?): Boolean =
+            other is KSerializer<*> && descriptor == other.descriptor
+
+        override fun hashCode(): Int = descriptor.hashCode()
+    }
 
 /**
  * A serializer for each possible value serialization call in [NbtEncoder] and [NbtDecoder].
@@ -62,7 +84,7 @@ private val nbtTypes = listOf(
     NbtLongArray(emptyList()),
 ).map { nbtTag ->
     SerializableTypeEdgeCase(
-        "NbtTag (${nbtTag::class.simpleName})",
+        "Polymorphic NbtTag (${nbtTag::class.simpleName})",
         NbtTag.serializer().descriptor,
         { asNbtEncoder().encodeNbtTag(nbtTag) },
         { asNbtDecoder().decodeNbtTag() },
@@ -187,6 +209,31 @@ private val basicTypes = listOf(
         },
         NbtList(emptyList())
     ),
+)
+
+// TODO Needed?
+@OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
+val polymorphicTypes = listOf(
+    SerializableTypeEdgeCase(
+        "Polymorphic (Sealed)",
+        buildSerialDescriptor("SealedIntOrString", PolymorphicKind.SEALED) {
+            element<Int>("Int")
+            element<String>("String")
+        },
+        { descriptor -> encodeString("value") },
+        { descriptor -> decodeString() },
+        NbtString("value")
+    ),
+    SerializableTypeEdgeCase(
+        "Polymorphic (Open)",
+        buildSerialDescriptor("SealedIntOrString", PolymorphicKind.OPEN) {
+            element<Int>("Int")
+            element<String>("String")
+        },
+        { descriptor -> encodeString("value") },
+        { descriptor -> decodeString() },
+        NbtString("value")
+    )
 )
 
 // TODO
