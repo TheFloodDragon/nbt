@@ -66,7 +66,7 @@ internal abstract class BaseNbtDecoder : AbstractNbtDecoder() {
     }
 
     /**
-     * Called after a value finishes decoding,
+     * Called after a value finishes decoding, TODO
      */
     private fun endNamedTagIfNamed() {
         val name = decodedNbtNameInfo?.name ?: return
@@ -224,6 +224,8 @@ internal abstract class BaseNbtDecoder : AbstractNbtDecoder() {
 
     @OptIn(InternalSerializationApi::class)
     override fun <T> decodeSerializableValue(deserializer: DeserializationStrategy<T>): T {
+        beginNamedTagIfNamed(deserializer.descriptor)
+
         return when {
             deserializer is AbstractPolymorphicSerializer<*> ->
                 throw UnsupportedOperationException(
