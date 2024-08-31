@@ -561,12 +561,6 @@ class NbtNameTest {
 
     @Test
     @Ignore
-    fun dynamic_name_decoded_from_unnamed_root_should_be_null() = parameterizeTest {
-        TODO("Implement after changing named NBT representation away from compound nesting")
-    }
-
-    @Test
-    @Ignore
     fun dynamic_name_decoded_from_compound_should_be_correct() = parameterizeTest {
         TODO("Implement after changing named NBT representation away from compound nesting")
     }
@@ -579,7 +573,7 @@ class NbtNameTest {
 
     @Test
     @Ignore
-    fun dynamic_name_decoded_from_collection_should_be_null() = parameterizeTest {
+    fun dynamic_name_serialized_for_unnamed_value_should_throw() = parameterizeTest {
         TODO("Implement after changing named NBT representation away from compound nesting")
     }
 }
