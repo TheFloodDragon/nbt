@@ -33,8 +33,12 @@ internal data object EmptyNbtContext : NbtContext {
  */
 internal class SerializationNbtContext : NbtContext {
     private var currentDescriptor: SerialDescriptor? = null
+    private var structureNesting = 0
 
     override fun getPath(): NbtPath? = null // TODO
+
+    val isSerializingRootValue: Boolean
+        get() = structureNesting == 0
 
     /**
      * Decorates calls to [SerializationStrategy.serialize] and [DeserializationStrategy.deserialize] so that serializer
@@ -50,6 +54,14 @@ internal class SerializationNbtContext : NbtContext {
         return block().also {
             currentDescriptor = previousDescriptor
         }
+    }
+
+    fun onBeginStructure() {
+        structureNesting++
+    }
+
+    fun onEndStructure() {
+        structureNesting--
     }
 
     fun checkDynamicallySerializingNbtName() {
