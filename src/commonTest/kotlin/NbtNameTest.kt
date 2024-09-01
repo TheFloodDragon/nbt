@@ -221,7 +221,7 @@ class NbtNameTest {
         }
 
         assertEquals(
-            "Expected tag named '$name', but got '${differentlyNamedNbtTag.content.keys.single()}'",
+            "Expected tag named '$name', but got '${differentlyNamedNbtTag.name}'",
             failure.message,
             "failure message"
         )
