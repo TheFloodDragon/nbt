@@ -83,7 +83,7 @@ class NbtNameTest {
 //    }
 
     @Test
-    fun type_with_NBT_name_should_serialize_nested_under_its_name() = parameterizeTest {
+    fun type_with_NBT_name_should_correctly_serialize_the_name() = parameterizeTest {
         val nbt by parameterOfVerifyingNbt()
         val serializableType by parameterOfSerializableTypeEdgeCases()
         val nbtName by parameterOf("name", "different_name")
@@ -104,9 +104,7 @@ class NbtNameTest {
         nbt.verifyEncoderOrDecoder(
             valueSerializer,
             Unit,
-            buildNbtCompound {
-                put(nbtName, serializableType.valueTag)
-            }
+            NbtNamed(nbtName, serializableType.valueTag)
         )
     }
 
@@ -264,9 +262,7 @@ class NbtNameTest {
             }
         }
 
-        val expectedTag = buildNbtCompound {
-            put(staticName, serializableType.valueTag)
-        }
+        val expectedTag = NbtNamed(staticName, serializableType.valueTag)
 
         nbt.verifyEncoder(DynamicDefaultingToStaticSerializer(), Unit, expectedTag)
     }
@@ -308,9 +304,7 @@ class NbtNameTest {
             nbt.verifyEncoderOrDecoder(
                 serializer,
                 Unit,
-                buildNbtCompound {
-                    put(nbtName, serializableType.valueTag)
-                }
+                NbtNamed(nbtName, serializableType.valueTag)
             )
         }
 
@@ -344,9 +338,7 @@ class NbtNameTest {
             nbt.verifyEncoderOrDecoder(
                 serializer,
                 Unit,
-                buildNbtCompound {
-                    put(nbtName, serializableType.valueTag)
-                }
+                NbtNamed(nbtName, serializableType.valueTag)
             )
         }
 
@@ -380,9 +372,7 @@ class NbtNameTest {
         nbt.verifyEncoder(
             serializer,
             Unit,
-            buildNbtCompound {
-                put("dynamic_name", serializableType.valueTag)
-            }
+            NbtNamed("dynamic_name", serializableType.valueTag)
         )
     }
 
@@ -408,9 +398,7 @@ class NbtNameTest {
         nbt.verifyEncoder(
             serializer,
             Unit,
-            buildNbtCompound {
-                put("first_dynamic_name", serializableType.valueTag)
-            }
+            NbtNamed("first_dynamic_name", serializableType.valueTag)
         )
     }
 
@@ -447,9 +435,7 @@ class NbtNameTest {
         nbt.verifyEncoder(
             serializer,
             Unit,
-            buildNbtCompound {
-                put("first_dynamic_name", serializableType.valueTag)
-            }
+            NbtNamed("first_dynamic_name", serializableType.valueTag)
         )
     }
 
@@ -485,9 +471,7 @@ class NbtNameTest {
         nbt.verifyEncoder(
             serializer,
             Unit,
-            buildNbtCompound {
-                put("first_dynamic_name", serializableType.valueTag)
-            }
+            NbtNamed("first_dynamic_name", serializableType.valueTag)
         )
     }
 
@@ -514,9 +498,7 @@ class NbtNameTest {
 
         nbt.verifyDecoder(
             serializer,
-            buildNbtCompound {
-                put("dynamic_name", serializableType.valueTag)
-            }
+            NbtNamed("dynamic_name", serializableType.valueTag)
         )
     }
 
@@ -553,9 +535,7 @@ class NbtNameTest {
 
         nbt.verifyDecoder(
             serializer,
-            buildNbtCompound {
-                put("dynamic_name", serializableType.valueTag)
-            }
+            NbtNamed("dynamic_name", serializableType.valueTag)
         )
     }
 

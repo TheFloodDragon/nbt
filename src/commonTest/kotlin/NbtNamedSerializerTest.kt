@@ -148,9 +148,7 @@ class NbtNamedSerializerTest {
         nbt.verifyEncoderOrDecoder(
             NbtNamed.serializer(serializableType.serializer()),
             NbtNamed(name, Unit),
-            buildNbtCompound {
-                put(name, serializableType.valueTag)
-            }
+            NbtNamed(name, serializableType.valueTag)
         )
     }
 
@@ -161,9 +159,7 @@ class NbtNamedSerializerTest {
         nbt.verifyEncoder(
             NbtNamed.serializer(NbtNamed.serializer(Int.serializer())),
             NbtNamed("outer", NbtNamed("inner", 0)),
-            buildNbtCompound {
-                put("outer", 0)
-            }
+            NbtNamed("outer", NbtInt(0))
         )
     }
 
@@ -173,9 +169,7 @@ class NbtNamedSerializerTest {
 
         nbt.verifyDecoder(
             NbtNamed.serializer(NbtNamed.serializer(Int.serializer())),
-            buildNbtCompound {
-                put("dynamic_name", 0)
-            },
+            NbtNamed("dynamic_name", NbtInt(0)),
             testDecodedValue = { decoded ->
                 val expected = NbtNamed("dynamic_name", NbtNamed("dynamic_name", 0))
                 assertEquals(expected, decoded)
