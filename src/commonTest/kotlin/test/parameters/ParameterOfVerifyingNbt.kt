@@ -12,7 +12,6 @@ import net.benwoodworth.knbt.NbtTag
 import net.benwoodworth.knbt.internal.*
 import net.benwoodworth.knbt.test.verify.VerifyingNbtReader
 import net.benwoodworth.knbt.test.verify.VerifyingNbtWriter
-import net.benwoodworth.knbt.toNbtCompound
 import kotlin.test.fail
 
 internal fun ParameterizeScope.parameterOfVerifyingNbt(
@@ -91,21 +90,21 @@ internal sealed class VerifyingNbt(
      * correct calls are made to its [reader][NbtReaderDecoder.reader], then asserts that the decoded value
      * [equals][Any.equals] the original [value].
      */
-    fun <T> verifyEncoderOrDecoder(
+    abstract fun <T> verifyEncoderOrDecoder(
         serializer: KSerializer<T>,
         value: T,
         encodedTag: NbtNamed<NbtTag>,
         testDecodedValue: (value: T, decodedValue: T) -> Unit = { _, _ -> }
-    ) {
-        verifyEncoderOrDecoder(serializer, value, encodedTag.toNbtCompound(), testDecodedValue)
-    }
+    )
 
-    abstract fun <T> verifyEncoderOrDecoder(
+    fun <T> verifyEncoderOrDecoder(
         serializer: KSerializer<T>,
         value: T,
         encodedTag: NbtTag,
         testDecodedValue: (value: T, decodedValue: T) -> Unit = { _, _ -> }
-    )
+    ) {
+        verifyEncoderOrDecoder(serializer, value, NbtNamed("", encodedTag), testDecodedValue) // TODO non-empty serializer NbtName?
+    }
 }
 
 internal class EncoderVerifyingNbt(
@@ -117,17 +116,13 @@ internal class EncoderVerifyingNbt(
     override fun <T> verifyEncoderOrDecoder(
         serializer: KSerializer<T>,
         value: T,
-        encodedTag: NbtTag,
+        encodedTag: NbtNamed<NbtTag>,
         testDecodedValue: (value: T, decodedValue: T) -> Unit
     ) {
         verifyEncoder(serializer, value, encodedTag)
     }
 
     fun <T> verifyEncoder(serializer: SerializationStrategy<T>, value: T, encodedTag: NbtNamed<NbtTag>) {
-        verifyEncoder(serializer, value, encodedTag.toNbtCompound())
-    }
-
-    fun <T> verifyEncoder(serializer: SerializationStrategy<T>, value: T, encodedTag: NbtTag) {
         try {
             val context = SerializationNbtContext()
             val writer = VerifyingNbtWriter(encodedTag)
@@ -138,6 +133,10 @@ internal class EncoderVerifyingNbt(
         } catch (e: NbtDecodingException) {
             fail("Encoding should not result in an NbtDecodingException", e)
         }
+    }
+
+    fun <T> verifyEncoder(serializer: SerializationStrategy<T>, value: T, encodedTag: NbtTag) {
+        verifyEncoder(serializer, value, NbtNamed("", encodedTag)) // TODO non-empty serializer NbtName?
     }
 }
 
@@ -150,7 +149,7 @@ internal class DecoderVerifyingNbt(
     override fun <T> verifyEncoderOrDecoder(
         serializer: KSerializer<T>,
         value: T,
-        encodedTag: NbtTag,
+        encodedTag: NbtNamed<NbtTag>,
         testDecodedValue: (value: T, decodedValue: T) -> Unit
     ) {
         verifyDecoder(
@@ -167,14 +166,6 @@ internal class DecoderVerifyingNbt(
         encodedTag: NbtNamed<NbtTag>,
         testDecodedValue: (decodedValue: T) -> Unit = {}
     ) {
-        verifyDecoder(deserializer, encodedTag.toNbtCompound(), testDecodedValue)
-    }
-
-    fun <T> verifyDecoder(
-        deserializer: DeserializationStrategy<T>,
-        encodedTag: NbtTag,
-        testDecodedValue: (decodedValue: T) -> Unit = {}
-    ) {
         try {
             val context = SerializationNbtContext()
             val reader = VerifyingNbtReader(encodedTag, capabilities)
@@ -187,5 +178,13 @@ internal class DecoderVerifyingNbt(
         } catch (e: NbtEncodingException) {
             fail("Decoding should not result in an NbtEncodingException", e)
         }
+    }
+
+    fun <T> verifyDecoder(
+        deserializer: DeserializationStrategy<T>,
+        encodedTag: NbtTag,
+        testDecodedValue: (decodedValue: T) -> Unit = {}
+    ) {
+        verifyDecoder(deserializer, NbtNamed("", encodedTag), testDecodedValue) // TODO non-empty deserializer NbtName?
     }
 }
