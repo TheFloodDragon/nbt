@@ -122,7 +122,7 @@ internal class NbtWriterEncoder(
     private fun beginNamedTagIfNamed() {
         val nbtName = nbtNameToWrite
 
-        writtenNbtNameStack.addLast(nbtName)
+        writtenNbtNameStack.addLast(null)
         nbtNameToWrite = null
         nbtNameToWriteWasDynamicallyEncoded = false
 
@@ -132,9 +132,6 @@ internal class NbtWriterEncoder(
 
             structureTypeStack += TAG_Compound
             elementName = nbtName
-
-            nbtNameToWrite = null
-            nbtNameToWriteWasDynamicallyEncoded = false
             writtenNbtNameStack += nbtName
         }
     }
