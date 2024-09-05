@@ -9,7 +9,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationStrategy
-import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
@@ -108,6 +107,32 @@ class NbtNameTest {
         )
     }
 
+    @Test
+    fun type_without_explicit_nbt_name_should_have_an_empty_name() = parameterizeTest {
+        val nbt by parameterOfVerifyingNbt()
+        val serializableType by parameterOfSerializableTypeEdgeCases()
+
+        val valueSerializer = object : KSerializer<Unit> {
+            override val descriptor = object : SerialDescriptor by serializableType.baseDescriptor {
+                @ExperimentalSerializationApi
+                override val annotations = serializableType.baseDescriptor.annotations
+                    .filter { it !is NbtName } // No explicit name
+            }
+
+            override fun serialize(encoder: Encoder, value: Unit): Unit =
+                serializableType.encodeValue(encoder, descriptor)
+
+            override fun deserialize(decoder: Decoder): Unit =
+                serializableType.decodeValue(decoder, descriptor)
+        }
+
+        nbt.verifyEncoderOrDecoder(
+            valueSerializer,
+            Unit,
+            NbtNamed("", serializableType.valueTag)
+        )
+    }
+
     private data class SerializableValueWithNbtName<T>(
         val value: T,
         val serializer: KSerializer<T>,
@@ -141,11 +166,11 @@ class NbtNameTest {
 
     @Test
     fun decoding_value_with_static_NBT_name_should_fail_with_different_name() = parameterizeTest {
-        val nbt by parameterOfDecoderVerifyingNbt(includeNamedRootNbt = true)
+        val nbt by parameterOfDecoderVerifyingNbt()
         assume(nbt.capabilities.namedRoot)
 
         val value by parameter(valuesWithStaticNbtNames)
-        val name = value.serializer.descriptor.nbtName!!
+        val name = value.serializer.descriptor.nbtName
 
         val differentlyNamedNbtTag = buildNbtCompound("different_than_$name") {
             // No elements, since the decoder should fail before reaching this point anyway
@@ -165,7 +190,7 @@ class NbtNameTest {
 
     @Test
     fun should_not_fail_decoding_a_different_NBT_name_when_dynamic() = parameterizeTest {
-        val nbt by parameterOfDecoderVerifyingNbt(includeNamedRootNbt = true)
+        val nbt by parameterOfDecoderVerifyingNbt()
         assume(nbt.capabilities.namedRoot)
 
         @Serializable
@@ -181,7 +206,7 @@ class NbtNameTest {
 
     @Test
     fun should_encode_dynamic_name_as_the_static_name_when_no_names_are_actually_encoded() = parameterizeTest {
-        val nbt by parameterOfEncoderVerifyingNbt(includeNamedRootNbt = true)
+        val nbt by parameterOfEncoderVerifyingNbt()
         assume(nbt.capabilities.namedRoot)
 
         val serializableType by parameterOfSerializableTypeEdgeCases()
@@ -231,11 +256,11 @@ class NbtNameTest {
 
     @Test
     fun serializing_dynamic_name_should_require_marking_dynamic() = parameterizeTest {
-        val nbt by parameterOfVerifyingNbt(includeNamedRootNbt = true)
+        val nbt by parameterOfVerifyingNbt()
         val serializableType by parameterOfSerializableTypeEdgeCases()
 
         val serializer = DynamicNameWithoutDynamicAnnotationSerializer(serializableType)
-        val nbtName = requireNotNull(serializer.descriptor.nbtName) { "Serializer nbtName is null" }
+        val nbtName = serializer.descriptor.nbtName
 
         val failure = assertFailsWith<IllegalArgumentException> {
             nbt.verifyEncoderOrDecoder(
@@ -250,7 +275,7 @@ class NbtNameTest {
 
     @Test
     fun serializing_dynamic_name_should_require_marking_dynamic_even_if_delegating_from_dynamic() = parameterizeTest {
-        val nbt by parameterOfVerifyingNbt(includeNamedRootNbt = true)
+        val nbt by parameterOfVerifyingNbt()
         val serializableType by parameterOfSerializableTypeEdgeCases()
 
         val delegate = DynamicNameWithoutDynamicAnnotationSerializer(serializableType)
@@ -269,7 +294,7 @@ class NbtNameTest {
                 decoder.decodeSerializableValue(delegate)
         }
 
-        val nbtName = requireNotNull(serializer.descriptor.nbtName) { "Serializer nbtName is null" }
+        val nbtName = serializer.descriptor.nbtName
 
         val failure = assertFailsWith<IllegalArgumentException> {
             nbt.verifyEncoderOrDecoder(
@@ -290,7 +315,7 @@ class NbtNameTest {
 
     @Test
     fun dynamic_name_should_be_encoded() = parameterizeTest {
-        val nbt by parameterOfEncoderVerifyingNbt(includeNamedRootNbt = true)
+        val nbt by parameterOfEncoderVerifyingNbt()
         val serializableType by parameterOfSerializableTypeEdgeCases()
 
         val serializer = object : SerializationStrategy<Unit> {
@@ -315,7 +340,7 @@ class NbtNameTest {
 
     @Test
     fun dynamic_name_should_be_the_first_name_encoded_if_another_is_encoded_later() = parameterizeTest {
-        val nbt by parameterOfEncoderVerifyingNbt(includeNamedRootNbt = true)
+        val nbt by parameterOfEncoderVerifyingNbt()
         val serializableType by parameterOfSerializableTypeEdgeCases()
 
         val serializer = object : SerializationStrategy<Unit> {
@@ -341,7 +366,7 @@ class NbtNameTest {
 
     @Test
     fun dynamic_name_should_be_the_first_name_encoded_if_another_is_encoded_later_from_a_delegate() = parameterizeTest {
-        val nbt by parameterOfEncoderVerifyingNbt(includeNamedRootNbt = true)
+        val nbt by parameterOfEncoderVerifyingNbt()
         val serializableType by parameterOfSerializableTypeEdgeCases()
 
         val delegate = object : SerializationStrategy<Unit> {
@@ -378,7 +403,7 @@ class NbtNameTest {
 
     @Test
     fun dynamic_name_encoded_from_delegate_should_be_encoded_if_it_is_the_first() = parameterizeTest {
-        val nbt by parameterOfEncoderVerifyingNbt(includeNamedRootNbt = true)
+        val nbt by parameterOfEncoderVerifyingNbt()
         val serializableType by parameterOfSerializableTypeEdgeCases()
 
         val delegate = object : SerializationStrategy<Unit> {
@@ -414,7 +439,7 @@ class NbtNameTest {
 
     @Test
     fun dynamic_name_decoded_from_named_root_should_be_correct() = parameterizeTest {
-        val nbt by parameterOfDecoderVerifyingNbt(includeNamedRootNbt = true)
+        val nbt by parameterOfDecoderVerifyingNbt()
         assume(nbt.capabilities.namedRoot)
 
         val serializableType by parameterOfSerializableTypeEdgeCases()
@@ -441,7 +466,7 @@ class NbtNameTest {
 
     @Test
     fun dynamic_name_decoded_from_named_root_should_be_correct_when_decoded_from_delegate() = parameterizeTest {
-        val nbt by parameterOfDecoderVerifyingNbt(includeNamedRootNbt = true)
+        val nbt by parameterOfDecoderVerifyingNbt()
         assume(nbt.capabilities.namedRoot)
 
         val serializableType by parameterOfSerializableTypeEdgeCases()
