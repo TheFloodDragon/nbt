@@ -12,18 +12,16 @@ import net.benwoodworth.knbt.test.asSource
 import net.benwoodworth.knbt.test.assume
 import net.benwoodworth.knbt.test.file.nbtFiles
 import net.benwoodworth.knbt.test.parameterizeTest
-import net.benwoodworth.knbt.test.parameters.parameterOfNbtTagTypeEdgeCases
 import okio.blackholeSink
 import okio.buffer
 import okio.use
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 
 @OptIn(OkioApi::class)
 class BinaryNbtWriterTest {
-    val nbt = Nbt {
+    val nbt = BinaryNbtFormat {
         variant = NbtVariant.Java
         compression = NbtCompression.None
     }
