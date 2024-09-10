@@ -5,6 +5,7 @@ import com.benwoodworth.parameterize.parameter
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationStrategy
+import kotlinx.serialization.modules.SerializersModule
 import net.benwoodworth.knbt.*
 import net.benwoodworth.knbt.internal.*
 import net.benwoodworth.knbt.test.verify.VerifyingNbtReader
@@ -63,12 +64,11 @@ internal fun ParameterizeScope.parameterOfDecoderVerifyingNbt(
 }
 
 internal sealed class VerifyingNbt(
-    private val name: String,
-    val capabilities: NbtCapabilities,
     builderAction: NbtFormatBuilder.() -> Unit
-) {
-    protected val nbt = NbtFormat { builderAction() }
-        .let { NbtFormat(name, it.configuration, it.serializersModule, capabilities) }
+) : NbtFormat() {
+    private val baseNbt = Nbt { builderAction() }
+    override val serializersModule get() = baseNbt.serializersModule
+    override val configuration get() = baseNbt.configuration
 
     override fun toString(): String = name
 
@@ -100,10 +100,10 @@ internal sealed class VerifyingNbt(
 }
 
 internal class EncoderVerifyingNbt(
-    val name: String,
-    capabilities: NbtCapabilities,
+    override val name: String,
+    override val capabilities: NbtCapabilities,
     builderAction: NbtFormatBuilder.() -> Unit
-) : VerifyingNbt(name, capabilities, builderAction) {
+) : VerifyingNbt(builderAction) {
     @Deprecated("Use verifyEncoder()", level = DeprecationLevel.HIDDEN)
     override fun <T> verifyEncoderOrDecoder(
         serializer: KSerializer<T>,
@@ -118,7 +118,7 @@ internal class EncoderVerifyingNbt(
         try {
             val context = SerializationNbtContext()
             val writer = VerifyingNbtWriter(encodedTag)
-            val encoder = NbtWriterEncoder(nbt, context, writer)
+            val encoder = NbtWriterEncoder(this, context, writer)
 
             encoder.encodeSerializableValue(serializer, value)
             writer.assertComplete()
@@ -133,10 +133,10 @@ internal class EncoderVerifyingNbt(
 }
 
 internal class DecoderVerifyingNbt(
-    val name: String,
-    capabilities: NbtCapabilities,
+    override val name: String,
+    override val capabilities: NbtCapabilities,
     builderAction: NbtFormatBuilder.() -> Unit
-) : VerifyingNbt(name, capabilities, builderAction) {
+) : VerifyingNbt(builderAction) {
     @Deprecated("Use verifyDecoder()", level = DeprecationLevel.HIDDEN)
     override fun <T> verifyEncoderOrDecoder(
         serializer: KSerializer<T>,
@@ -161,7 +161,7 @@ internal class DecoderVerifyingNbt(
         try {
             val context = SerializationNbtContext()
             val reader = VerifyingNbtReader(encodedTag, capabilities)
-            val decoder = NbtReaderDecoder(nbt, context, reader)
+            val decoder = NbtReaderDecoder(this, context, reader)
             val decodedValue = decoder.decodeSerializableValue(deserializer)
 
             reader.assertComplete()
