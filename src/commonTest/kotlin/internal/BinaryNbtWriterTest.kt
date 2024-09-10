@@ -21,8 +21,7 @@ import kotlin.test.assertFalse
 
 @OptIn(OkioApi::class)
 class BinaryNbtWriterTest {
-    val nbt = BinaryNbtFormat {
-        variant = NbtVariant.Java
+    val nbt = JavaNbt {
         compression = NbtCompression.None
     }
 
