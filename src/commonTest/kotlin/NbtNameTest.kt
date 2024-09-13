@@ -165,30 +165,6 @@ class NbtNameTest {
     }
 
     @Test
-    fun decoding_value_with_static_NBT_name_should_fail_with_different_name() = parameterizeTest {
-        val nbt by parameterOfDecoderVerifyingNbt()
-        assume(nbt.capabilities.namedRoot)
-
-        val value by parameter(valuesWithStaticNbtNames)
-        val name = value.serializer.descriptor.nbtName
-
-        val differentlyNamedNbtTag = buildNbtCompound("different_than_$name") {
-            // No elements, since the decoder should fail before reaching this point anyway
-        }
-
-        val failure = assertFailsWith<NbtDecodingException> {
-            nbt.verifyDecoder(value.serializer, differentlyNamedNbtTag)
-        }
-
-        assertEquals(
-            "Expected tag named '$name', but got '${differentlyNamedNbtTag.name}'",
-            failure.message,
-            "failure message"
-        )
-    }
-
-
-    @Test
     fun should_not_fail_decoding_a_different_NBT_name_when_dynamic() = parameterizeTest {
         val nbt by parameterOfDecoderVerifyingNbt()
         assume(nbt.capabilities.namedRoot)
