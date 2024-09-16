@@ -9,16 +9,13 @@ import net.benwoodworth.knbt.internal.*
 import net.benwoodworth.knbt.internal.BedrockNbtReader
 import net.benwoodworth.knbt.internal.NbtCapabilities
 import net.benwoodworth.knbt.internal.NbtContext
-import net.benwoodworth.knbt.internal.NbtReader
-import net.benwoodworth.knbt.internal.NbtWriter
 import okio.BufferedSink
 import okio.BufferedSource
-import okio.Sink
-import okio.Source
 
 private val bedrockNbtCapabilities = NbtCapabilities(
     namedRoot = true,
     definiteLengthEncoding = true,
+    rootTagTypes = NbtTagTypeSet(listOf(NbtTagType.TAG_List, NbtTagType.TAG_Compound)),
 )
 
 public class BedrockNbt internal constructor(
