@@ -1,5 +1,8 @@
 package net.benwoodworth.knbt.test
 
+import com.benwoodworth.parameterize.ParameterizeScope
+import com.benwoodworth.parameterize.parameter
+import com.benwoodworth.parameterize.parameterize
 import okio.Buffer
 import okio.Source
 import okio.Timeout

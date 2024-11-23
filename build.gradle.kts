@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 val kotlinx_serialization_version: String by extra
+val kotlinx_coroutines_version: String by extra
 val okio_version: String by extra
 val parameterize_version: String by extra
 
@@ -31,6 +32,12 @@ kotlin {
     explicitApi()
 
     jvm {
+        compilations.all {
+            kotlinOptions.jvmTarget = "1.8"
+        }
+        testRuns["test"].executionTask.configure {
+            useJUnitPlatform()
+        }
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget = JvmTarget.JVM_1_8
@@ -40,7 +47,7 @@ kotlin {
         }
     }
 
-    js {
+    js(IR) {
         browser {
             testTask {
                 useKarma {
@@ -52,10 +59,18 @@ kotlin {
         nodejs()
     }
 
+    //wasmJs() // Requires gzip/zlib support to be implemented
+    //wasmWasi()
+
     //wasmJs()   // Requires gzip/zlib support to be implemented
     //wasmWasi() //
 
     linuxX64()
+    linuxArm64()
+    //androidNativeArm32() // Not supported by Okio yet
+    //androidNativeArm64() // https://github.com/square/okio/issues/1242#issuecomment-1759357336
+    //androidNativeX86()
+    //androidNativeX64()
     linuxArm64()
     //androidNativeArm32() // Not supported by Okio yet
     //androidNativeArm64() // https://github.com/square/okio/issues/1242#issuecomment-1759357336
@@ -64,7 +79,11 @@ kotlin {
     macosX64()
     macosArm64()
     iosSimulatorArm64()
+    macosArm64()
+    iosSimulatorArm64()
     iosX64()
+    watchosSimulatorArm64()
+    watchosX64()
     watchosSimulatorArm64()
     watchosX64()
     watchosArm32()
@@ -74,10 +93,17 @@ kotlin {
     tvosArm64()
     iosArm64()
     watchosDeviceArm64()
+    tvosSimulatorArm64()
+    tvosX64()
+    tvosArm64()
+    iosArm64()
+    watchosDeviceArm64()
     mingwX64()
 
     sourceSets {
         configureEach {
+            val isTest = name.endsWith("Test")
+
             languageSettings.apply {
                 optIn("kotlin.contracts.ExperimentalContracts")
                 optIn("net.benwoodworth.knbt.InternalNbtApi")
@@ -88,6 +114,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinx_serialization_version")
+                implementation("com.squareup.okio:okio:$okio_version")
                 implementation("com.squareup.okio:okio:$okio_version")
             }
         }
@@ -148,6 +175,12 @@ signing {
     )
 
     sign(publishing.publications)
+
+    // https://github.com/gradle/gradle/issues/26091#issuecomment-1722947958
+    tasks.withType<AbstractPublishToMaven>().configureEach {
+        val signingTasks = tasks.withType<Sign>()
+        mustRunAfter(signingTasks)
+    }
 }
 
 publishing {
@@ -174,6 +207,8 @@ publishing {
 
             licenses {
                 license {
+                    name.set("GNU Lesser General Public License")
+                    url.set("https://www.gnu.org/licenses/lgpl-3.0.txt")
                     name.set("GNU Lesser General Public License")
                     url.set("https://www.gnu.org/licenses/lgpl-3.0.txt")
                 }
