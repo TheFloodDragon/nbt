@@ -3,7 +3,7 @@ package net.benwoodworth.knbt.test.verify
 import net.benwoodworth.knbt.*
 import net.benwoodworth.knbt.internal.NbtCapabilities
 import net.benwoodworth.knbt.internal.NbtReader
-import net.benwoodworth.knbt.internal.toNbtTagType
+import net.benwoodworth.knbt.tag.*
 import kotlin.contracts.contract
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
@@ -119,7 +119,7 @@ internal class VerifyingNbtReader(
         assertBeginningEntryWithUnknownSizes(capabilities.definiteLengthEncoding)
         assertBeginningEntryWithAnotherEntryToRead(state.ended)
 
-        val entry = state.tag.getOrNull(state.index)
+        val entry = state.tag.content.getOrNull(state.index)
         if (entry != null) {
             val awaitEntryState = State.AwaitingValue(NbtByte(entry), state.copy(index = state.index + 1))
 
@@ -159,7 +159,7 @@ internal class VerifyingNbtReader(
         assertBeginningEntryWithUnknownSizes(capabilities.definiteLengthEncoding)
         assertBeginningEntryWithAnotherEntryToRead(state.ended)
 
-        val entry = state.tag.getOrNull(state.index)
+        val entry = state.tag.content.getOrNull(state.index)
         if (entry != null) {
             true to State.AwaitingValue(NbtInt(entry), state.copy(index = state.index + 1))
         } else {
@@ -197,7 +197,7 @@ internal class VerifyingNbtReader(
         assertBeginningEntryWithUnknownSizes(capabilities.definiteLengthEncoding)
         assertBeginningEntryWithAnotherEntryToRead(state.ended)
 
-        val entry = state.tag.getOrNull(state.index)
+        val entry = state.tag.content.getOrNull(state.index)
         if (entry != null) {
             true to State.AwaitingValue(NbtLong(entry), state.copy(index = state.index + 1))
         } else {
@@ -217,49 +217,49 @@ internal class VerifyingNbtReader(
         assertStateIs<State.AwaitingValue>(state)
         assertReadTagTypeEquals(state.tag, NbtByte::class)
 
-        state.tag.value to state.nextState
+        state.tag.content to state.nextState
     }
 
     override fun readShort(): Short = transitionState(::readShort) {
         assertStateIs<State.AwaitingValue>(state)
         assertReadTagTypeEquals(state.tag, NbtShort::class)
 
-        state.tag.value to state.nextState
+        state.tag.content to state.nextState
     }
 
     override fun readInt(): Int = transitionState(::readInt) {
         assertStateIs<State.AwaitingValue>(state)
         assertReadTagTypeEquals(state.tag, NbtInt::class)
 
-        state.tag.value to state.nextState
+        state.tag.content to state.nextState
     }
 
     override fun readLong(): Long = transitionState(::readLong) {
         assertStateIs<State.AwaitingValue>(state)
         assertReadTagTypeEquals(state.tag, NbtLong::class)
 
-        state.tag.value to state.nextState
+        state.tag.content to state.nextState
     }
 
     override fun readFloat(): Float = transitionState(::readFloat) {
         assertStateIs<State.AwaitingValue>(state)
         assertReadTagTypeEquals(state.tag, NbtFloat::class)
 
-        state.tag.value to state.nextState
+        state.tag.content to state.nextState
     }
 
     override fun readDouble(): Double = transitionState(::readDouble) {
         assertStateIs<State.AwaitingValue>(state)
         assertReadTagTypeEquals(state.tag, NbtDouble::class)
 
-        state.tag.value to state.nextState
+        state.tag.content to state.nextState
     }
 
     override fun readString(): String = transitionState(::readString) {
         assertStateIs<State.AwaitingValue>(state)
         assertReadTagTypeEquals(state.tag, NbtString::class)
 
-        state.tag.value to state.nextState
+        state.tag.content to state.nextState
     }
 
     private sealed interface State {
@@ -343,7 +343,7 @@ internal class VerifyingNbtReader(
         inline fun <reified T : NbtTag> assertReadTagTypeEquals(expected: NbtTag, actual: KClass<T>) {
             contract { returns() implies (expected is T) }
 
-            assertEquals(expected.type, actual.toNbtTagType(), messagePrefix + "Incorrect type was read")
+            assertEquals(expected.type, NbtType.from(actual), messagePrefix + "Incorrect type was read")
         }
     }
 }
