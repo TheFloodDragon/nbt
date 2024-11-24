@@ -3,8 +3,13 @@ package net.benwoodworth.knbt.internal
 import com.benwoodworth.parameterize.parameter
 import kotlinx.serialization.decodeFromByteArray
 import kotlinx.serialization.encodeToByteArray
-import net.benwoodworth.knbt.*
+import net.benwoodworth.knbt.JavaNbt
+import net.benwoodworth.knbt.NbtNamed
+import net.benwoodworth.knbt.OkioApi
 import net.benwoodworth.knbt.okio.decodeFromBufferedSource
+import net.benwoodworth.knbt.tag.NbtTag
+import net.benwoodworth.knbt.tag.buildNbtCompound
+import net.benwoodworth.knbt.tag.put
 import net.benwoodworth.knbt.test.TestSource
 import net.benwoodworth.knbt.test.assume
 import net.benwoodworth.knbt.test.file.nbtFiles

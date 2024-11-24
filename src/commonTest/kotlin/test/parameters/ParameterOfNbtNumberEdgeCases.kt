@@ -2,7 +2,7 @@ package net.benwoodworth.knbt.test.parameters
 
 import com.benwoodworth.parameterize.ParameterizeScope
 import com.benwoodworth.parameterize.parameter
-import net.benwoodworth.knbt.*
+import net.benwoodworth.knbt.tag.*
 
 fun ParameterizeScope.parameterOfNbtByteEdgeCases() = parameter {
     sequenceOf(

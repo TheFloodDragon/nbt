@@ -2,7 +2,7 @@ package net.benwoodworth.knbt.external
 
 import kotlinx.serialization.Serializable
 import net.benwoodworth.knbt.NbtName
-import net.benwoodworth.knbt.buildNbtCompound
+import net.benwoodworth.knbt.tag.buildNbtCompound
 import net.benwoodworth.knbt.test.parameterizeTest
 import net.benwoodworth.knbt.test.parameters.parameterOfVerifyingNbt
 import kotlin.test.Test

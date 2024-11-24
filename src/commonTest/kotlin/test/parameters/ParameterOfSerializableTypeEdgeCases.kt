@@ -15,7 +15,9 @@ import kotlinx.serialization.descriptors.buildSerialDescriptor
 import kotlinx.serialization.descriptors.element
 import kotlinx.serialization.encoding.*
 import kotlinx.serialization.encoding.CompositeDecoder.Companion.DECODE_DONE
-import net.benwoodworth.knbt.*
+import net.benwoodworth.knbt.NbtDecoder
+import net.benwoodworth.knbt.NbtEncoder
+import net.benwoodworth.knbt.tag.*
 import kotlin.test.assertEquals
 
 data class SerializableTypeEdgeCase(
@@ -76,12 +78,12 @@ private val nbtTypes = listOf(
     NbtLong(0),
     NbtFloat(0.0f),
     NbtDouble(0.0),
-    NbtByteArray(emptyList()),
+    NbtByteArray(byteArrayOf()),
     NbtString(""),
-    NbtList(emptyList()),
-    NbtCompound(mapOf()),
-    NbtIntArray(emptyList()),
-    NbtLongArray(emptyList()),
+    NbtList<NbtTag>(),
+    NbtCompound(),
+    NbtIntArray(intArrayOf()),
+    NbtLongArray(longArrayOf()),
 ).map { nbtTag ->
     SerializableTypeEdgeCase(
         "Polymorphic NbtTag (${nbtTag::class.simpleName})",
@@ -99,7 +101,7 @@ private val basicTypes = listOf(
         Boolean.serializer().descriptor,
         { encodeBoolean(false) },
         { decodeBoolean() },
-        NbtByte.fromBoolean(false),
+        NbtByte(false),
     ),
     SerializableTypeEdgeCase(
         "Byte",
@@ -187,7 +189,7 @@ private val basicTypes = listOf(
                     .also { assertEquals(DECODE_DONE, it, "decodeElementIndex(...)") }
             }
         },
-        NbtList(emptyList())
+        NbtList<NbtTag>()
     ),
     SerializableTypeEdgeCase(
         "Collection (sequentially, if supported)",
@@ -207,7 +209,7 @@ private val basicTypes = listOf(
                 }
             }
         },
-        NbtList(emptyList())
+        NbtList<NbtTag>()
     ),
 )
 

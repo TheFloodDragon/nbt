@@ -2,7 +2,8 @@ package net.benwoodworth.knbt.internal
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
-import net.benwoodworth.knbt.*
+import net.benwoodworth.knbt.NbtName
+import net.benwoodworth.knbt.tag.*
 import net.benwoodworth.knbt.test.parameterizeTest
 import net.benwoodworth.knbt.test.parameters.parameterOfDecoderVerifyingNbt
 import kotlin.test.Ignore

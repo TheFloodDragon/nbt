@@ -5,8 +5,13 @@ import com.benwoodworth.parameterize.parameter
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationStrategy
-import net.benwoodworth.knbt.*
+import net.benwoodworth.knbt.Nbt
+import net.benwoodworth.knbt.NbtFormat
+import net.benwoodworth.knbt.NbtFormatBuilder
+import net.benwoodworth.knbt.NbtNamed
 import net.benwoodworth.knbt.internal.*
+import net.benwoodworth.knbt.tag.NbtTag
+import net.benwoodworth.knbt.tag.NbtType
 import net.benwoodworth.knbt.test.verify.VerifyingNbtReader
 import net.benwoodworth.knbt.test.verify.VerifyingNbtWriter
 import kotlin.test.fail
@@ -95,7 +100,12 @@ internal sealed class VerifyingNbt(
         encodedTag: NbtTag,
         testDecodedValue: (value: T, decodedValue: T) -> Unit = { _, _ -> }
     ) {
-        verifyEncoderOrDecoder(serializer, value, NbtNamed("", encodedTag), testDecodedValue) // TODO non-empty serializer NbtName?
+        verifyEncoderOrDecoder(
+            serializer,
+            value,
+            NbtNamed("", encodedTag),
+            testDecodedValue
+        ) // TODO non-empty serializer NbtName?
     }
 }
 

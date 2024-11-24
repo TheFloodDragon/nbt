@@ -1,6 +1,7 @@
 package net.benwoodworth.knbt.tag
 
 import kotlinx.serialization.Serializable
+import kotlin.jvm.JvmStatic
 
 /**
  * NbtList
@@ -16,8 +17,18 @@ public class NbtList<T : NbtTag>(public override val content: MutableList<T>) : 
 
     public constructor(size: Int) : this(ArrayList(size))
 
-    internal val elementType: NbtType
+    public val elementType: NbtType
         get() = if (content.isEmpty()) NbtType.END else content.first().type
+
+    /**
+     * 克隆数据
+     */
+    override fun clone(): NbtList<T> = NbtList<T>().apply {
+        this.content.forEach {
+            @Suppress("UNCHECKED_CAST")
+            add(it.clone() as T)
+        }
+    }
 
     override fun equals(other: Any?): Boolean =
         this === other || (other is NbtList<*> && content == other.content)
@@ -30,7 +41,8 @@ public class NbtList<T : NbtTag>(public override val content: MutableList<T>) : 
 
     public companion object {
 
-        public fun <T : NbtTag> of(list: List<T>): NbtList<T> = NbtList(list.toMutableList())
+        @JvmStatic
+        public fun <T : NbtTag> of(list: Collection<T>): NbtList<T> = NbtList(list.toMutableList())
 
     }
 

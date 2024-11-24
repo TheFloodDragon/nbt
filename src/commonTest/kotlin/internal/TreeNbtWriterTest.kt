@@ -1,7 +1,7 @@
 package net.benwoodworth.knbt.internal
 
-import net.benwoodworth.knbt.*
-import net.benwoodworth.knbt.internal.NbtType.*
+import net.benwoodworth.knbt.NbtNamed
+import net.benwoodworth.knbt.tag.*
 import net.benwoodworth.knbt.test.parameterizeTest
 import net.benwoodworth.knbt.test.parameters.*
 import kotlin.test.Test
@@ -80,7 +80,7 @@ class TreeNbtWriterTest {
     fun should_write_ByteArray_correctly() = parameterizeTest {
         val value by parameterOfByteArrays()
 
-        expectNbtWriterCalls(NbtByteArray(value.asList())) {
+        expectNbtWriterCalls(NbtByteArray(value)) {
             beginRootTag(NbtType.BYTE_ARRAY, rootName)
             beginByteArray(value.size)
             value.forEach { entry ->
@@ -95,7 +95,7 @@ class TreeNbtWriterTest {
     fun should_write_IntArray_correctly() = parameterizeTest {
         val value by parameterOfIntArrays()
 
-        expectNbtWriterCalls(NbtIntArray(value.asList())) {
+        expectNbtWriterCalls(NbtIntArray(value)) {
             beginRootTag(NbtType.INT_ARRAY, rootName)
             beginIntArray(value.size)
             value.forEach { entry ->
@@ -110,7 +110,7 @@ class TreeNbtWriterTest {
     fun should_write_LongArray_correctly() = parameterizeTest {
         val value by parameterOfLongArrays()
 
-        expectNbtWriterCalls(NbtLongArray(value.asList())) {
+        expectNbtWriterCalls(NbtLongArray(value)) {
             beginRootTag(NbtType.LONG_ARRAY, rootName)
             beginLongArray(value.size)
             value.forEach { entry ->
@@ -145,7 +145,7 @@ class TreeNbtWriterTest {
 
     @Test
     fun should_write_List_with_no_entries_correctly() {
-        expectNbtWriterCalls(NbtList(emptyList())) {
+        expectNbtWriterCalls(NbtList<NbtTag>()) {
             beginRootTag(NbtType.LIST, rootName)
             beginList(NbtType.END, 0)
             endList()
@@ -154,7 +154,7 @@ class TreeNbtWriterTest {
 
     @Test
     fun should_write_List_with_one_entry_correctly() {
-        expectNbtWriterCalls(NbtList(listOf("entry").map { NbtString(it) })) {
+        expectNbtWriterCalls(NbtList.of(listOf("entry").map { NbtString(it) })) {
             beginRootTag(NbtType.LIST, rootName)
             beginList(NbtType.STRING, 1)
             beginListEntry()

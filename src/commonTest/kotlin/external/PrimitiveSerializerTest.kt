@@ -2,12 +2,10 @@ package net.benwoodworth.knbt.external
 
 import com.benwoodworth.parameterize.parameter
 import kotlinx.serialization.builtins.serializer
-import net.benwoodworth.knbt.NbtByte
-import net.benwoodworth.knbt.NbtString
-import net.benwoodworth.knbt.fromBoolean
+import net.benwoodworth.knbt.tag.NbtByte
+import net.benwoodworth.knbt.tag.NbtString
 import net.benwoodworth.knbt.test.parameterizeTest
 import net.benwoodworth.knbt.test.parameters.*
-import net.benwoodworth.knbt.toBoolean
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -19,7 +17,7 @@ class PrimitiveSerializerTest {
 
         nbt.verifyEncoderOrDecoder(
             Byte.serializer(),
-            nbtByte.value,
+            nbtByte.content,
             nbtByte,
             testDecodedValue = { value, decodedValue ->
                 assertEquals(value, decodedValue, "decodedValue")
@@ -34,7 +32,7 @@ class PrimitiveSerializerTest {
 
         nbt.verifyEncoderOrDecoder(
             Short.serializer(),
-            nbtShort.value,
+            nbtShort.content,
             nbtShort,
             testDecodedValue = { value, decodedValue ->
                 assertEquals(value, decodedValue, "decodedValue")
@@ -49,7 +47,7 @@ class PrimitiveSerializerTest {
 
         nbt.verifyEncoderOrDecoder(
             Int.serializer(),
-            nbtInt.value,
+            nbtInt.content,
             nbtInt,
             testDecodedValue = { value, decodedValue ->
                 assertEquals(value, decodedValue, "decodedValue")
@@ -64,7 +62,7 @@ class PrimitiveSerializerTest {
 
         nbt.verifyEncoderOrDecoder(
             Long.serializer(),
-            nbtLong.value,
+            nbtLong.content,
             nbtLong,
             testDecodedValue = { value, decodedValue ->
                 assertEquals(value, decodedValue, "decodedValue")
@@ -79,7 +77,7 @@ class PrimitiveSerializerTest {
 
         nbt.verifyEncoderOrDecoder(
             Float.serializer(),
-            nbtFloat.value,
+            nbtFloat.content,
             nbtFloat,
             testDecodedValue = { value, decodedValue ->
                 assertEquals(value, decodedValue, "decodedValue")
@@ -94,7 +92,7 @@ class PrimitiveSerializerTest {
 
         nbt.verifyEncoderOrDecoder(
             Double.serializer(),
-            nbtDouble.value,
+            nbtDouble.content,
             nbtDouble,
             testDecodedValue = { value, decodedValue ->
                 assertEquals(value, decodedValue, "decodedValue")
@@ -110,7 +108,7 @@ class PrimitiveSerializerTest {
         nbt.verifyEncoderOrDecoder(
             Boolean.serializer(),
             boolean,
-            NbtByte.fromBoolean(boolean),
+            NbtByte(boolean),
             testDecodedValue = { value, decodedValue ->
                 assertEquals(value, decodedValue, "decodedValue")
             }
@@ -138,7 +136,7 @@ class PrimitiveSerializerTest {
         // Character that appears in the NbtString edge cases, potentially being an incomplete part of a surrogate pair.
         val char by parameter {
             this@parameterizeTest.parameterOfNbtStringEdgeCases().arguments
-                .flatMap { it.value.asIterable() }
+                .flatMap { it.content.asIterable() }
         }
 
         nbt.verifyEncoderOrDecoder(

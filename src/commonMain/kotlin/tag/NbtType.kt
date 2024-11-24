@@ -1,5 +1,7 @@
 package net.benwoodworth.knbt.tag
 
+import kotlin.reflect.KClass
+
 /**
  * NbtType
  *
@@ -24,6 +26,24 @@ public enum class NbtType(internal val id: Byte) {
     public companion object {
 
         public fun from(id: Byte): NbtType? = entries.find { it.id == id }
+
+        public fun from(clazz: KClass<out NbtTag>): NbtType =
+            when (clazz.simpleName) { // String cases so it's optimized to a jump table
+                "NbtByte" -> BYTE
+                "NbtShort" -> SHORT
+                "NbtInt" -> INT
+                "NbtLong" -> LONG
+                "NbtFloat" -> FLOAT
+                "NbtDouble" -> DOUBLE
+                "NbtByteArray" -> BYTE_ARRAY
+                "NbtString" -> STRING
+                "NbtList" -> LIST
+                "NbtCompound" -> COMPOUND
+                "NbtIntArray" -> INT_ARRAY
+                "NbtLongArray" -> LONG_ARRAY
+                else -> END// "Nothing", or "Void" on JVM
+            }
+
 
     }
 

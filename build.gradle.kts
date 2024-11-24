@@ -36,9 +36,9 @@ kotlin {
         compilerOptions {
             jvmTarget = JvmTarget.JVM_1_8
         }
-        //testRuns["test"].executionTask.configure {
-        //    useJUnitPlatform()
-        //}
+        testRuns["test"].executionTask.configure {
+            useJUnitPlatform()
+        }
     }
 
     js(IR) {
@@ -96,8 +96,6 @@ kotlin {
 
     sourceSets {
         configureEach {
-            val isTest = name.endsWith("Test")
-
             languageSettings.apply {
                 optIn("kotlin.contracts.ExperimentalContracts")
                 optIn("net.benwoodworth.knbt.InternalNbtApi")
@@ -115,6 +113,7 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinx_serialization_version")
                 implementation("com.benwoodworth.parameterize:parameterize:$parameterize_version")
             }
         }
@@ -138,9 +137,9 @@ kotlin {
     }
 }
 
-//tasks.named<Test>("jvmTest") {
-//    useJUnitPlatform()
-//}
+tasks.named<Test>("jvmTest") {
+    useJUnitPlatform()
+}
 
 apiValidation {
     nonPublicMarkers.add("net.benwoodworth.knbt.NbtDeprecated")

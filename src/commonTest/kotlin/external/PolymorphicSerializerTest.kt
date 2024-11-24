@@ -5,8 +5,8 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
-import net.benwoodworth.knbt.buildNbtCompound
-import net.benwoodworth.knbt.put
+import net.benwoodworth.knbt.tag.buildNbtCompound
+import net.benwoodworth.knbt.tag.put
 import net.benwoodworth.knbt.test.parameterizeTest
 import net.benwoodworth.knbt.test.parameters.parameterOfVerifyingNbt
 import kotlin.test.Test

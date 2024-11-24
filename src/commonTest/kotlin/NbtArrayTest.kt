@@ -4,6 +4,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.serializer
+import net.benwoodworth.knbt.tag.*
 import net.benwoodworth.knbt.test.parameterizeTest
 import net.benwoodworth.knbt.test.parameters.parameterOfVerifyingNbt
 import net.benwoodworth.knbt.test.serializers.ListSerializerWithAnnotations
@@ -21,7 +22,7 @@ class NbtArrayTest {
         nbt.verifyEncoderOrDecoder(
             listAsNbtArraySerializer(),
             listOf<Byte>(1, 2, 3),
-            NbtByteArray(listOf(1, 2, 3)),
+            NbtByteArray(byteArrayOf(1, 2, 3)),
             testDecodedValue = { value, decodedValue ->
                 assertEquals(value, decodedValue, "decodedValue")
             }
@@ -35,7 +36,7 @@ class NbtArrayTest {
         nbt.verifyEncoderOrDecoder(
             listAsNbtArraySerializer(),
             listOf(1, 2, 3),
-            NbtIntArray(listOf(1, 2, 3)),
+            NbtIntArray(intArrayOf(1, 2, 3)),
             testDecodedValue = { value, decodedValue ->
                 assertEquals(value, decodedValue, "decodedValue")
             }
@@ -49,7 +50,7 @@ class NbtArrayTest {
         nbt.verifyEncoderOrDecoder(
             listAsNbtArraySerializer(),
             listOf(1L, 2L, 3L),
-            NbtLongArray(listOf(1L, 2L, 3L)),
+            NbtLongArray(longArrayOf(1L, 2L, 3L)),
             testDecodedValue = { value, decodedValue ->
                 assertEquals(value, decodedValue, "decodedValue")
             }

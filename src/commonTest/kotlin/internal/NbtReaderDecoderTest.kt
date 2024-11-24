@@ -4,9 +4,9 @@ import com.benwoodworth.parameterize.parameter
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
 import net.benwoodworth.knbt.NbtName
-import net.benwoodworth.knbt.NbtString
-import net.benwoodworth.knbt.buildNbtCompound
-import net.benwoodworth.knbt.put
+import net.benwoodworth.knbt.tag.NbtString
+import net.benwoodworth.knbt.tag.buildNbtCompound
+import net.benwoodworth.knbt.tag.put
 import net.benwoodworth.knbt.test.parameterizeTest
 import net.benwoodworth.knbt.test.parameters.parameterOfDecoderVerifyingNbt
 import kotlin.math.PI

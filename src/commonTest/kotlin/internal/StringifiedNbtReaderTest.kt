@@ -3,7 +3,8 @@ package net.benwoodworth.knbt.internal
 import com.benwoodworth.parameterize.ParameterizeScope
 import com.benwoodworth.parameterize.parameter
 import kotlinx.serialization.decodeFromString
-import net.benwoodworth.knbt.*
+import net.benwoodworth.knbt.StringifiedNbt
+import net.benwoodworth.knbt.tag.*
 import net.benwoodworth.knbt.test.parameterizeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -129,10 +130,10 @@ class StringifiedNbtReaderTest {
     @Test
     fun should_parse_ByteArray_correctly() = parameterizeTest {
         val testCase by parameterOfDecodeTestCases(
-            "[B;]" to NbtByteArray(listOf()),
-            "[B; 1b , 2b, 3b]" to NbtByteArray(listOf(1, 2, 3)),
+            "[B;]" to NbtByteArray(byteArrayOf()),
+            "[B; 1b , 2b, 3b]" to NbtByteArray(byteArrayOf(1, 2, 3)),
 
-            " [ B ; 1b , 2b , 3b ] " to NbtByteArray(listOf(1, 2, 3)),
+            " [ B ; 1b , 2b , 3b ] " to NbtByteArray(byteArrayOf(1, 2, 3)),
         )
 
         assertEquals(testCase.expected, StringifiedNbt.decodeFromString(testCase.snbt))
@@ -141,10 +142,10 @@ class StringifiedNbtReaderTest {
     @Test
     fun should_parse_IntArray_correctly() = parameterizeTest {
         val testCase by parameterOfDecodeTestCases(
-            "[I;]" to NbtIntArray(listOf()),
-            "[I; 1, 2, 3]" to NbtIntArray(listOf(1, 2, 3)),
+            "[I;]" to NbtIntArray(intArrayOf()),
+            "[I; 1, 2, 3]" to NbtIntArray(intArrayOf(1, 2, 3)),
 
-            " [ I ; 1 , 2 , 3 ] " to NbtIntArray(listOf(1, 2, 3)),
+            " [ I ; 1 , 2 , 3 ] " to NbtIntArray(intArrayOf(1, 2, 3)),
         )
 
         assertEquals(testCase.expected, StringifiedNbt.decodeFromString(testCase.snbt))
@@ -153,10 +154,10 @@ class StringifiedNbtReaderTest {
     @Test
     fun should_parse_LongArray_correctly() = parameterizeTest {
         val testCase by parameterOfDecodeTestCases(
-            "[L;]" to NbtLongArray(listOf()),
-            "[L; 1l, 2l, 3l]" to NbtLongArray(listOf(1, 2, 3)),
+            "[L;]" to NbtLongArray(longArrayOf()),
+            "[L; 1l, 2l, 3l]" to NbtLongArray(longArrayOf(1, 2, 3)),
 
-            " [ L ; 1l , 2l , 3l ] " to NbtLongArray(listOf(1, 2, 3)),
+            " [ L ; 1l , 2l , 3l ] " to NbtLongArray(longArrayOf(1, 2, 3)),
         )
 
         assertEquals(testCase.expected, StringifiedNbt.decodeFromString(testCase.snbt))

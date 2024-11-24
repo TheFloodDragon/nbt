@@ -21,4 +21,9 @@ public sealed interface NbtTag {
      */
     public val content: Any
 
+    /**
+     * Clone the tag.
+     */
+    public fun clone(): NbtTag = this
+
 }

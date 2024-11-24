@@ -11,9 +11,9 @@ import kotlinx.serialization.descriptors.buildSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.encodeCollection
-import net.benwoodworth.knbt.NbtList
-import net.benwoodworth.knbt.UnsafeNbtApi
-import net.benwoodworth.knbt.buildNbtList
+import net.benwoodworth.knbt.tag.NbtList
+import net.benwoodworth.knbt.tag.NbtTag
+import net.benwoodworth.knbt.tag.buildNbtList
 import net.benwoodworth.knbt.test.decodeStructureAndElements
 import net.benwoodworth.knbt.test.parameterizeTest
 import net.benwoodworth.knbt.test.parameters.parameterOfSerializableTypeEdgeCases
@@ -30,7 +30,7 @@ class ListSerializerTest {
         nbt.verifyEncoderOrDecoder(
             ListSerializer(Unit.serializer()),
             listOf(),
-            NbtList(listOf()),
+            NbtList<NbtTag>(),
             testDecodedValue = { value, decodedValue ->
                 assertContentEquals(value, decodedValue, "decodedValue")
             }
@@ -38,7 +38,6 @@ class ListSerializerTest {
     }
 
     @Test
-    @OptIn(UnsafeNbtApi::class)
     fun should_serialize_List_of_value_correctly() = parameterizeTest {
         val nbt by parameterOfVerifyingNbt()
         val serializableType by parameterOfSerializableTypeEdgeCases()
@@ -56,7 +55,7 @@ class ListSerializerTest {
         nbt.verifyEncoderOrDecoder(
             ListSerializer(serializer),
             listOf(Unit),
-            NbtList(listOf(serializableType.valueTag)),
+            NbtList(mutableListOf(serializableType.valueTag)),
             testDecodedValue = { value, decodedValue ->
                 assertContentEquals(value, decodedValue, "decodedValue")
             }
@@ -95,13 +94,12 @@ class ListSerializerTest {
 //        }
         val serializer = ListSerializer(ListSerializer(listType.serializer()))
 
-        @OptIn(UnsafeNbtApi::class)
         nbt.verifyEncoderOrDecoder(
             serializer,
             listOf(listOf(Unit), listOf(Unit)),
             buildNbtList {
-                add(NbtList(listOf(listType.valueTag)))
-                add(NbtList(listOf(listType.valueTag)))
+                add(NbtList(mutableListOf(listType.valueTag)))
+                add(NbtList(mutableListOf(listType.valueTag)))
             }
         )
     }
@@ -142,13 +140,12 @@ class ListSerializerTest {
             }
         }
 
-        @OptIn(UnsafeNbtApi::class)
         nbt.verifyEncoderOrDecoder(
             serializer,
             Unit,
             buildNbtList {
-                add(NbtList(listOf(list0ElementType.valueTag)))
-                add(NbtList(listOf(list1ElementType.valueTag)))
+                add(NbtList(mutableListOf(list0ElementType.valueTag)))
+                add(NbtList(mutableListOf(list1ElementType.valueTag)))
             }
         )
     }

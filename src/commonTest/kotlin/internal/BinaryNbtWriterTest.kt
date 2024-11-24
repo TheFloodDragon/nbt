@@ -4,12 +4,15 @@ import com.benwoodworth.parameterize.parameter
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.decodeFromByteArray
 import kotlinx.serialization.encodeToByteArray
-import net.benwoodworth.knbt.*
+import net.benwoodworth.knbt.JavaNbt
+import net.benwoodworth.knbt.NbtCompression
+import net.benwoodworth.knbt.NbtNamed
+import net.benwoodworth.knbt.OkioApi
 import net.benwoodworth.knbt.okio.detect
 import net.benwoodworth.knbt.okio.encodeToBufferedSink
+import net.benwoodworth.knbt.tag.NbtTag
 import net.benwoodworth.knbt.test.TestSink
 import net.benwoodworth.knbt.test.asSource
-import net.benwoodworth.knbt.test.assume
 import net.benwoodworth.knbt.test.file.nbtFiles
 import net.benwoodworth.knbt.test.parameterizeTest
 import okio.blackholeSink

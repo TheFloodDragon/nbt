@@ -1,8 +1,8 @@
 package net.benwoodworth.knbt.internal
 
-import net.benwoodworth.knbt.*
+import net.benwoodworth.knbt.NbtNamed
 import net.benwoodworth.knbt.internal.NbtReader.*
-import net.benwoodworth.knbt.internal.NbtType.*
+import net.benwoodworth.knbt.tag.*
 import net.benwoodworth.knbt.test.parameterizeTest
 import net.benwoodworth.knbt.test.parameters.*
 import net.benwoodworth.knbt.test.shouldReturn
@@ -79,7 +79,7 @@ class TreeNbtReaderTest {
     fun should_read_ByteArray_correctly() = parameterizeTest {
         val value by parameterOfByteArrays()
 
-        expectNbtReaderCalls(NbtByteArray(value.asList())) {
+        expectNbtReaderCalls(NbtByteArray(value)) {
             beginRootTag() shouldReturn NamedTagInfo(NbtType.BYTE_ARRAY, rootName)
             beginByteArray() shouldReturn ArrayInfo(value.size)
             repeat(value.size) { index ->
@@ -93,7 +93,7 @@ class TreeNbtReaderTest {
     fun should_read_IntArray_correctly() = parameterizeTest {
         val value by parameterOfIntArrays()
 
-        expectNbtReaderCalls(NbtIntArray(value.asList())) {
+        expectNbtReaderCalls(NbtIntArray(value)) {
             beginRootTag() shouldReturn NamedTagInfo(NbtType.INT_ARRAY, rootName)
             beginIntArray() shouldReturn ArrayInfo(value.size)
             repeat(value.size) { index ->
@@ -107,7 +107,7 @@ class TreeNbtReaderTest {
     fun should_read_LongArray_correctly() = parameterizeTest {
         val value by parameterOfLongArrays()
 
-        expectNbtReaderCalls(NbtLongArray(value.asList())) {
+        expectNbtReaderCalls(NbtLongArray(value)) {
             beginRootTag() shouldReturn NamedTagInfo(NbtType.LONG_ARRAY, rootName)
             beginLongArray() shouldReturn ArrayInfo(value.size)
             repeat(value.size) { index ->
@@ -143,7 +143,7 @@ class TreeNbtReaderTest {
 
     @Test
     fun should_read_List_with_no_entries_correctly() {
-        expectNbtReaderCalls(NbtList(emptyList())) {
+        expectNbtReaderCalls(NbtList<NbtTag>()) {
             beginRootTag() shouldReturn NamedTagInfo(NbtType.LIST, rootName)
             beginList() shouldReturn ListInfo(NbtType.END, 0)
             endList()
@@ -152,7 +152,7 @@ class TreeNbtReaderTest {
 
     @Test
     fun should_read_List_with_one_entry_correctly() {
-        expectNbtReaderCalls(NbtList(listOf("entry").map { NbtString(it) })) {
+        expectNbtReaderCalls(NbtList.of(listOf("entry").map { NbtString(it) })) {
             beginRootTag() shouldReturn NamedTagInfo(NbtType.LIST, rootName)
             beginList() shouldReturn ListInfo(NbtType.STRING, 1)
             readString() shouldReturn "entry"
@@ -162,15 +162,16 @@ class TreeNbtReaderTest {
 
     @Test
     fun should_read_List_of_Lists_correctly() {
-        val list = buildNbtList<NbtList<*>> {
-            addNbtList<NbtString> {
-                add("hello")
-                add("world")
-            }
-            addNbtList<Nothing> {}
-            addNbtList<NbtInt> {
-                add(42)
-            }
+        val list = NbtList<NbtList<NbtTag>>().apply {
+            add(NbtList<NbtTag>().apply {
+                add(NbtString("hello"))
+                add(NbtString("world"))
+            })
+            add(NbtList())
+            add(NbtList<NbtTag>().apply {
+                add(NbtInt(42))
+                add(NbtString("world"))
+            })
         }
 
         expectNbtReaderCalls(list) {

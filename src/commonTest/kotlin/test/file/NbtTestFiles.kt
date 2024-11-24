@@ -1,7 +1,11 @@
 package net.benwoodworth.knbt.test.file
 
 import kotlinx.serialization.KSerializer
-import net.benwoodworth.knbt.*
+import net.benwoodworth.knbt.BinaryNbtFormat
+import net.benwoodworth.knbt.JavaNbt
+import net.benwoodworth.knbt.NbtCompression
+import net.benwoodworth.knbt.NbtNamed
+import net.benwoodworth.knbt.tag.NbtCompound
 import net.benwoodworth.knbt.test.asSource
 import okio.Source
 

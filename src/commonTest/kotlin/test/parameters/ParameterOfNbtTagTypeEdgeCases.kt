@@ -7,7 +7,7 @@ import net.benwoodworth.knbt.tag.*
 /**
  * An [NbtTag] of each type.
  */
-fun ParameterizeScope.parameterOfNbtTypeEdgeCases() = parameter {
+fun ParameterizeScope.parameterOfNbtTagTypeEdgeCases() = parameter {
     NbtType.entries.asSequence().mapNotNull { type ->
         when (type) {
             NbtType.END -> null

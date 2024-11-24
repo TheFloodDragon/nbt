@@ -9,6 +9,7 @@ import kotlinx.serialization.descriptors.PolymorphicKind
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildSerialDescriptor
 import kotlinx.serialization.encoding.*
+import net.benwoodworth.knbt.tag.buildNbtCompound
 import net.benwoodworth.knbt.test.parameterizeTest
 import net.benwoodworth.knbt.test.parameters.parameterOfDecoderVerifyingNbt
 import net.benwoodworth.knbt.test.parameters.parameterOfEncoderVerifyingNbt

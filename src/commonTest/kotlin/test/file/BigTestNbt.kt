@@ -2,7 +2,9 @@ package net.benwoodworth.knbt.test.file
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import net.benwoodworth.knbt.*
+import net.benwoodworth.knbt.NbtArray
+import net.benwoodworth.knbt.NbtName
+import net.benwoodworth.knbt.tag.*
 import net.benwoodworth.knbt.test.assertStructureEquals
 import net.benwoodworth.knbt.test.fix
 import net.benwoodworth.knbt.test.toBinary
@@ -24,7 +26,7 @@ val bigTestTag
                 put("value", 0.5f)
             }
         }
-        put("listTest (long)", NbtList(listOf(11L, 12L, 13L, 14L, 15L).map { NbtLong(it) }))
+        put("listTest (long)", NbtList.of(listOf(11L, 12L, 13L, 14L, 15L).map { NbtLong(it) }))
         putNbtList("listTest (compound)") {
             addNbtCompound {
                 put("name", "Compound tag #0")

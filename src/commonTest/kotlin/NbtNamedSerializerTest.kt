@@ -5,20 +5,15 @@ import com.benwoodworth.parameterize.parameterOf
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
+import net.benwoodworth.knbt.tag.NbtInt
 import net.benwoodworth.knbt.test.assume
 import net.benwoodworth.knbt.test.parameterizeTest
-import net.benwoodworth.knbt.test.parameters.parameterOfDecoderVerifyingNbt
-import net.benwoodworth.knbt.test.parameters.parameterOfEncoderVerifyingNbt
-import net.benwoodworth.knbt.test.parameters.parameterOfSerializableTypeEdgeCases
-import net.benwoodworth.knbt.test.parameters.parameterOfVerifyingNbt
-import net.benwoodworth.knbt.test.parameters.serializer
+import net.benwoodworth.knbt.test.parameters.*
 import net.benwoodworth.knbt.test.qualifiedNameOrDefault
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
-import kotlin.test.assertTrue
 
 class NbtNamedSerializerTest {
     @Test
@@ -56,11 +51,10 @@ class NbtNamedSerializerTest {
         val serializer = NbtNamed.serializer(valueType.serializer())
         val other = NbtNamed.serializer(valueType.serializer())
 
-        assertTrue(serializer.descriptor == other.descriptor, "equals")
+        assertEquals(serializer.descriptor, other.descriptor, "equals")
     }
 
     @Test
-    @OptIn(ExperimentalSerializationApi::class)
     fun descriptor_equals_should_be_false_if_value_serializer_is_unequal() = parameterizeTest {
         val valueType by parameterOfSerializableTypeEdgeCases()
         val otherValueType by parameterOfSerializableTypeEdgeCases()
@@ -69,11 +63,10 @@ class NbtNamedSerializerTest {
         val serializer = NbtNamed.serializer(valueType.serializer())
         val other = NbtNamed.serializer(otherValueType.serializer())
 
-        assertFalse(serializer.descriptor == other.descriptor, "equals")
+        assertNotEquals(serializer.descriptor, other.descriptor, "equals")
     }
 
     @Test
-    @OptIn(ExperimentalSerializationApi::class)
     fun descriptor_hash_code_should_equal_if_constructed_the_same() = parameterizeTest {
         val valueType by parameterOfSerializableTypeEdgeCases()
 
@@ -84,7 +77,6 @@ class NbtNamedSerializerTest {
     }
 
     @Test
-    @OptIn(ExperimentalSerializationApi::class)
     fun descriptor_hash_code_should_be_different_from_common_descriptors() = parameterizeTest {
         val descriptor by parameter {
             this@parameterizeTest.parameterOfSerializableTypeEdgeCases().arguments

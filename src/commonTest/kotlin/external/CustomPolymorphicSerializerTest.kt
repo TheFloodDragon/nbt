@@ -8,8 +8,7 @@ import kotlinx.serialization.descriptors.buildSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import net.benwoodworth.knbt.NbtDecoder
-import net.benwoodworth.knbt.NbtInt
-import net.benwoodworth.knbt.NbtString
+import net.benwoodworth.knbt.tag.*
 import net.benwoodworth.knbt.test.parameterizeTest
 import net.benwoodworth.knbt.test.parameters.parameterOfVerifyingNbt
 import kotlin.test.Test
@@ -70,8 +69,8 @@ class CustomPolymorphicSerializerTest {
 
         override fun deserialize(decoder: Decoder): IntOrString =
             when (val tag = (decoder as NbtDecoder).decodeNbtTag()) {
-                is NbtInt -> IntOrString.OfInt(tag.value)
-                is NbtString -> IntOrString.OfString(tag.value)
+                is NbtInt -> IntOrString.OfInt(tag.content)
+                is NbtString -> IntOrString.OfString(tag.content)
                 else -> throw SerializationException("Expected NbtInt or NbtString, but got ${tag::class.simpleName}")
             }
     }

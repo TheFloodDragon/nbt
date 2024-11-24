@@ -12,6 +12,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.serializer
+import net.benwoodworth.knbt.tag.*
 import net.benwoodworth.knbt.test.parameterizeTest
 import net.benwoodworth.knbt.test.parameters.parameterOfDecoderVerifyingNbt
 import net.benwoodworth.knbt.test.parameters.parameterOfEncoderVerifyingNbt
@@ -32,9 +33,8 @@ class NbtTransformingSerializerTest {
 
     private object WrappingJsonListSerializer :
         NbtTransformingSerializer<List<StringData>>(ListSerializer(StringData.serializer())) {
-        @OptIn(UnsafeNbtApi::class)
-        override fun transformDeserialize(tag: NbtTag): NbtTag =
-            if (tag !is NbtList<*>) NbtList(listOf(tag)) else tag
+        override fun transformDeserialize(tag: NbtTag) =
+            if (tag !is NbtList<*>) NbtList(mutableListOf(tag)) else tag
     }
 
     private object UnwrappingJsonListSerializer :
@@ -48,7 +48,7 @@ class NbtTransformingSerializerTest {
 
     private object DroppingNameSerializer : NbtTransformingSerializer<Example>(Example.serializer()) {
         override fun transformSerialize(tag: NbtTag): NbtTag =
-            NbtCompound(tag.nbtCompound.content.filterNot { (k, v) -> k == "name" && v == NbtString("First") })
+            NbtCompound.of(tag.nbtCompound.content.filterNot { (k, v) -> k == "name" && v == NbtString("First") })
     }
 
     @Test

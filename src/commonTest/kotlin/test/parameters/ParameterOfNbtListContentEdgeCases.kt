@@ -3,21 +3,21 @@ package net.benwoodworth.knbt.test.parameters
 import com.benwoodworth.parameterize.ParameterizeScope
 import com.benwoodworth.parameterize.parameter
 import com.benwoodworth.parameterize.parameterize
-import net.benwoodworth.knbt.*
+import net.benwoodworth.knbt.tag.*
 
 private fun NbtTag.repeatInNbtList(size: Int): NbtList<*> = when (this) {
-    is NbtByte -> NbtList(List(size) { this })
-    is NbtShort -> NbtList(List(size) { this })
-    is NbtInt -> NbtList(List(size) { this })
-    is NbtLong -> NbtList(List(size) { this })
-    is NbtFloat -> NbtList(List(size) { this })
-    is NbtDouble -> NbtList(List(size) { this })
-    is NbtByteArray -> NbtList(List(size) { this })
-    is NbtString -> NbtList(List(size) { this })
-    is NbtList<*> -> NbtList(List(size) { this })
-    is NbtCompound -> NbtList(List(size) { this })
-    is NbtIntArray -> NbtList(List(size) { this })
-    is NbtLongArray -> NbtList(List(size) { this })
+    is NbtByte -> NbtList(MutableList(size) { this })
+    is NbtShort -> NbtList(MutableList(size) { this })
+    is NbtInt -> NbtList(MutableList(size) { this })
+    is NbtLong -> NbtList(MutableList(size) { this })
+    is NbtFloat -> NbtList(MutableList(size) { this })
+    is NbtDouble -> NbtList(MutableList(size) { this })
+    is NbtByteArray -> NbtList(MutableList(size) { this })
+    is NbtString -> NbtList(MutableList(size) { this })
+    is NbtList<*> -> NbtList(MutableList(size) { this })
+    is NbtCompound -> NbtList(MutableList(size) { this })
+    is NbtIntArray -> NbtList(MutableList(size) { this })
+    is NbtLongArray -> NbtList(MutableList(size) { this })
 }
 
 /**
@@ -25,11 +25,11 @@ private fun NbtTag.repeatInNbtList(size: Int): NbtList<*> = when (this) {
  */
 fun ParameterizeScope.parameterOfNbtListContentEdgeCases() = parameter {
     sequence {
-        // NbtType.END
-        yield(NbtList(emptyList()))
+        // TAG_End
+        yield(NbtList<NbtTag>())
 
         parameterize {
-            val entry by parameterOfNbtTypeEdgeCases()
+            val entry by parameterOfNbtTagTypeEdgeCases()
             val size by parameter(0..2)
 
             yield(entry.repeatInNbtList(size))

@@ -1,6 +1,9 @@
 package net.benwoodworth.knbt
 
 import kotlinx.serialization.Serializable
+import net.benwoodworth.knbt.tag.NbtTag
+import net.benwoodworth.knbt.tag.buildNbtCompound
+import net.benwoodworth.knbt.tag.put
 import net.benwoodworth.knbt.test.parameterizeTest
 import net.benwoodworth.knbt.test.parameters.parameterOfVerifyingNbt
 import kotlin.test.Test

@@ -4,7 +4,7 @@ import com.benwoodworth.parameterize.parameter
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.*
-import net.benwoodworth.knbt.*
+import net.benwoodworth.knbt.tag.*
 import net.benwoodworth.knbt.test.parameterizeTest
 import net.benwoodworth.knbt.test.parameters.parameterOfVerifyingNbt
 import kotlin.test.Test
@@ -61,7 +61,7 @@ class ArraySerializerTest {
     )
 
     @Test
-    fun should_serialize_ARRAY_correctly() = parameterizeTest {
+    fun should_serialize_array_correctly() = parameterizeTest {
         val nbt by parameterOfVerifyingNbt()
         val arraySerializer by parameter(arraySerializerTestCases)
 

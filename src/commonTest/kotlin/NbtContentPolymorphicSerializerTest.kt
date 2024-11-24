@@ -12,6 +12,8 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.decodeFromString
+import net.benwoodworth.knbt.tag.NbtTag
+import net.benwoodworth.knbt.tag.nbtCompound
 import net.benwoodworth.knbt.test.parameterizeTest
 import net.benwoodworth.knbt.test.parameters.parameterOfDecoderVerifyingNbt
 import net.benwoodworth.knbt.test.parameters.parameterOfVerifyingNbt

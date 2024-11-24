@@ -1,13 +1,14 @@
 package net.benwoodworth.knbt.internal
 
 import com.benwoodworth.parameterize.parameter
+import net.benwoodworth.knbt.tag.NbtType
 import net.benwoodworth.knbt.test.assume
 import net.benwoodworth.knbt.test.parameterizeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
-class NbtTypeSetTest {
+class NbtTagTypeSetTest {
     private class TestCase(
         private val description: String,
         val entries: List<NbtType>

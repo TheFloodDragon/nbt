@@ -3,6 +3,7 @@ package net.benwoodworth.knbt
 import com.benwoodworth.parameterize.parameter
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
+import net.benwoodworth.knbt.tag.*
 import net.benwoodworth.knbt.internal.NbtDecodingException
 import net.benwoodworth.knbt.test.assume
 import net.benwoodworth.knbt.test.parameterizeTest

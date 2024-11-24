@@ -32,10 +32,10 @@ class LittleEndianBase128Test {
         val (ulong, bytes) = value
 
         val actualBytes = Buffer()
-            .apply { writeLEB128(testCase.ulong) }
+            .apply { writeLEB128(ulong) }
             .readByteArray().toUByteArray()
 
-        assertContentEquals(testCase.bytes.toBinary(), actualBytes.toBinary())
+        assertContentEquals(bytes.toBinary(), actualBytes.toBinary())
     }
 
     @Test
@@ -49,10 +49,10 @@ class LittleEndianBase128Test {
             .apply { write(bytes.toByteArray()) }
             .readLEB128(EmptyNbtContext, 10)
 
-        assertEquals(testCase.ulong, actualULong)
+        assertEquals(ulong, actualULong)
     }
 
-    private data class ZigZagTestCase(val long: Long, val zigZagULong: ULong)
+    private data class ZigZagParameters(val long: Long, val zigZagULong: ULong)
 
     private val zigZagTestValues = sequenceOf(
         ZigZagParameters(0L, 0uL),
