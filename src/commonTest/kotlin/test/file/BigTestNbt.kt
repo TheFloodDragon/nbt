@@ -4,13 +4,14 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import net.benwoodworth.knbt.NbtArray
 import net.benwoodworth.knbt.NbtName
+import net.benwoodworth.knbt.NbtNamed
 import net.benwoodworth.knbt.tag.*
 import net.benwoodworth.knbt.test.assertStructureEquals
 import net.benwoodworth.knbt.test.fix
 import net.benwoodworth.knbt.test.toBinary
 
 val bigTestTag
-    get() = buildNbtCompound("Level") {
+    get() = NbtNamed("", buildNbtCompound("Level") {
         put("longTest", 9223372036854775807L)
         put("shortTest", 32767.toShort())
         put("stringTest", "HELLO WORLD THIS IS A TEST STRING ÅÄÖ!")
@@ -44,6 +45,7 @@ val bigTestTag
         )
         put("doubleTest", 0.4931287132182315)
     }
+    )
 
 @Serializable
 @NbtName("Level")
