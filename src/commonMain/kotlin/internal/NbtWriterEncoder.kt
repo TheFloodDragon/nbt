@@ -12,8 +12,8 @@ import kotlinx.serialization.modules.SerializersModule
 import net.benwoodworth.knbt.AbstractNbtEncoder
 import net.benwoodworth.knbt.ExperimentalNbtApi
 import net.benwoodworth.knbt.NbtFormat
-import net.benwoodworth.knbt.NbtTag
-import net.benwoodworth.knbt.internal.NbtTagType.*
+import net.benwoodworth.knbt.tag.NbtTag
+import net.benwoodworth.knbt.tag.NbtType
 
 @OptIn(ExperimentalSerializationApi::class)
 internal class NbtWriterEncoder(
@@ -27,10 +27,10 @@ internal class NbtWriterEncoder(
     private lateinit var elementName: String
     private var encodingMapKey: Boolean = false
 
-    private val structureTypeStack = ArrayDeque<NbtTagType>()
+    private val structureTypeStack = ArrayDeque<NbtType>()
 
     private var serializerListKind: NbtListKind? = null
-    private val listTypeStack = ArrayDeque<NbtTagType>() // TAG_End when uninitialized
+    private val listTypeStack = ArrayDeque<NbtType>() // NbtType.END when uninitialized
     private var listSize: Int = 0
 
     private var nbtNameToWrite: String? = null
@@ -58,20 +58,20 @@ internal class NbtWriterEncoder(
         return true
     }
 
-    private fun beginEncodingValue(type: NbtTagType) {
+    private fun beginEncodingValue(type: NbtType) {
         when (val structureType = structureTypeStack.lastOrNull()) {
             null -> {
                 val name = checkNotNull(nbtNameToWrite) { "${::nbtNameToWrite.name} was not set" }
                 writer.beginRootTag(type, name)
             }
 
-            TAG_Compound -> {
+            NbtType.COMPOUND -> {
                 if (encodingMapKey) throw NbtEncodingException(context, "Only String tag names are supported")
                 writer.beginCompoundEntry(type, elementName)
             }
 
-            TAG_List -> when (val listType = listTypeStack.last()) {
-                TAG_End -> {
+            NbtType.LIST -> when (val listType = listTypeStack.last()) {
+                NbtType.END -> {
                     listTypeStack[listTypeStack.lastIndex] = type
                     writer.beginList(type, listSize)
                     writer.beginListEntry()
@@ -81,26 +81,26 @@ internal class NbtWriterEncoder(
                     writer.beginListEntry()
                 }
 
-                else -> throw NbtEncodingException(context, "Cannot encode $type within a $TAG_List of $listType")
+                else -> throw NbtEncodingException(context, "Cannot encode $type within a ${NbtType.LIST} of $listType")
             }
 
-            TAG_Byte_Array -> {
-                if (type != TAG_Byte) {
-                    throw NbtEncodingException(context, "Cannot encode $type within a $TAG_Byte_Array")
+            NbtType.BYTE_ARRAY -> {
+                if (type != NbtType.BYTE) {
+                    throw NbtEncodingException(context, "Cannot encode $type within a ${NbtType.BYTE_ARRAY}")
                 }
                 writer.beginByteArrayEntry()
             }
 
-            TAG_Int_Array -> {
-                if (type != TAG_Int) {
-                    throw NbtEncodingException(context, "Cannot encode $type within a $TAG_Int_Array")
+            NbtType.INT_ARRAY -> {
+                if (type != NbtType.INT) {
+                    throw NbtEncodingException(context, "Cannot encode $type within a ${NbtType.INT_ARRAY}")
                 }
                 writer.beginIntArrayEntry()
             }
 
-            TAG_Long_Array -> {
-                if (type != TAG_Long) {
-                    throw NbtEncodingException(context, "Cannot encode $type within a $TAG_Long_Array")
+            NbtType.LONG_ARRAY -> {
+                if (type != NbtType.LONG) {
+                    throw NbtEncodingException(context, "Cannot encode $type within a ${NbtType.LONG_ARRAY}")
                 }
                 writer.beginLongArrayEntry()
             }
@@ -136,19 +136,19 @@ internal class NbtWriterEncoder(
 
     override fun endStructure(descriptor: SerialDescriptor): Unit =
         when (val structureType = structureTypeStack.removeLast()) {
-            TAG_Compound -> endCompound()
-            TAG_List -> endList()
-            TAG_Byte_Array -> endByteArray()
-            TAG_Int_Array -> endIntArray()
-            TAG_Long_Array -> endLongArray()
+            NbtType.COMPOUND -> endCompound()
+            NbtType.LIST -> endList()
+            NbtType.BYTE_ARRAY -> endByteArray()
+            NbtType.INT_ARRAY -> endIntArray()
+            NbtType.LONG_ARRAY -> endLongArray()
             else -> error("Unhandled structure type: $structureType")
         }
 
     private fun beginCompound(): CompositeEncoder {
-        beginEncodingValue(TAG_Compound)
+        beginEncodingValue(NbtType.COMPOUND)
         context.onBeginStructure()
         writer.beginCompound()
-        structureTypeStack += TAG_Compound
+        structureTypeStack += NbtType.COMPOUND
         return this
     }
 
@@ -159,26 +159,26 @@ internal class NbtWriterEncoder(
     }
 
     private fun beginList(size: Int): CompositeEncoder {
-        beginEncodingValue(TAG_List)
+        beginEncodingValue(NbtType.LIST)
         context.onBeginStructure()
-        structureTypeStack += TAG_List
-        listTypeStack += TAG_End // writer.beginList(TYPE, size) is postponed until the first element is encoded, or the list is ended
+        structureTypeStack += NbtType.LIST
+        listTypeStack += NbtType.END // writer.beginList(TYPE, size) is postponed until the first element is encoded, or the list is ended
         listSize = size
         return this
     }
 
     private fun endList() {
-        if (listTypeStack.removeLast() == TAG_End) writer.beginList(TAG_End, listSize)
+        if (listTypeStack.removeLast() == NbtType.END) writer.beginList(NbtType.END, listSize)
         writer.endList()
         context.onEndStructure()
         endEncodingValue()
     }
 
     private fun beginByteArray(size: Int): CompositeEncoder {
-        beginEncodingValue(TAG_Byte_Array)
+        beginEncodingValue(NbtType.BYTE_ARRAY)
         context.onBeginStructure()
         writer.beginByteArray(size)
-        structureTypeStack += TAG_Byte_Array
+        structureTypeStack += NbtType.BYTE_ARRAY
         return this
     }
 
@@ -189,10 +189,10 @@ internal class NbtWriterEncoder(
     }
 
     private fun beginIntArray(size: Int): CompositeEncoder {
-        beginEncodingValue(TAG_Int_Array)
+        beginEncodingValue(NbtType.INT_ARRAY)
         context.onBeginStructure()
         writer.beginIntArray(size)
-        structureTypeStack += TAG_Int_Array
+        structureTypeStack += NbtType.INT_ARRAY
         return this
     }
 
@@ -203,10 +203,10 @@ internal class NbtWriterEncoder(
     }
 
     private fun beginLongArray(size: Int): CompositeEncoder {
-        beginEncodingValue(TAG_Long_Array)
+        beginEncodingValue(NbtType.LONG_ARRAY)
         context.onBeginStructure()
         writer.beginLongArray(size)
-        structureTypeStack += TAG_Long_Array
+        structureTypeStack += NbtType.LONG_ARRAY
         return this
     }
 
@@ -220,43 +220,43 @@ internal class NbtWriterEncoder(
         nbt.configuration.encodeDefaults
 
     override fun encodeByte(value: Byte) {
-        beginEncodingValue(TAG_Byte)
+        beginEncodingValue(NbtType.BYTE)
         writer.writeByte(value)
         endEncodingValue()
     }
 
     override fun encodeBoolean(value: Boolean) {
-        beginEncodingValue(TAG_Byte)
+        beginEncodingValue(NbtType.BYTE)
         writer.writeByte(if (value) 1 else 0)
         endEncodingValue()
     }
 
     override fun encodeShort(value: Short) {
-        beginEncodingValue(TAG_Short)
+        beginEncodingValue(NbtType.SHORT)
         writer.writeShort(value)
         endEncodingValue()
     }
 
     override fun encodeInt(value: Int) {
-        beginEncodingValue(TAG_Int)
+        beginEncodingValue(NbtType.INT)
         writer.writeInt(value)
         endEncodingValue()
     }
 
     override fun encodeLong(value: Long) {
-        beginEncodingValue(TAG_Long)
+        beginEncodingValue(NbtType.LONG)
         writer.writeLong(value)
         endEncodingValue()
     }
 
     override fun encodeFloat(value: Float) {
-        beginEncodingValue(TAG_Float)
+        beginEncodingValue(NbtType.FLOAT)
         writer.writeFloat(value)
         endEncodingValue()
     }
 
     override fun encodeDouble(value: Double) {
-        beginEncodingValue(TAG_Double)
+        beginEncodingValue(NbtType.DOUBLE)
         writer.writeDouble(value)
         endEncodingValue()
     }
@@ -266,7 +266,7 @@ internal class NbtWriterEncoder(
             encodingMapKey = false
             elementName = value
         } else {
-            beginEncodingValue(TAG_String)
+            beginEncodingValue(NbtType.STRING)
             writer.writeString(value)
             endEncodingValue()
         }

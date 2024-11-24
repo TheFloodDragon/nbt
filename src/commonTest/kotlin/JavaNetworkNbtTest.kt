@@ -7,10 +7,11 @@ import kotlinx.serialization.encodeToByteArray
 import net.benwoodworth.knbt.JavaNetworkNbt.ProtocolType
 import net.benwoodworth.knbt.JavaNetworkNbt.ProtocolType.*
 import net.benwoodworth.knbt.okio.decodeFromBufferedSource
+import net.benwoodworth.knbt.tag.NbtTag
 import net.benwoodworth.knbt.test.asSource
 import net.benwoodworth.knbt.test.assume
 import net.benwoodworth.knbt.test.parameterizeTest
-import net.benwoodworth.knbt.test.parameters.parameterOfNbtTagTypeEdgeCases
+import net.benwoodworth.knbt.test.parameters.parameterOfNbtTypeEdgeCases
 import okio.buffer
 import kotlin.test.*
 
@@ -80,10 +81,10 @@ class JavaNetworkNbtTest {
 
         val emptyNamedNbt = JavaNetworkNbt(baseNbt) { this.protocolVersion = protocolVersion }
 
-        val nbtTag by parameterOfNbtTagTypeEdgeCases()
+        val nbtTag by parameterOfNbtTypeEdgeCases()
 
         val javaBytes = javaNbt
-            .encodeToByteArray(NbtNamed("", nbtTag))
+            .encodeToByteArray<NbtNamed<NbtTag>>(NbtNamed("", nbtTag))
 
         val actualBytes = emptyNamedNbt.encodeToByteArray(nbtTag)
 
@@ -97,7 +98,7 @@ class JavaNetworkNbtTest {
 
         val emptyNamedNbt = JavaNetworkNbt(baseNbt) { this.protocolVersion = protocolVersion }
 
-        val nbtTag by parameterOfNbtTagTypeEdgeCases()
+        val nbtTag by parameterOfNbtTypeEdgeCases()
 
         val bytes = emptyNamedNbt.encodeToByteArray(nbtTag)
 
@@ -115,7 +116,7 @@ class JavaNetworkNbtTest {
 
         val emptyNamedNbt = JavaNetworkNbt(baseNbt) { this.protocolVersion = protocolVersion }
 
-        val nbtTag by parameterOfNbtTagTypeEdgeCases()
+        val nbtTag by parameterOfNbtTypeEdgeCases()
 
         val emptyNamedTag = emptyNamedNbt.encodeToByteArray(nbtTag)
         val emptyNamedTagType = emptyNamedTag.take(1)
@@ -137,7 +138,7 @@ class JavaNetworkNbtTest {
 
         val unnamedNamedNbt = JavaNetworkNbt(baseNbt) { this.protocolVersion = protocolVersion }
 
-        val nbtTag by parameterOfNbtTagTypeEdgeCases()
+        val nbtTag by parameterOfNbtTypeEdgeCases()
 
         val javaBytes = javaNbt
             .encodeToByteArray(NbtNamed("", nbtTag))
@@ -160,7 +161,7 @@ class JavaNetworkNbtTest {
 
         val unnamedNamedNbt = JavaNetworkNbt(baseNbt) { this.protocolVersion = protocolVersion }
 
-        val nbtTag by parameterOfNbtTagTypeEdgeCases()
+        val nbtTag by parameterOfNbtTypeEdgeCases()
 
         val bytes = unnamedNamedNbt.encodeToByteArray(nbtTag)
 

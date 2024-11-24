@@ -2,6 +2,7 @@ package net.benwoodworth.knbt
 
 import kotlinx.serialization.*
 import net.benwoodworth.knbt.internal.*
+import net.benwoodworth.knbt.tag.NbtTag
 
 public abstract class NbtFormat internal constructor() : SerialFormat {
     internal abstract val name: String

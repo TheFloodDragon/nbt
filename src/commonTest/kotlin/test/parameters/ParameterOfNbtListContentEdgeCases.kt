@@ -25,11 +25,11 @@ private fun NbtTag.repeatInNbtList(size: Int): NbtList<*> = when (this) {
  */
 fun ParameterizeScope.parameterOfNbtListContentEdgeCases() = parameter {
     sequence {
-        // TAG_End
+        // NbtType.END
         yield(NbtList(emptyList()))
 
         parameterize {
-            val entry by parameterOfNbtTagTypeEdgeCases()
+            val entry by parameterOfNbtTypeEdgeCases()
             val size by parameter(0..2)
 
             yield(entry.repeatInNbtList(size))

@@ -6,6 +6,8 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import net.benwoodworth.knbt.tag.asNbtDecoder
+import net.benwoodworth.knbt.tag.asNbtEncoder
 
 /** TODO wording
  * The serial representation of a [value], except its [NbtName] is replaced with [name].
@@ -23,6 +25,7 @@ public class NbtNamed<out T>(
     public val name: String,
     public val value: T
 ) {
+
     override fun equals(other: Any?): Boolean = when {
         this === other -> true
         other !is NbtNamed<*> -> false
@@ -31,8 +34,7 @@ public class NbtNamed<out T>(
         else -> true
     }
 
-    override fun hashCode(): Int =
-        name.hashCode() * 31 + value.hashCode()
+    override fun hashCode(): Int = name.hashCode() * 31 + value.hashCode()
 
     override fun toString(): String =
         "NbtNamed(name=$name, value=$value)"
@@ -43,13 +45,11 @@ private class NbtNamedSerializer<T>(
 ) : KSerializer<NbtNamed<T>> {
     override val descriptor = NbtNamedSerialDescriptor(valueSerializer.descriptor)
 
-    @OptIn(ExperimentalNbtApi::class)
     override fun serialize(encoder: Encoder, value: NbtNamed<T>) {
         encoder.asNbtEncoder().encodeNbtName(value.name)
         encoder.encodeSerializableValue(valueSerializer, value.value)
     }
 
-    @OptIn(ExperimentalNbtApi::class)
     override fun deserialize(decoder: Decoder): NbtNamed<T> {
         val name = decoder.asNbtDecoder().decodeNbtName()
         val value = decoder.decodeSerializableValue(valueSerializer)

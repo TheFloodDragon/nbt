@@ -13,6 +13,9 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import net.benwoodworth.knbt.internal.nbtName
+import net.benwoodworth.knbt.tag.NbtTag
+import net.benwoodworth.knbt.tag.asNbtDecoder
+import net.benwoodworth.knbt.tag.asNbtEncoder
 
 /**
  * Base class for custom serializers that allows manipulating an abstract NBT

@@ -10,8 +10,13 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.internal.AbstractPolymorphicSerializer
 import kotlinx.serialization.modules.SerializersModule
-import net.benwoodworth.knbt.*
-import net.benwoodworth.knbt.internal.NbtTagType.*
+import net.benwoodworth.knbt.AbstractNbtDecoder
+import net.benwoodworth.knbt.ExperimentalNbtApi
+import net.benwoodworth.knbt.NbtFormat
+import net.benwoodworth.knbt.NbtName
+import net.benwoodworth.knbt.tag.NbtString
+import net.benwoodworth.knbt.tag.NbtTag
+import net.benwoodworth.knbt.tag.NbtType
 
 @OptIn(ExperimentalSerializationApi::class)
 internal abstract class BaseNbtDecoder : AbstractNbtDecoder() {
@@ -21,14 +26,14 @@ internal abstract class BaseNbtDecoder : AbstractNbtDecoder() {
     protected abstract val context: SerializationNbtContext
     protected abstract val reader: NbtReader
     protected abstract val parent: BaseNbtDecoder?
-    protected abstract val decodedTagType: NbtTagType
+    protected abstract val decodedTagType: NbtType
     protected abstract val decodedTagName: String?
 
     protected var serializerListKind: NbtListKind? = null
 
     private var verifiedNbtName: Boolean = false
 
-    private fun beginDecodingValue(type: NbtTagType) {
+    private fun beginDecodingValue(type: NbtType) {
         val actualType = decodedTagType
 
         if (type != actualType) {
@@ -61,7 +66,7 @@ internal abstract class BaseNbtDecoder : AbstractNbtDecoder() {
 
     //region Primitive NBT types
     override fun decodeByte(): Byte {
-        beginDecodingValue(TAG_Byte)
+        beginDecodingValue(NbtType.BYTE)
         return reader.readByte()
             .also { endDecodingValue() }
     }
@@ -70,47 +75,47 @@ internal abstract class BaseNbtDecoder : AbstractNbtDecoder() {
         decodeByte() != 0.toByte()
 
     override fun decodeShort(): Short {
-        beginDecodingValue(TAG_Short)
+        beginDecodingValue(NbtType.SHORT)
         return reader.readShort()
             .also { endDecodingValue() }
     }
 
     override fun decodeInt(): Int {
-        beginDecodingValue(TAG_Int)
+        beginDecodingValue(NbtType.INT)
         return reader.readInt()
             .also { endDecodingValue() }
     }
 
     override fun decodeLong(): Long {
-        beginDecodingValue(TAG_Long)
+        beginDecodingValue(NbtType.LONG)
         return reader.readLong()
             .also { endDecodingValue() }
     }
 
     override fun decodeFloat(): Float {
-        beginDecodingValue(TAG_Float)
+        beginDecodingValue(NbtType.FLOAT)
         return reader.readFloat()
             .also { endDecodingValue() }
     }
 
     override fun decodeDouble(): Double {
-        beginDecodingValue(TAG_Double)
+        beginDecodingValue(NbtType.DOUBLE)
         return reader.readDouble()
             .also { endDecodingValue() }
     }
 
     override fun decodeString(): String {
-        beginDecodingValue(TAG_String)
+        beginDecodingValue(NbtType.STRING)
         return reader.readString()
             .also { endDecodingValue() }
     }
 
     override fun decodeChar(): Char {
-        beginDecodingValue(TAG_String)
+        beginDecodingValue(NbtType.STRING)
         val string = reader.readString()
 
         if (string.length != 1) {
-            val message = "Expected TAG_String with length 1, but got ${NbtString(string)} (length ${string.length}"
+            val message = "Expected NbtType.STRING with length 1, but got ${NbtString(string)} (length ${string.length}"
             throw NbtDecodingException(context, message)
         }
 
@@ -139,7 +144,7 @@ internal abstract class BaseNbtDecoder : AbstractNbtDecoder() {
 
     private fun beginCompound(descriptor: SerialDescriptor): CompositeDecoder {
         context.onBeginStructure()
-        beginDecodingValue(TAG_Compound)
+        beginDecodingValue(NbtType.COMPOUND)
         return if (descriptor.kind == StructureKind.MAP) {
             MapNbtDecoder(nbt, context, reader, this) {
                 endDecodingValue()
@@ -155,7 +160,7 @@ internal abstract class BaseNbtDecoder : AbstractNbtDecoder() {
 
     private fun beginList(): CompositeDecoder {
         context.onBeginStructure()
-        beginDecodingValue(TAG_List)
+        beginDecodingValue(NbtType.LIST)
         return ListNbtDecoder(nbt, context, reader, this) {
             endDecodingValue()
             context.onEndStructure()
@@ -164,7 +169,7 @@ internal abstract class BaseNbtDecoder : AbstractNbtDecoder() {
 
     private fun beginByteArray(): CompositeDecoder {
         context.onBeginStructure()
-        beginDecodingValue(TAG_Byte_Array)
+        beginDecodingValue(NbtType.BYTE_ARRAY)
         return ByteArrayNbtDecoder(nbt, context, reader, this) {
             endDecodingValue()
             context.onEndStructure()
@@ -173,7 +178,7 @@ internal abstract class BaseNbtDecoder : AbstractNbtDecoder() {
 
     private fun beginIntArray(): CompositeDecoder {
         context.onBeginStructure()
-        beginDecodingValue(TAG_Int_Array)
+        beginDecodingValue(NbtType.INT_ARRAY)
         return IntArrayNbtDecoder(nbt, context, reader, this) {
             endDecodingValue()
             context.onEndStructure()
@@ -182,7 +187,7 @@ internal abstract class BaseNbtDecoder : AbstractNbtDecoder() {
 
     private fun beginLongArray(): CompositeDecoder {
         context.onBeginStructure()
-        beginDecodingValue(TAG_Long_Array)
+        beginDecodingValue(NbtType.LONG_ARRAY)
         return LongArrayNbtDecoder(nbt, context, reader, this) {
             endDecodingValue()
             context.onEndStructure()
@@ -275,7 +280,7 @@ internal class NbtReaderDecoder(
 
     private val rootTagInfo = reader.beginRootTag()
 
-    override val decodedTagType: NbtTagType
+    override val decodedTagType: NbtType
         get() = rootTagInfo.type
 
     override val decodedTagName: String?
@@ -308,7 +313,7 @@ private class ClassNbtDecoder(
 ) : CompoundNbtDecoder() {
     override lateinit var compoundEntryInfo: NbtReader.NamedTagInfo
 
-    override val decodedTagType: NbtTagType
+    override val decodedTagType: NbtType
         get() = compoundEntryInfo.type
 
     override val decodedTagName: String? // TODO Remove
@@ -320,10 +325,10 @@ private class ClassNbtDecoder(
 
     private fun handleUnknownKey(info: NbtReader.NamedTagInfo) {
         fun discardTagAndGetTypeName(): String =
-            if (info.type == TAG_List) {
+            if (info.type == NbtType.LIST) {
                 try {
                     val entryType = reader.discardListTag().type
-                    "${TAG_List}<${entryType}>"
+                    "${NbtType.LIST}<${entryType}>"
                 } catch (e: Exception) {
                     info.type.toString()
                 }
@@ -343,7 +348,7 @@ private class ClassNbtDecoder(
     override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
         compoundEntryInfo = reader.beginCompoundEntry()
 
-        val index = if (compoundEntryInfo.type == TAG_End) {
+        val index = if (compoundEntryInfo.type == NbtType.END) {
             CompositeDecoder.DECODE_DONE
         } else {
             var index: Int
@@ -356,7 +361,7 @@ private class ClassNbtDecoder(
                     handleUnknownKey(compoundEntryInfo)
                     compoundEntryInfo = reader.beginCompoundEntry()
 
-                    if (compoundEntryInfo.type == TAG_End) {
+                    if (compoundEntryInfo.type == NbtType.END) {
                         index = CompositeDecoder.DECODE_DONE
                     }
                 }
@@ -386,8 +391,8 @@ private class MapNbtDecoder(
 
     override lateinit var compoundEntryInfo: NbtReader.NamedTagInfo
 
-    override val decodedTagType: NbtTagType
-        get() = if (decodeMapKey) TAG_String else compoundEntryInfo.type
+    override val decodedTagType: NbtType
+        get() = if (decodeMapKey) NbtType.STRING else compoundEntryInfo.type
 
     override val decodedTagName: String?
         get() = compoundEntryInfo.name // TODO For map key AND value?
@@ -399,7 +404,7 @@ private class MapNbtDecoder(
     override fun decodeElementIndex(descriptor: SerialDescriptor): Int =
         if (index % 2 == 0) {
             compoundEntryInfo = reader.beginCompoundEntry()
-            if (compoundEntryInfo.type == TAG_End) {
+            if (compoundEntryInfo.type == NbtType.END) {
                 CompositeDecoder.DECODE_DONE
             } else {
                 decodeMapKey = true
@@ -452,7 +457,7 @@ private class ListNbtDecoder(
     override val elementCount: Int
         get() = listInfo.size
 
-    override val decodedTagType: NbtTagType
+    override val decodedTagType: NbtType
         get() = listInfo.type
 
     override val decodedTagName: String?
@@ -478,8 +483,8 @@ private class ByteArrayNbtDecoder(
     override val elementCount: Int
         get() = arrayInfo.size
 
-    override val decodedTagType: NbtTagType
-        get() = TAG_Byte
+    override val decodedTagType: NbtType
+        get() = NbtType.BYTE
 
     override val decodedTagName: String?
         get() = null
@@ -504,8 +509,8 @@ private class IntArrayNbtDecoder(
     override val elementCount: Int
         get() = arrayInfo.size
 
-    override val decodedTagType: NbtTagType
-        get() = TAG_Int
+    override val decodedTagType: NbtType
+        get() = NbtType.INT
 
     override val decodedTagName: String?
         get() = null
@@ -530,8 +535,8 @@ private class LongArrayNbtDecoder(
     override val elementCount: Int
         get() = arrayInfo.size
 
-    override val decodedTagType: NbtTagType
-        get() = TAG_Long
+    override val decodedTagType: NbtType
+        get() = NbtType.LONG
 
     override val decodedTagName: String?
         get() = null

@@ -7,6 +7,7 @@ import kotlinx.serialization.encoding.AbstractDecoder
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import net.benwoodworth.knbt.internal.NbtException
+import net.benwoodworth.knbt.tag.NbtTag
 
 /**
  * Decoder used by [BinaryNbtFormat] during deserialization.
@@ -46,8 +47,8 @@ import net.benwoodworth.knbt.internal.NbtException
  * }
  * ```
  */
-@Suppress("DEPRECATION")
-public sealed interface NbtDecoder : Decoder, CompositeDecoder, NbtDecoderDeprecations {
+public sealed interface NbtDecoder : Decoder, CompositeDecoder {
+
     /**
      * An instance of the current [NbtFormat].
      */
@@ -99,8 +100,8 @@ public sealed interface NbtDecoder : Decoder, CompositeDecoder, NbtDecoderDeprec
      * @throws IllegalArgumentException if the serializer's [descriptor][KSerializer.descriptor] is not marked with
      * [@NbtName.Dynamic][NbtName.Dynamic].
      */
-    @ExperimentalNbtApi
     public fun decodeNbtName(): String
+
 }
 
 @ExperimentalSerializationApi

@@ -92,13 +92,13 @@ All other kinds of lists will serialize as NBT list tags.
 ```kotlin
 @Serializable
 class ListsAndArrays(
-    // Serializes as TAG_List
+    // Serializes as NbtType.LIST
     val byteList: List<Byte>,
     
-    // Serializes as TAG_Int_Array
+    // Serializes as NbtType.INT_ARRAY
     val intArray: IntArray,
     
-    // Serializes as TAG_Long_Array
+    // Serializes as NbtType.LONG_ARRAY
     @NbtArray
     val listAsLongArray: List<Long>,
 )

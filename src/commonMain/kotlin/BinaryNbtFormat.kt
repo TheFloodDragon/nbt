@@ -13,7 +13,7 @@ import okio.BufferedSink
 import okio.BufferedSource
 
 public abstract class BinaryNbtFormat internal constructor() :
-    NbtFormat(), BinaryFormat, @Suppress("DEPRECATION") NbtDeprecations {
+    NbtFormat(), BinaryFormat {
 
     abstract override val configuration: BinaryNbtFormatConfiguration
 

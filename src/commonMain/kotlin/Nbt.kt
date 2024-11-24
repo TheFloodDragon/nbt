@@ -6,13 +6,14 @@ import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
 import net.benwoodworth.knbt.internal.NbtCapabilities
-import net.benwoodworth.knbt.internal.NbtTagType
-import net.benwoodworth.knbt.internal.NbtTagTypeSet
+import net.benwoodworth.knbt.internal.NbtTypeSet
+import net.benwoodworth.knbt.tag.NbtTag
+import net.benwoodworth.knbt.tag.NbtType
 
 private val nbtCapabilities = NbtCapabilities(
     namedRoot = true,
     definiteLengthEncoding = true,
-    rootTagTypes = NbtTagTypeSet(NbtTagType.entries),
+    rootTagTypes = NbtTypeSet(NbtType.entries),
 )
 
 public open class Nbt internal constructor(

@@ -10,49 +10,49 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
-class NbtTagTypeTest {
+class NbtTypeTest {
     @Test
-    fun converting_to_NbtTagType_or_null_from_a_valid_ID_byte_should_return_the_correct_tag() = parameterizeTest {
-        val expectedType by parameter(NbtTagType.entries)
+    fun converting_to_NbtType_or_null_from_a_valid_ID_byte_should_return_the_correct_tag() = parameterizeTest {
+        val expectedType by parameter(NbtType.entries)
         val id = expectedType.id
 
-        assertEquals(expectedType, id.toNbtTagTypeOrNull())
+        assertEquals(expectedType, id.toNbtTypeOrNull())
     }
 
     @Test
-    fun converting_to_NbtTagType_or_null_from_an_invalid_ID_byte_should_return_null() = parameterizeTest {
+    fun converting_to_NbtType_or_null_from_an_invalid_ID_byte_should_return_null() = parameterizeTest {
         val invalidId by parameterOfBytes()
-        assume(NbtTagType.entries.none { it.id == invalidId })
+        assume(NbtType.entries.none { it.id == invalidId })
 
-        assertNull(invalidId.toNbtTagTypeOrNull())
+        assertNull(invalidId.toNbtTypeOrNull())
     }
 
     @Test
     fun converting_class_should_return_the_correct_tag_type() = parameterizeTest {
-        fun NbtTagType.nbtTagClass() = when (this) {
-            NbtTagType.TAG_End -> Nothing::class
-            NbtTagType.TAG_Byte -> NbtByte::class
-            NbtTagType.TAG_Short -> NbtShort::class
-            NbtTagType.TAG_Int -> NbtInt::class
-            NbtTagType.TAG_Long -> NbtLong::class
-            NbtTagType.TAG_Float -> NbtFloat::class
-            NbtTagType.TAG_Double -> NbtDouble::class
-            NbtTagType.TAG_Byte_Array -> NbtByteArray::class
-            NbtTagType.TAG_String -> NbtString::class
-            NbtTagType.TAG_List -> NbtList::class
-            NbtTagType.TAG_Compound -> NbtCompound::class
-            NbtTagType.TAG_Int_Array -> NbtIntArray::class
-            NbtTagType.TAG_Long_Array -> NbtLongArray::class
+        fun NbtType.nbtTagClass() = when (this) {
+            NbtType.NbtType.END -> Nothing::class
+            NbtType.NbtType.BYTE -> NbtByte::class
+            NbtType.NbtType.SHORT -> NbtShort::class
+            NbtType.NbtType.INT -> NbtInt::class
+            NbtType.NbtType.LONG -> NbtLong::class
+            NbtType.NbtType.FLOAT -> NbtFloat::class
+            NbtType.NbtType.DOUBLE -> NbtDouble::class
+            NbtType.NbtType.BYTE_ARRAY -> NbtByteArray::class
+            NbtType.NbtType.STRING -> NbtString::class
+            NbtType.NbtType.LIST -> NbtList::class
+            NbtType.NbtType.COMPOUND -> NbtCompound::class
+            NbtType.NbtType.INT_ARRAY -> NbtIntArray::class
+            NbtType.NbtType.LONG_ARRAY -> NbtLongArray::class
         }
 
-        val expectedConversions = NbtTagType.entries.asSequence()
+        val expectedConversions = NbtType.entries.asSequence()
             .map { it.nbtTagClass() to it }
 
         val expectedConversion by parameter(expectedConversions)
             .reportedAs(this, "class") { it.first }
 
-        val (nbtTagClass, nbtTagType) = expectedConversion
+        val (nbtTagClass, NbtType) = expectedConversion
 
-        assertEquals(nbtTagType, nbtTagClass.toNbtTagType())
+        assertEquals(NbtType, nbtTagClass.toNbtType())
     }
 }

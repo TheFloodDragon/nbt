@@ -16,6 +16,8 @@ import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.SerializersModuleBuilder
 import kotlinx.serialization.modules.polymorphic
 import net.benwoodworth.knbt.internal.nbtName
+import net.benwoodworth.knbt.tag.NbtTag
+import net.benwoodworth.knbt.tag.asNbtDecoder
 import kotlin.reflect.KClass
 
 /**

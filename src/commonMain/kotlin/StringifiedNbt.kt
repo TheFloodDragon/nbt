@@ -3,12 +3,14 @@ package net.benwoodworth.knbt
 import kotlinx.serialization.*
 import kotlinx.serialization.modules.SerializersModule
 import net.benwoodworth.knbt.internal.*
+import net.benwoodworth.knbt.tag.NbtTag
+import net.benwoodworth.knbt.tag.NbtType
 import kotlin.native.concurrent.ThreadLocal
 
 private val stringifiedNbtCapabilities = NbtCapabilities(
     namedRoot = false,
     definiteLengthEncoding = false,
-    rootTagTypes = NbtTagTypeSet(NbtTagType.entries - NbtTagType.TAG_End),
+    rootTagTypes = NbtTypeSet(NbtType.entries - NbtType.END),
 )
 
 public open class StringifiedNbt internal constructor(

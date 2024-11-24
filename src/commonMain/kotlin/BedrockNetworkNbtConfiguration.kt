@@ -55,7 +55,4 @@ public class BedrockNetworkNbtBuilder internal constructor(nbt: BedrockNetworkNb
         )
     }
 
-    private fun bleh(a: String?) {
-        a!!
-    }
 }

@@ -1,25 +1,25 @@
 package net.benwoodworth.knbt.internal
 
-import net.benwoodworth.knbt.internal.NbtTagType.*
+import net.benwoodworth.knbt.tag.NbtType
 import okio.BufferedSource
 
 internal abstract class BinaryNbtReader : NbtReader {
     protected abstract val context: NbtContext
     protected abstract val source: BufferedSource
 
-    private val tagTypeStack = ArrayDeque<NbtTagType>()
+    private val tagTypeStack = ArrayDeque<NbtType>()
     private val elementsRemainingStack = ArrayDeque<Int>()
 
     private fun <T> ArrayDeque<T>.replaceLast(element: T): T = set(lastIndex, element)
 
-    protected fun BufferedSource.readNbtTagType(): NbtTagType {
+    protected fun BufferedSource.readNbtType(): NbtType {
         val tagId = readByte()
 
-        return tagId.toNbtTagTypeOrNull()
+        return NbtType.from(tagId)
             ?: throw NbtDecodingException(context, "Unknown NBT tag type ID: 0x${tagId.toHex()}")
     }
 
-    private fun checkTagType(expected: NbtTagType) {
+    private fun checkTagType(expected: NbtType) {
         val actual = tagTypeStack.lastOrNull()
         if (expected != actual && actual != null) {
             throw NbtDecodingException(context, "Expected $expected, but got $actual")
@@ -29,13 +29,13 @@ internal abstract class BinaryNbtReader : NbtReader {
     abstract override fun beginRootTag(): NbtReader.NamedTagInfo
 
     override fun beginCompound() {
-        checkTagType(TAG_Compound)
-        tagTypeStack += TAG_End
+        checkTagType(NbtType.COMPOUND)
+        tagTypeStack += NbtType.END
     }
 
     override fun beginCompoundEntry(): NbtReader.NamedTagInfo {
-        val type = source.readNbtTagType()
-        return if (type == TAG_End) {
+        val type = source.readNbtType()
+        return if (type == NbtType.END) {
             NbtReader.NamedTagInfo.End
         } else {
             tagTypeStack.replaceLast(type)
@@ -47,7 +47,7 @@ internal abstract class BinaryNbtReader : NbtReader {
         tagTypeStack.removeLast()
     }
 
-    private fun beginCollection(elementType: NbtTagType, size: Int) {
+    private fun beginCollection(elementType: NbtType, size: Int) {
         tagTypeStack += elementType
         elementsRemainingStack += size
     }
@@ -58,9 +58,9 @@ internal abstract class BinaryNbtReader : NbtReader {
     }
 
     final override fun beginList(): NbtReader.ListInfo {
-        checkTagType(TAG_List)
+        checkTagType(NbtType.LIST)
 
-        val type = source.readNbtTagType()
+        val type = source.readNbtType()
         val size = source.readNbtInt()
         beginCollection(type, size)
 
@@ -73,10 +73,10 @@ internal abstract class BinaryNbtReader : NbtReader {
     final override fun endList(): Unit = endCollection()
 
     final override fun beginByteArray(): NbtReader.ArrayInfo {
-        checkTagType(TAG_Byte_Array)
+        checkTagType(NbtType.BYTE_ARRAY)
 
         val size = source.readNbtInt()
-        beginCollection(TAG_Byte, size)
+        beginCollection(NbtType.BYTE, size)
 
         return NbtReader.ArrayInfo(size)
     }
@@ -87,10 +87,10 @@ internal abstract class BinaryNbtReader : NbtReader {
     final override fun endByteArray(): Unit = endCollection()
 
     final override fun beginIntArray(): NbtReader.ArrayInfo {
-        checkTagType(TAG_Int_Array)
+        checkTagType(NbtType.INT_ARRAY)
 
         val size = source.readNbtInt()
-        beginCollection(TAG_Int, size)
+        beginCollection(NbtType.INT, size)
 
         return NbtReader.ArrayInfo(size)
     }
@@ -101,10 +101,10 @@ internal abstract class BinaryNbtReader : NbtReader {
     final override fun endIntArray(): Unit = endCollection()
 
     final override fun beginLongArray(): NbtReader.ArrayInfo {
-        checkTagType(TAG_Long_Array)
+        checkTagType(NbtType.LONG_ARRAY)
 
         val size = source.readNbtInt()
-        beginCollection(TAG_Long, size)
+        beginCollection(NbtType.LONG, size)
 
         return NbtReader.ArrayInfo(size)
     }
@@ -115,37 +115,37 @@ internal abstract class BinaryNbtReader : NbtReader {
     final override fun endLongArray(): Unit = endCollection()
 
     final override fun readByte(): Byte {
-        checkTagType(TAG_Byte)
+        checkTagType(NbtType.BYTE)
         return source.readByte()
     }
 
     final override fun readShort(): Short {
-        checkTagType(TAG_Short)
+        checkTagType(NbtType.SHORT)
         return source.readNbtShort()
     }
 
     final override fun readInt(): Int {
-        checkTagType(TAG_Int)
+        checkTagType(NbtType.INT)
         return source.readNbtInt()
     }
 
     final override fun readLong(): Long {
-        checkTagType(TAG_Long)
+        checkTagType(NbtType.LONG)
         return source.readNbtLong()
     }
 
     final override fun readFloat(): Float {
-        checkTagType(TAG_Float)
+        checkTagType(NbtType.FLOAT)
         return source.readNbtFloat()
     }
 
     final override fun readDouble(): Double {
-        checkTagType(TAG_Double)
+        checkTagType(NbtType.DOUBLE)
         return source.readNbtDouble()
     }
 
     final override fun readString(): String {
-        checkTagType(TAG_String)
+        checkTagType(NbtType.STRING)
         return source.readNbtString()
     }
 
@@ -159,7 +159,7 @@ internal abstract class BinaryNbtReader : NbtReader {
 
 internal abstract class NamedBinaryNbtReader : BinaryNbtReader() {
     final override fun beginRootTag(): NbtReader.NamedTagInfo =
-        NbtReader.NamedTagInfo(source.readNbtTagType(), source.readNbtString())
+        NbtReader.NamedTagInfo(source.readNbtType(), source.readNbtString())
 }
 
 internal class JavaNbtReader(
@@ -218,7 +218,7 @@ internal abstract class JavaNetworkNbtReader : BinaryNbtReader() {
         }
 
         override fun beginRootTag(): NbtReader.NamedTagInfo {
-            val type = source.readNbtTagType()
+            val type = source.readNbtType()
             source.discardTagName()
 
             return NbtReader.NamedTagInfo(type, "")
@@ -230,7 +230,7 @@ internal abstract class JavaNetworkNbtReader : BinaryNbtReader() {
         override val source: BufferedSource
     ) : JavaNetworkNbtReader() {
         override fun beginRootTag(): NbtReader.NamedTagInfo =
-            NbtReader.NamedTagInfo(source.readNbtTagType(), "")
+            NbtReader.NamedTagInfo(source.readNbtType(), "")
     }
 }
 

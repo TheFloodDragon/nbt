@@ -26,8 +26,8 @@ public final class net/benwoodworth/knbt/BedrockNbtKt {
 }
 
 public final class net/benwoodworth/knbt/BedrockNetworkNbt : net/benwoodworth/knbt/BinaryNbtFormat {
-	public final fun decodeFromNbtTag (Lkotlinx/serialization/DeserializationStrategy;Lnet/benwoodworth/knbt/NbtTag;)Ljava/lang/Object;
-	public final fun encodeToNbtTag (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)Lnet/benwoodworth/knbt/NbtTag;
+	public final fun decodeFromNbtTag (Lkotlinx/serialization/DeserializationStrategy;Lnet/benwoodworth/knbt/tag/NbtTag;)Ljava/lang/Object;
+	public final fun encodeToNbtTag (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)Lnet/benwoodworth/knbt/tag/NbtTag;
 	public fun getConfiguration ()Lnet/benwoodworth/knbt/BedrockNetworkNbtConfiguration;
 	public synthetic fun getConfiguration ()Lnet/benwoodworth/knbt/BinaryNbtFormatConfiguration;
 	public synthetic fun getConfiguration ()Lnet/benwoodworth/knbt/NbtFormatConfiguration;
@@ -55,13 +55,9 @@ public final class net/benwoodworth/knbt/BedrockNetworkNbtKt {
 	public static synthetic fun BedrockNetworkNbt$default (Lnet/benwoodworth/knbt/BedrockNetworkNbt;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lnet/benwoodworth/knbt/BedrockNetworkNbt;
 }
 
-public abstract class net/benwoodworth/knbt/BinaryNbtFormat : net/benwoodworth/knbt/NbtFormat, kotlinx/serialization/BinaryFormat, net/benwoodworth/knbt/NbtDeprecations {
+public abstract class net/benwoodworth/knbt/BinaryNbtFormat : net/benwoodworth/knbt/NbtFormat, kotlinx/serialization/BinaryFormat {
 	public fun decodeFromByteArray (Lkotlinx/serialization/DeserializationStrategy;[B)Ljava/lang/Object;
-	public fun decodeFromSource (Lkotlinx/serialization/DeserializationStrategy;Lokio/BufferedSource;)Ljava/lang/Object;
-	public fun decodeFromSource (Lkotlinx/serialization/DeserializationStrategy;Lokio/Source;)Ljava/lang/Object;
 	public fun encodeToByteArray (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)[B
-	public fun encodeToSink (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;Lokio/BufferedSink;)V
-	public fun encodeToSink (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;Lokio/Sink;)V
 	public abstract fun getConfiguration ()Lnet/benwoodworth/knbt/BinaryNbtFormatConfiguration;
 }
 
@@ -109,8 +105,8 @@ public final class net/benwoodworth/knbt/JavaNbtKt {
 }
 
 public final class net/benwoodworth/knbt/JavaNetworkNbt : net/benwoodworth/knbt/BinaryNbtFormat {
-	public final fun decodeFromNbtTag (Lkotlinx/serialization/DeserializationStrategy;Lnet/benwoodworth/knbt/NbtTag;)Ljava/lang/Object;
-	public final fun encodeToNbtTag (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)Lnet/benwoodworth/knbt/NbtTag;
+	public final fun decodeFromNbtTag (Lkotlinx/serialization/DeserializationStrategy;Lnet/benwoodworth/knbt/tag/NbtTag;)Ljava/lang/Object;
+	public final fun encodeToNbtTag (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)Lnet/benwoodworth/knbt/tag/NbtTag;
 	public synthetic fun getConfiguration ()Lnet/benwoodworth/knbt/BinaryNbtFormatConfiguration;
 	public fun getConfiguration ()Lnet/benwoodworth/knbt/JavaNetworkNbtConfiguration;
 	public synthetic fun getConfiguration ()Lnet/benwoodworth/knbt/NbtFormatConfiguration;
@@ -143,9 +139,6 @@ public final class net/benwoodworth/knbt/JvmStreamsKt {
 	public static final fun encodeToStream (Lnet/benwoodworth/knbt/BinaryNbtFormat;Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;Ljava/io/OutputStream;)V
 }
 
-public abstract interface annotation class net/benwoodworth/knbt/MIGRATION Acknowledge that NbtCompound now has a stricter get : java/lang/annotation/Annotation {
-}
-
 public class net/benwoodworth/knbt/Nbt : net/benwoodworth/knbt/NbtFormat {
 	public static final field Default Lnet/benwoodworth/knbt/Nbt$Default;
 	public final fun decodeFromNbtTag (Lkotlinx/serialization/DeserializationStrategy;Lnet/benwoodworth/knbt/NbtNamed;)Ljava/lang/Object;
@@ -171,169 +164,6 @@ public final class net/benwoodworth/knbt/NbtBuilder : net/benwoodworth/knbt/NbtF
 	public synthetic fun build$knbt ()Lnet/benwoodworth/knbt/NbtFormat;
 }
 
-public final class net/benwoodworth/knbt/NbtByte : net/benwoodworth/knbt/NbtByteDeprecations, net/benwoodworth/knbt/NbtTag {
-	public static final field Companion Lnet/benwoodworth/knbt/NbtByte$Companion;
-	public fun <init> (B)V
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getBooleanValue ()Z
-	public fun getType ()Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public final fun getValue ()B
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class net/benwoodworth/knbt/NbtByte$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class net/benwoodworth/knbt/NbtByteArray : net/benwoodworth/knbt/NbtByteArrayDeprecations, net/benwoodworth/knbt/NbtTag {
-	public static final field Companion Lnet/benwoodworth/knbt/NbtByteArray$Companion;
-	public fun <init> (Ljava/util/List;)V
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun get (I)B
-	public final fun getContent ()Ljava/util/List;
-	public final fun getSize ()I
-	public fun getType ()Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class net/benwoodworth/knbt/NbtByteArray$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public abstract class net/benwoodworth/knbt/NbtByteArrayDeprecations : net/benwoodworth/knbt/NbtListLikeDeprecations {
-	public final fun average ()D
-	public final fun binarySearch (Ljava/lang/Byte;II)I
-	public static synthetic fun binarySearch$default (Lnet/benwoodworth/knbt/NbtByteArrayDeprecations;Ljava/lang/Byte;IIILjava/lang/Object;)I
-	public final fun max ()B
-	public final fun maxOrNull ()Ljava/lang/Byte;
-	public final fun min ()B
-	public final fun minOrNull ()Ljava/lang/Byte;
-	public final fun sorted ()Ljava/util/List;
-	public final fun sortedDescending ()Ljava/util/List;
-	public final fun sum ()I
-	public final fun toByteArray ()[B
-}
-
-public abstract interface class net/benwoodworth/knbt/NbtByteDeprecations {
-	public abstract fun getBooleanValue ()Z
-}
-
-public final class net/benwoodworth/knbt/NbtByteDeprecations$DefaultImpls {
-	public static fun getBooleanValue (Lnet/benwoodworth/knbt/NbtByteDeprecations;)Z
-}
-
-public final class net/benwoodworth/knbt/NbtCompound : net/benwoodworth/knbt/NbtCompoundDeprecations, net/benwoodworth/knbt/NbtTag {
-	public static final field Companion Lnet/benwoodworth/knbt/NbtCompound$Companion;
-	public fun <init> (Ljava/util/Map;)V
-	public final fun contains (Ljava/lang/String;)Z
-	public fun equals (Ljava/lang/Object;)Z
-	public fun get (Ljava/lang/String;)Lnet/benwoodworth/knbt/NbtTag;
-	public final fun getContent ()Ljava/util/Map;
-	public final fun getSize ()I
-	public fun getType ()Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class net/benwoodworth/knbt/NbtCompound$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class net/benwoodworth/knbt/NbtCompoundBuilder {
-	public fun <init> ()V
-	public final fun build ()Lnet/benwoodworth/knbt/NbtCompound;
-	public final fun put (Ljava/lang/String;Lnet/benwoodworth/knbt/NbtTag;)Lnet/benwoodworth/knbt/NbtTag;
-}
-
-public abstract class net/benwoodworth/knbt/NbtCompoundDeprecations {
-	public final fun all (Lkotlin/jvm/functions/Function1;)Z
-	public final fun any ()Z
-	public final fun any (Lkotlin/jvm/functions/Function1;)Z
-	public final fun asIterable ()Ljava/lang/Iterable;
-	public final fun asSequence ()Lkotlin/sequences/Sequence;
-	public final fun containsKey (Ljava/lang/String;)Z
-	public final fun containsValue (Lnet/benwoodworth/knbt/NbtTag;)Z
-	public final fun count ()I
-	public final fun count (Lkotlin/jvm/functions/Function1;)I
-	public final fun filter (Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun filterKeys (Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun filterNot (Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun filterNotTo (Ljava/util/Map;Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun filterTo (Ljava/util/Map;Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun filterValues (Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun firstNotNullOf (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun firstNotNullOfOrNull (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun flatMap (Lkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun flatMapSequence (Lkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun flatMapSequenceTo (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun flatMapTo (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun forEach (Lkotlin/jvm/functions/Function1;)V
-	public abstract fun get (Ljava/lang/String;)Lnet/benwoodworth/knbt/NbtTag;
-	public final fun getEntries ()Ljava/util/Set;
-	public final fun getKeys ()Ljava/util/Set;
-	public final fun getOrElse (Ljava/lang/String;Lkotlin/jvm/functions/Function0;)Lnet/benwoodworth/knbt/NbtTag;
-	public final fun getValue (Ljava/lang/Object;Lkotlin/reflect/KProperty;)Lnet/benwoodworth/knbt/NbtTag;
-	public final fun getValue (Ljava/lang/String;)Lnet/benwoodworth/knbt/NbtTag;
-	public final fun getValues ()Ljava/util/Collection;
-	public final fun ifEmpty (Lkotlin/jvm/functions/Function0;)Lnet/benwoodworth/knbt/NbtCompound;
-	public final fun isNotEmpty ()Z
-	public final fun isNullOrEmpty ()Z
-	public final fun iterator ()Ljava/util/Iterator;
-	public final fun map (Lkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun mapKeys (Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun mapKeysTo (Ljava/util/Map;Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun mapNotNull (Lkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun mapNotNullTo (Ljava/util/Collection;Lkotlin/jvm/functions/Function1;)Ljava/util/Collection;
-	public final fun mapTo (Ljava/util/Collection;Lkotlin/jvm/functions/Function1;)Ljava/util/Collection;
-	public final fun mapValues (Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun mapValuesTo (Ljava/util/Map;Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun maxBy (Lkotlin/jvm/functions/Function1;)Ljava/util/Map$Entry;
-	public final fun maxByOrNull (Lkotlin/jvm/functions/Function1;)Ljava/util/Map$Entry;
-	public final fun maxOf (Lkotlin/jvm/functions/Function1;)D
-	public final fun maxOf (Lkotlin/jvm/functions/Function1;)F
-	public final fun maxOf (Lkotlin/jvm/functions/Function1;)Ljava/lang/Comparable;
-	public final fun maxOfOrNull (Lkotlin/jvm/functions/Function1;)Ljava/lang/Comparable;
-	public final fun maxOfOrNull (Lkotlin/jvm/functions/Function1;)Ljava/lang/Double;
-	public final fun maxOfOrNull (Lkotlin/jvm/functions/Function1;)Ljava/lang/Float;
-	public final fun maxOfWith (Ljava/util/Comparator;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun maxOfWithOrNull (Ljava/util/Comparator;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun maxWith (Ljava/util/Comparator;)Ljava/util/Map$Entry;
-	public final fun maxWithOrNull (Ljava/util/Comparator;)Ljava/util/Map$Entry;
-	public final fun minBy (Lkotlin/jvm/functions/Function1;)Ljava/util/Map$Entry;
-	public final fun minByOrNull (Lkotlin/jvm/functions/Function1;)Ljava/util/Map$Entry;
-	public final fun minOf (Lkotlin/jvm/functions/Function1;)D
-	public final fun minOf (Lkotlin/jvm/functions/Function1;)F
-	public final fun minOf (Lkotlin/jvm/functions/Function1;)Ljava/lang/Comparable;
-	public final fun minOfOrNull (Lkotlin/jvm/functions/Function1;)Ljava/lang/Comparable;
-	public final fun minOfOrNull (Lkotlin/jvm/functions/Function1;)Ljava/lang/Double;
-	public final fun minOfOrNull (Lkotlin/jvm/functions/Function1;)Ljava/lang/Float;
-	public final fun minOfWith (Ljava/util/Comparator;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun minOfWithOrNull (Ljava/util/Comparator;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun minWith (Ljava/util/Comparator;)Ljava/util/Map$Entry;
-	public final fun minWithOrNull (Ljava/util/Comparator;)Ljava/util/Map$Entry;
-	public final fun minus (Ljava/lang/Iterable;)Ljava/util/Map;
-	public final fun minus (Ljava/lang/String;)Ljava/util/Map;
-	public final fun minus (Lkotlin/sequences/Sequence;)Ljava/util/Map;
-	public final fun minus ([Ljava/lang/String;)Ljava/util/Map;
-	public final fun none ()Z
-	public final fun none (Lkotlin/jvm/functions/Function1;)Z
-	public final fun onEach (Lkotlin/jvm/functions/Function1;)Lnet/benwoodworth/knbt/NbtCompound;
-	public final fun onEachIndexed (Lkotlin/jvm/functions/Function2;)Lnet/benwoodworth/knbt/NbtCompound;
-	public final fun orEmpty ()Ljava/util/Map;
-	public final fun plus (Ljava/lang/Iterable;)Ljava/util/Map;
-	public final fun plus (Ljava/util/Map;)Ljava/util/Map;
-	public final fun plus (Lkotlin/Pair;)Ljava/util/Map;
-	public final fun plus (Lkotlin/sequences/Sequence;)Ljava/util/Map;
-	public final fun plus ([Lkotlin/Pair;)Ljava/util/Map;
-	public final fun toList ()Ljava/util/List;
-	public final fun toMap ()Ljava/util/Map;
-	public final fun toMap (Ljava/util/Map;)Ljava/util/Map;
-	public final fun toMutableMap ()Ljava/util/Map;
-	public final fun withDefault (Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-}
-
 public abstract class net/benwoodworth/knbt/NbtCompression {
 	public static final field Companion Lnet/benwoodworth/knbt/NbtCompression$Companion;
 }
@@ -345,8 +175,6 @@ public final class net/benwoodworth/knbt/NbtCompression$Gzip : net/benwoodworth/
 	public static final field INSTANCE Lnet/benwoodworth/knbt/NbtCompression$Gzip;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -354,15 +182,11 @@ public final class net/benwoodworth/knbt/NbtCompression$None : net/benwoodworth/
 	public static final field INSTANCE Lnet/benwoodworth/knbt/NbtCompression$None;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class net/benwoodworth/knbt/NbtCompression$Zlib : net/benwoodworth/knbt/NbtCompression {
 	public static final field INSTANCE Lnet/benwoodworth/knbt/NbtCompression$Zlib;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
@@ -387,186 +211,35 @@ public abstract class net/benwoodworth/knbt/NbtContentPolymorphicSerializer : ko
 	public fun <init> (Lkotlin/reflect/KClass;)V
 	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
 	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	protected abstract fun selectDeserializer (Lnet/benwoodworth/knbt/NbtTag;)Lkotlinx/serialization/DeserializationStrategy;
+	protected abstract fun selectDeserializer (Lnet/benwoodworth/knbt/tag/NbtTag;)Lkotlinx/serialization/DeserializationStrategy;
 	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
 }
 
-public abstract interface class net/benwoodworth/knbt/NbtDecoder : kotlinx/serialization/encoding/CompositeDecoder, kotlinx/serialization/encoding/Decoder, net/benwoodworth/knbt/NbtDecoderDeprecations {
+public abstract interface class net/benwoodworth/knbt/NbtDecoder : kotlinx/serialization/encoding/CompositeDecoder, kotlinx/serialization/encoding/Decoder {
 	public abstract fun decodeNbtName ()Ljava/lang/String;
-	public abstract fun decodeNbtTag ()Lnet/benwoodworth/knbt/NbtTag;
+	public abstract fun decodeNbtTag ()Lnet/benwoodworth/knbt/tag/NbtTag;
 	public abstract fun getNbt ()Lnet/benwoodworth/knbt/NbtFormat;
 }
 
 public final class net/benwoodworth/knbt/NbtDecoder$DefaultImpls {
-	public static fun beginByteArray (Lnet/benwoodworth/knbt/NbtDecoder;Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public static fun beginCompound (Lnet/benwoodworth/knbt/NbtDecoder;Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public static fun beginIntArray (Lnet/benwoodworth/knbt/NbtDecoder;Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public static fun beginList (Lnet/benwoodworth/knbt/NbtDecoder;Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public static fun beginLongArray (Lnet/benwoodworth/knbt/NbtDecoder;Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public static fun decodeByteArray (Lnet/benwoodworth/knbt/NbtDecoder;Ljava/lang/Void;)[B
-	public static fun decodeByteArrayElement (Lnet/benwoodworth/knbt/NbtDecoder;Lkotlinx/serialization/descriptors/SerialDescriptor;I)[B
 	public static fun decodeCollectionSize (Lnet/benwoodworth/knbt/NbtDecoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)I
-	public static fun decodeIntArray (Lnet/benwoodworth/knbt/NbtDecoder;Ljava/lang/Void;)[I
-	public static fun decodeIntArrayElement (Lnet/benwoodworth/knbt/NbtDecoder;Lkotlinx/serialization/descriptors/SerialDescriptor;I)[I
-	public static fun decodeLongArray (Lnet/benwoodworth/knbt/NbtDecoder;Ljava/lang/Void;)[J
-	public static fun decodeLongArrayElement (Lnet/benwoodworth/knbt/NbtDecoder;Lkotlinx/serialization/descriptors/SerialDescriptor;I)[J
-	public static fun decodeNbtTagElement (Lnet/benwoodworth/knbt/NbtDecoder;Lkotlinx/serialization/descriptors/SerialDescriptor;I)Lnet/benwoodworth/knbt/NbtTag;
 	public static fun decodeNullableSerializableValue (Lnet/benwoodworth/knbt/NbtDecoder;Lkotlinx/serialization/DeserializationStrategy;)Ljava/lang/Object;
 	public static fun decodeSequentially (Lnet/benwoodworth/knbt/NbtDecoder;)Z
 	public static fun decodeSerializableValue (Lnet/benwoodworth/knbt/NbtDecoder;Lkotlinx/serialization/DeserializationStrategy;)Ljava/lang/Object;
 }
 
-public abstract interface class net/benwoodworth/knbt/NbtDecoderDeprecations : kotlinx/serialization/encoding/CompositeDecoder, kotlinx/serialization/encoding/Decoder {
-	public abstract fun beginByteArray (Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public abstract fun beginCompound (Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public abstract fun beginIntArray (Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public abstract fun beginList (Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public abstract fun beginLongArray (Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public abstract fun decodeByteArray (Ljava/lang/Void;)[B
-	public abstract fun decodeByteArrayElement (Lkotlinx/serialization/descriptors/SerialDescriptor;I)[B
-	public abstract fun decodeIntArray (Ljava/lang/Void;)[I
-	public abstract fun decodeIntArrayElement (Lkotlinx/serialization/descriptors/SerialDescriptor;I)[I
-	public abstract fun decodeLongArray (Ljava/lang/Void;)[J
-	public abstract fun decodeLongArrayElement (Lkotlinx/serialization/descriptors/SerialDescriptor;I)[J
-	public abstract fun decodeNbtTagElement (Lkotlinx/serialization/descriptors/SerialDescriptor;I)Lnet/benwoodworth/knbt/NbtTag;
-}
-
-public final class net/benwoodworth/knbt/NbtDecoderDeprecations$DefaultImpls {
-	public static fun beginByteArray (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public static synthetic fun beginByteArray$default (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;ILjava/lang/Object;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public static fun beginCompound (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public static synthetic fun beginCompound$default (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;ILjava/lang/Object;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public static fun beginIntArray (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public static synthetic fun beginIntArray$default (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;ILjava/lang/Object;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public static fun beginList (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public static synthetic fun beginList$default (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;ILjava/lang/Object;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public static fun beginLongArray (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public static synthetic fun beginLongArray$default (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;ILjava/lang/Object;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public static fun decodeByteArray (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Ljava/lang/Void;)[B
-	public static synthetic fun decodeByteArray$default (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Ljava/lang/Void;ILjava/lang/Object;)[B
-	public static fun decodeByteArrayElement (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;I)[B
-	public static fun decodeCollectionSize (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;)I
-	public static fun decodeIntArray (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Ljava/lang/Void;)[I
-	public static synthetic fun decodeIntArray$default (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Ljava/lang/Void;ILjava/lang/Object;)[I
-	public static fun decodeIntArrayElement (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;I)[I
-	public static fun decodeLongArray (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Ljava/lang/Void;)[J
-	public static synthetic fun decodeLongArray$default (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Ljava/lang/Void;ILjava/lang/Object;)[J
-	public static fun decodeLongArrayElement (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;I)[J
-	public static fun decodeNbtTagElement (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;I)Lnet/benwoodworth/knbt/NbtTag;
-	public static fun decodeNullableSerializableValue (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Lkotlinx/serialization/DeserializationStrategy;)Ljava/lang/Object;
-	public static fun decodeSequentially (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;)Z
-	public static fun decodeSerializableValue (Lnet/benwoodworth/knbt/NbtDecoderDeprecations;Lkotlinx/serialization/DeserializationStrategy;)Ljava/lang/Object;
-}
-
-public abstract interface class net/benwoodworth/knbt/NbtDeprecations {
-	public abstract fun decodeFromSource (Lkotlinx/serialization/DeserializationStrategy;Lokio/BufferedSource;)Ljava/lang/Object;
-	public abstract fun decodeFromSource (Lkotlinx/serialization/DeserializationStrategy;Lokio/Source;)Ljava/lang/Object;
-	public abstract fun encodeToSink (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;Lokio/BufferedSink;)V
-	public abstract fun encodeToSink (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;Lokio/Sink;)V
-}
-
-public final class net/benwoodworth/knbt/NbtDeprecations$DefaultImpls {
-	public static fun decodeFromSource (Lnet/benwoodworth/knbt/NbtDeprecations;Lkotlinx/serialization/DeserializationStrategy;Lokio/BufferedSource;)Ljava/lang/Object;
-	public static fun decodeFromSource (Lnet/benwoodworth/knbt/NbtDeprecations;Lkotlinx/serialization/DeserializationStrategy;Lokio/Source;)Ljava/lang/Object;
-	public static fun encodeToSink (Lnet/benwoodworth/knbt/NbtDeprecations;Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;Lokio/BufferedSink;)V
-	public static fun encodeToSink (Lnet/benwoodworth/knbt/NbtDeprecations;Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;Lokio/Sink;)V
-}
-
-public final class net/benwoodworth/knbt/NbtDouble : net/benwoodworth/knbt/NbtTag {
-	public static final field Companion Lnet/benwoodworth/knbt/NbtDouble$Companion;
-	public fun <init> (D)V
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getType ()Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public final fun getValue ()D
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class net/benwoodworth/knbt/NbtDouble$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public abstract interface class net/benwoodworth/knbt/NbtEncoder : kotlinx/serialization/encoding/CompositeEncoder, kotlinx/serialization/encoding/Encoder, net/benwoodworth/knbt/NbtEncoderDeprecations {
+public abstract interface class net/benwoodworth/knbt/NbtEncoder : kotlinx/serialization/encoding/CompositeEncoder, kotlinx/serialization/encoding/Encoder {
 	public abstract fun encodeNbtName (Ljava/lang/String;)V
-	public abstract fun encodeNbtTag (Lnet/benwoodworth/knbt/NbtTag;)V
+	public abstract fun encodeNbtTag (Lnet/benwoodworth/knbt/tag/NbtTag;)V
 	public abstract fun getNbt ()Lnet/benwoodworth/knbt/NbtFormat;
 }
 
 public final class net/benwoodworth/knbt/NbtEncoder$DefaultImpls {
-	public static fun beginByteArray (Lnet/benwoodworth/knbt/NbtEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;ILjava/lang/Void;)Lnet/benwoodworth/knbt/NbtEncoder;
 	public static fun beginCollection (Lnet/benwoodworth/knbt/NbtEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;I)Lkotlinx/serialization/encoding/CompositeEncoder;
-	public static fun beginCompound (Lnet/benwoodworth/knbt/NbtEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public static fun beginIntArray (Lnet/benwoodworth/knbt/NbtEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;ILjava/lang/Void;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public static fun beginList (Lnet/benwoodworth/knbt/NbtEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;ILjava/lang/Void;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public static fun beginLongArray (Lnet/benwoodworth/knbt/NbtEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;ILjava/lang/Void;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public static fun encodeByteArray (Lnet/benwoodworth/knbt/NbtEncoder;[BLjava/lang/Void;)V
-	public static fun encodeByteArrayElement (Lnet/benwoodworth/knbt/NbtEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;I[B)V
-	public static fun encodeIntArray (Lnet/benwoodworth/knbt/NbtEncoder;[ILjava/lang/Void;)V
-	public static fun encodeIntArrayElement (Lnet/benwoodworth/knbt/NbtEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;I[I)V
-	public static fun encodeLongArray (Lnet/benwoodworth/knbt/NbtEncoder;[JLjava/lang/Void;)V
-	public static fun encodeLongArrayElement (Lnet/benwoodworth/knbt/NbtEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;I[J)V
-	public static fun encodeNbtTagElement (Lnet/benwoodworth/knbt/NbtEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;ILnet/benwoodworth/knbt/NbtTag;)V
 	public static fun encodeNotNullMark (Lnet/benwoodworth/knbt/NbtEncoder;)V
 	public static fun encodeNullableSerializableValue (Lnet/benwoodworth/knbt/NbtEncoder;Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)V
 	public static fun encodeSerializableValue (Lnet/benwoodworth/knbt/NbtEncoder;Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)V
 	public static fun shouldEncodeElementDefault (Lnet/benwoodworth/knbt/NbtEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;I)Z
-}
-
-public abstract interface class net/benwoodworth/knbt/NbtEncoderDeprecations : kotlinx/serialization/encoding/CompositeEncoder, kotlinx/serialization/encoding/Encoder {
-	public abstract fun beginByteArray (Lkotlinx/serialization/descriptors/SerialDescriptor;ILjava/lang/Void;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public abstract fun beginCompound (Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public abstract fun beginIntArray (Lkotlinx/serialization/descriptors/SerialDescriptor;ILjava/lang/Void;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public abstract fun beginList (Lkotlinx/serialization/descriptors/SerialDescriptor;ILjava/lang/Void;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public abstract fun beginLongArray (Lkotlinx/serialization/descriptors/SerialDescriptor;ILjava/lang/Void;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public abstract fun encodeByteArray ([BLjava/lang/Void;)V
-	public abstract fun encodeByteArrayElement (Lkotlinx/serialization/descriptors/SerialDescriptor;I[B)V
-	public abstract fun encodeIntArray ([ILjava/lang/Void;)V
-	public abstract fun encodeIntArrayElement (Lkotlinx/serialization/descriptors/SerialDescriptor;I[I)V
-	public abstract fun encodeLongArray ([JLjava/lang/Void;)V
-	public abstract fun encodeLongArrayElement (Lkotlinx/serialization/descriptors/SerialDescriptor;I[J)V
-	public abstract fun encodeNbtTagElement (Lkotlinx/serialization/descriptors/SerialDescriptor;ILnet/benwoodworth/knbt/NbtTag;)V
-}
-
-public final class net/benwoodworth/knbt/NbtEncoderDeprecations$DefaultImpls {
-	public static fun beginByteArray (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;ILjava/lang/Void;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public static synthetic fun beginByteArray$default (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;ILjava/lang/Void;ILjava/lang/Object;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public static fun beginCollection (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;I)Lkotlinx/serialization/encoding/CompositeEncoder;
-	public static fun beginCompound (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public static synthetic fun beginCompound$default (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;Ljava/lang/Void;ILjava/lang/Object;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public static fun beginIntArray (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;ILjava/lang/Void;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public static synthetic fun beginIntArray$default (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;ILjava/lang/Void;ILjava/lang/Object;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public static fun beginList (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;ILjava/lang/Void;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public static synthetic fun beginList$default (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;ILjava/lang/Void;ILjava/lang/Object;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public static fun beginLongArray (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;ILjava/lang/Void;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public static synthetic fun beginLongArray$default (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;ILjava/lang/Void;ILjava/lang/Object;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public static fun encodeByteArray (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;[BLjava/lang/Void;)V
-	public static synthetic fun encodeByteArray$default (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;[BLjava/lang/Void;ILjava/lang/Object;)V
-	public static fun encodeByteArrayElement (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;I[B)V
-	public static fun encodeIntArray (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;[ILjava/lang/Void;)V
-	public static synthetic fun encodeIntArray$default (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;[ILjava/lang/Void;ILjava/lang/Object;)V
-	public static fun encodeIntArrayElement (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;I[I)V
-	public static fun encodeLongArray (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;[JLjava/lang/Void;)V
-	public static synthetic fun encodeLongArray$default (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;[JLjava/lang/Void;ILjava/lang/Object;)V
-	public static fun encodeLongArrayElement (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;I[J)V
-	public static fun encodeNbtTagElement (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;ILnet/benwoodworth/knbt/NbtTag;)V
-	public static fun encodeNotNullMark (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;)V
-	public static fun encodeNullableSerializableValue (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)V
-	public static fun encodeSerializableValue (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)V
-	public static fun shouldEncodeElementDefault (Lnet/benwoodworth/knbt/NbtEncoderDeprecations;Lkotlinx/serialization/descriptors/SerialDescriptor;I)Z
-}
-
-public final class net/benwoodworth/knbt/NbtFloat : net/benwoodworth/knbt/NbtTag {
-	public static final field Companion Lnet/benwoodworth/knbt/NbtFloat$Companion;
-	public fun <init> (F)V
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getType ()Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public final fun getValue ()F
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class net/benwoodworth/knbt/NbtFloat$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public abstract class net/benwoodworth/knbt/NbtFormat : kotlinx/serialization/SerialFormat {
@@ -593,346 +266,10 @@ public abstract class net/benwoodworth/knbt/NbtFormatConfiguration {
 	public abstract fun toString ()Ljava/lang/String;
 }
 
-public final class net/benwoodworth/knbt/NbtInt : net/benwoodworth/knbt/NbtTag {
-	public static final field Companion Lnet/benwoodworth/knbt/NbtInt$Companion;
-	public fun <init> (I)V
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getType ()Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public final fun getValue ()I
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class net/benwoodworth/knbt/NbtInt$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class net/benwoodworth/knbt/NbtIntArray : net/benwoodworth/knbt/NbtIntArrayDeprecations, net/benwoodworth/knbt/NbtTag {
-	public static final field Companion Lnet/benwoodworth/knbt/NbtIntArray$Companion;
-	public fun <init> (Ljava/util/List;)V
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun get (I)I
-	public final fun getContent ()Ljava/util/List;
-	public final fun getSize ()I
-	public fun getType ()Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class net/benwoodworth/knbt/NbtIntArray$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public abstract class net/benwoodworth/knbt/NbtIntArrayDeprecations : net/benwoodworth/knbt/NbtListLikeDeprecations {
-	public final fun average ()D
-	public final fun binarySearch (Ljava/lang/Integer;II)I
-	public static synthetic fun binarySearch$default (Lnet/benwoodworth/knbt/NbtIntArrayDeprecations;Ljava/lang/Integer;IIILjava/lang/Object;)I
-	public final fun max ()I
-	public final fun maxOrNull ()Ljava/lang/Integer;
-	public final fun min ()I
-	public final fun minOrNull ()Ljava/lang/Integer;
-	public final fun sorted ()Ljava/util/List;
-	public final fun sortedDescending ()Ljava/util/List;
-	public final fun sum ()I
-	public final fun toIntArray ()[I
-}
-
 public final class net/benwoodworth/knbt/NbtKt {
 	public static final fun Nbt (Lnet/benwoodworth/knbt/NbtFormat;)Lnet/benwoodworth/knbt/Nbt;
 	public static final fun Nbt (Lnet/benwoodworth/knbt/NbtFormat;Lkotlin/jvm/functions/Function1;)Lnet/benwoodworth/knbt/Nbt;
 	public static synthetic fun Nbt$default (Lnet/benwoodworth/knbt/NbtFormat;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lnet/benwoodworth/knbt/Nbt;
-}
-
-public final class net/benwoodworth/knbt/NbtList : net/benwoodworth/knbt/NbtListLikeDeprecations, net/benwoodworth/knbt/NbtTag {
-	public static final field Companion Lnet/benwoodworth/knbt/NbtList$Companion;
-	public synthetic fun <init> (Ljava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun get (I)Lnet/benwoodworth/knbt/NbtTag;
-	public final fun getContent ()Ljava/util/List;
-	public final fun getSize ()I
-	public fun getType ()Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class net/benwoodworth/knbt/NbtList$Companion {
-	public final fun invoke$NbtByte (Ljava/util/List;)Lnet/benwoodworth/knbt/NbtList;
-	public final fun invoke$NbtByteArray (Ljava/util/List;)Lnet/benwoodworth/knbt/NbtList;
-	public final fun invoke$NbtCompound (Ljava/util/List;)Lnet/benwoodworth/knbt/NbtList;
-	public final fun invoke$NbtDouble (Ljava/util/List;)Lnet/benwoodworth/knbt/NbtList;
-	public final fun invoke$NbtFloat (Ljava/util/List;)Lnet/benwoodworth/knbt/NbtList;
-	public final fun invoke$NbtInt (Ljava/util/List;)Lnet/benwoodworth/knbt/NbtList;
-	public final fun invoke$NbtIntArray (Ljava/util/List;)Lnet/benwoodworth/knbt/NbtList;
-	public final fun invoke$NbtList (Ljava/util/List;)Lnet/benwoodworth/knbt/NbtList;
-	public final fun invoke$NbtLong (Ljava/util/List;)Lnet/benwoodworth/knbt/NbtList;
-	public final fun invoke$NbtLongArray (Ljava/util/List;)Lnet/benwoodworth/knbt/NbtList;
-	public final fun invoke$NbtShort (Ljava/util/List;)Lnet/benwoodworth/knbt/NbtList;
-	public final fun invoke$NbtString (Ljava/util/List;)Lnet/benwoodworth/knbt/NbtList;
-	public final fun invoke$Nothing (Ljava/util/List;)Lnet/benwoodworth/knbt/NbtList;
-	public final fun serializer (Lkotlinx/serialization/KSerializer;)Lkotlinx/serialization/KSerializer;
-}
-
-public final class net/benwoodworth/knbt/NbtListBuilder {
-	public fun <init> ()V
-	public fun <init> (I)V
-	public synthetic fun <init> (IILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public synthetic fun <init> (IILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun add (Lnet/benwoodworth/knbt/NbtTag;)Z
-	public final fun build ()Lnet/benwoodworth/knbt/NbtList;
-}
-
-public abstract class net/benwoodworth/knbt/NbtListLikeDeprecations {
-	public final fun all (Lkotlin/jvm/functions/Function1;)Z
-	public final fun any ()Z
-	public final fun any (Lkotlin/jvm/functions/Function1;)Z
-	public final fun asIterable ()Ljava/lang/Iterable;
-	public final fun asReversed ()Ljava/util/List;
-	public final fun asSequence ()Lkotlin/sequences/Sequence;
-	public final fun associate (Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun associateBy (Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun associateBy (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun associateByTo (Ljava/util/Map;Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun associateByTo (Ljava/util/Map;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun associateTo (Ljava/util/Map;Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun associateWith (Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun associateWithTo (Ljava/util/Map;Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun binarySearch (IILkotlin/jvm/functions/Function1;)I
-	public final fun binarySearch (Ljava/lang/Object;Ljava/util/Comparator;II)I
-	public static synthetic fun binarySearch$default (Lnet/benwoodworth/knbt/NbtListLikeDeprecations;IILkotlin/jvm/functions/Function1;ILjava/lang/Object;)I
-	public static synthetic fun binarySearch$default (Lnet/benwoodworth/knbt/NbtListLikeDeprecations;Ljava/lang/Object;Ljava/util/Comparator;IIILjava/lang/Object;)I
-	public final fun binarySearchBy (Ljava/lang/Comparable;IILkotlin/jvm/functions/Function1;)I
-	public static synthetic fun binarySearchBy$default (Lnet/benwoodworth/knbt/NbtListLikeDeprecations;Ljava/lang/Comparable;IILkotlin/jvm/functions/Function1;ILjava/lang/Object;)I
-	public final fun chunked (I)Ljava/util/List;
-	public final fun chunked (ILkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun component1 ()Ljava/lang/Object;
-	public final fun component2 ()Ljava/lang/Object;
-	public final fun component3 ()Ljava/lang/Object;
-	public final fun component4 ()Ljava/lang/Object;
-	public final fun component5 ()Ljava/lang/Object;
-	public final fun contains (Ljava/lang/Object;)Z
-	public final fun containsAll (Ljava/util/Collection;)Z
-	public final fun count ()I
-	public final fun count (Lkotlin/jvm/functions/Function1;)I
-	public final fun distinct ()Ljava/util/List;
-	public final fun distinctBy (Lkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun drop (I)Ljava/util/List;
-	public final fun dropLast (I)Ljava/util/List;
-	public final fun dropLastWhile (Lkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun dropWhile (Lkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun elementAt (I)Ljava/lang/Object;
-	public final fun elementAtOrElse (ILkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun elementAtOrNull (I)Ljava/lang/Object;
-	public final fun filter (Lkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun filterIndexed (Lkotlin/jvm/functions/Function2;)Ljava/util/List;
-	public final fun filterIndexedTo (Ljava/util/Collection;Lkotlin/jvm/functions/Function2;)Ljava/util/Collection;
-	public final fun filterIsInstance ()Ljava/util/List;
-	public final fun filterIsInstanceTo (Ljava/util/Collection;)Ljava/util/Collection;
-	public final fun filterNot (Lkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun filterNotTo (Ljava/util/Collection;Lkotlin/jvm/functions/Function1;)Ljava/util/Collection;
-	public final fun filterTo (Ljava/util/Collection;Lkotlin/jvm/functions/Function1;)Ljava/util/Collection;
-	public final fun find (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun findLast (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun first ()Ljava/lang/Object;
-	public final fun first (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun firstNotNullOf (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun firstNotNullOfOrNull (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun firstOrNull ()Ljava/lang/Object;
-	public final fun firstOrNull (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun flatMapIndexedIterable (Lkotlin/jvm/functions/Function2;)Ljava/util/List;
-	public final fun flatMapIndexedIterableTo (Ljava/util/Collection;Lkotlin/jvm/functions/Function2;)Ljava/util/Collection;
-	public final fun flatMapIndexedSequence (Lkotlin/jvm/functions/Function2;)Ljava/util/List;
-	public final fun flatMapIndexedSequenceTo (Ljava/util/Collection;Lkotlin/jvm/functions/Function2;)Ljava/util/Collection;
-	public final fun flatMapIterable (Lkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun flatMapIterableTo (Ljava/util/Collection;Lkotlin/jvm/functions/Function1;)Ljava/util/Collection;
-	public final fun flatMapSequence (Lkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun flatMapSequenceTo (Ljava/util/Collection;Lkotlin/jvm/functions/Function1;)Ljava/util/Collection;
-	public final fun fold (Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/lang/Object;
-	public final fun foldIndexed (Ljava/lang/Object;Lkotlin/jvm/functions/Function3;)Ljava/lang/Object;
-	public final fun foldRight (Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/lang/Object;
-	public final fun foldRightIndexed (Ljava/lang/Object;Lkotlin/jvm/functions/Function3;)Ljava/lang/Object;
-	public final fun forEach (Lkotlin/jvm/functions/Function1;)V
-	public final fun forEachIndexed (Lkotlin/jvm/functions/Function2;)V
-	public final fun getIndices ()Lkotlin/ranges/IntRange;
-	public final fun getLastIndex ()I
-	public final fun getOrElse (ILkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun groupBy (Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun groupBy (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun groupByTo (Ljava/util/Map;Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun groupByTo (Ljava/util/Map;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Ljava/util/Map;
-	public final fun groupingBy (Lkotlin/jvm/functions/Function1;)Lkotlin/collections/Grouping;
-	public final fun ifEmpty (Lkotlin/jvm/functions/Function0;)Ljava/util/List;
-	public final fun indexOf (Ljava/lang/Object;)I
-	public final fun indexOfFirst (Lkotlin/jvm/functions/Function1;)I
-	public final fun indexOfLast (Lkotlin/jvm/functions/Function1;)I
-	public final fun intersect (Ljava/lang/Iterable;)Ljava/util/Set;
-	public final fun isEmpty ()Z
-	public final fun isNotEmpty ()Z
-	public final fun isNullOrEmpty ()Z
-	public final fun iterator ()Ljava/util/Iterator;
-	public final fun joinToString (Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;ILjava/lang/CharSequence;Lkotlin/jvm/functions/Function1;)Ljava/lang/String;
-	public static synthetic fun joinToString$default (Lnet/benwoodworth/knbt/NbtListLikeDeprecations;Ljava/lang/CharSequence;Ljava/lang/CharSequence;Ljava/lang/CharSequence;ILjava/lang/CharSequence;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ljava/lang/String;
-	public final fun last ()Ljava/lang/Object;
-	public final fun last (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun lastIndexOf (Ljava/lang/Object;)I
-	public final fun lastOrNull ()Ljava/lang/Object;
-	public final fun lastOrNull (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun listIterator ()Ljava/util/ListIterator;
-	public final fun listIterator (I)Ljava/util/ListIterator;
-	public final fun map (Lkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun mapIndexed (Lkotlin/jvm/functions/Function2;)Ljava/util/List;
-	public final fun mapIndexedNotNull (Lkotlin/jvm/functions/Function2;)Ljava/util/List;
-	public final fun mapIndexedNotNullTo (Ljava/util/Collection;Lkotlin/jvm/functions/Function2;)Ljava/util/Collection;
-	public final fun mapIndexedTo (Ljava/util/Collection;Lkotlin/jvm/functions/Function2;)Ljava/util/Collection;
-	public final fun mapNotNull (Lkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun mapNotNullTo (Ljava/util/Collection;Lkotlin/jvm/functions/Function1;)Ljava/util/Collection;
-	public final fun mapTo (Ljava/util/Collection;Lkotlin/jvm/functions/Function1;)Ljava/util/Collection;
-	public final fun maxBy (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun maxByOrNull (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun maxOf (Lkotlin/jvm/functions/Function1;)D
-	public final fun maxOf (Lkotlin/jvm/functions/Function1;)F
-	public final fun maxOf (Lkotlin/jvm/functions/Function1;)Ljava/lang/Comparable;
-	public final fun maxOfOrNull (Lkotlin/jvm/functions/Function1;)Ljava/lang/Comparable;
-	public final fun maxOfOrNull (Lkotlin/jvm/functions/Function1;)Ljava/lang/Double;
-	public final fun maxOfOrNull (Lkotlin/jvm/functions/Function1;)Ljava/lang/Float;
-	public final fun maxOfWith (Ljava/util/Comparator;Lkotlin/jvm/functions/Function1;)Ljava/lang/Comparable;
-	public final fun maxOfWithOrNull (Ljava/util/Comparator;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun maxWith (Ljava/util/Comparator;)Ljava/lang/Object;
-	public final fun maxWithOrNull (Ljava/util/Comparator;)Ljava/lang/Object;
-	public final fun minBy (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun minByOrNull (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun minOf (Lkotlin/jvm/functions/Function1;)D
-	public final fun minOf (Lkotlin/jvm/functions/Function1;)F
-	public final fun minOf (Lkotlin/jvm/functions/Function1;)Ljava/lang/Comparable;
-	public final fun minOfOrNull (Lkotlin/jvm/functions/Function1;)Ljava/lang/Comparable;
-	public final fun minOfOrNull (Lkotlin/jvm/functions/Function1;)Ljava/lang/Double;
-	public final fun minOfOrNull (Lkotlin/jvm/functions/Function1;)Ljava/lang/Float;
-	public final fun minOfWith (Ljava/util/Comparator;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun minOfWithOrNull (Ljava/util/Comparator;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun minWith (Ljava/util/Comparator;)Ljava/lang/Object;
-	public final fun minWithOrNull (Ljava/util/Comparator;)Ljava/lang/Object;
-	public final fun minus (Ljava/lang/Iterable;)Ljava/util/List;
-	public final fun minus (Ljava/lang/Object;)Ljava/util/List;
-	public final fun minus (Lkotlin/sequences/Sequence;)Ljava/util/List;
-	public final fun minus ([Ljava/lang/Object;)Ljava/util/List;
-	public final fun minusElement (Ljava/lang/Object;)Ljava/util/List;
-	public final fun none ()Z
-	public final fun none (Lkotlin/jvm/functions/Function1;)Z
-	public final fun onEach (Lkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun onEachIndexed (Lkotlin/jvm/functions/Function2;)Ljava/util/List;
-	public final fun orEmpty ()Ljava/util/List;
-	public final fun partition (Lkotlin/jvm/functions/Function1;)Lkotlin/Pair;
-	public final fun plus (Ljava/lang/Iterable;)Ljava/util/List;
-	public final fun plus (Ljava/lang/Object;)Ljava/util/List;
-	public final fun plus (Lkotlin/sequences/Sequence;)Ljava/util/List;
-	public final fun plus ([Ljava/lang/Object;)Ljava/util/List;
-	public final fun plusElement (Ljava/lang/Object;)Ljava/util/List;
-	public final fun random ()Ljava/lang/Object;
-	public final fun random (Lkotlin/random/Random;)Ljava/lang/Object;
-	public final fun randomOrNull ()Ljava/lang/Object;
-	public final fun randomOrNull (Lkotlin/random/Random;)Ljava/lang/Object;
-	public final fun reduce (Lkotlin/jvm/functions/Function2;)Ljava/lang/Object;
-	public final fun reduceIndexed (Lkotlin/jvm/functions/Function3;)Ljava/lang/Object;
-	public final fun reduceIndexedOrNull (Lkotlin/jvm/functions/Function3;)Ljava/lang/Object;
-	public final fun reduceOrNull (Lkotlin/jvm/functions/Function2;)Ljava/lang/Object;
-	public final fun reduceRight (Lkotlin/jvm/functions/Function2;)Ljava/lang/Object;
-	public final fun reduceRightIndexed (Lkotlin/jvm/functions/Function3;)Ljava/lang/Object;
-	public final fun reduceRightIndexedOrNull (Lkotlin/jvm/functions/Function3;)Ljava/lang/Object;
-	public final fun reduceRightOrNull (Lkotlin/jvm/functions/Function2;)Ljava/lang/Object;
-	public final fun requireNoNulls ()Ljava/util/List;
-	public final fun reversed ()Ljava/util/List;
-	public final fun runningFold (Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
-	public final fun runningFoldIndexed (Ljava/lang/Object;Lkotlin/jvm/functions/Function3;)Ljava/util/List;
-	public final fun runningReduce (Lkotlin/jvm/functions/Function2;)Ljava/util/List;
-	public final fun runningReduceIndexed (Lkotlin/jvm/functions/Function3;)Ljava/util/List;
-	public final fun scan (Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
-	public final fun scanIndexed (Ljava/lang/Object;Lkotlin/jvm/functions/Function3;)Ljava/util/List;
-	public final fun shuffled ()Ljava/util/List;
-	public final fun shuffled (Lkotlin/random/Random;)Ljava/util/List;
-	public final fun single ()Ljava/lang/Object;
-	public final fun single (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun singleOrNull ()Ljava/lang/Object;
-	public final fun singleOrNull (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
-	public final fun slice (Ljava/lang/Iterable;)Ljava/util/List;
-	public final fun slice (Lkotlin/ranges/IntRange;)Ljava/util/List;
-	public final fun sortedBy (Lkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun sortedByDescending (Lkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun sortedWith (Ljava/util/Comparator;)Ljava/util/List;
-	public final fun subList (II)Ljava/util/List;
-	public final fun subtract (Ljava/lang/Iterable;)Ljava/util/Set;
-	public final fun sumBy (Lkotlin/jvm/functions/Function1;)I
-	public final fun sumByDouble (Lkotlin/jvm/functions/Function1;)D
-	public final fun sumOf (Lkotlin/jvm/functions/Function1;)D
-	public final fun sumOf (Lkotlin/jvm/functions/Function1;)I
-	public final fun sumOf (Lkotlin/jvm/functions/Function1;)J
-	public final fun sumOf-I7RO_PI (Lkotlin/jvm/functions/Function1;)J
-	public final fun sumOf-OGnWXxg (Lkotlin/jvm/functions/Function1;)I
-	public final fun take (I)Ljava/util/List;
-	public final fun takeLast (I)Ljava/util/List;
-	public final fun takeLastWhile (Lkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun takeWhile (Lkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public final fun toCollection (Ljava/util/Collection;)Ljava/util/Collection;
-	public final fun toHashSet ()Ljava/util/HashSet;
-	public final fun toList ()Ljava/util/List;
-	public final fun toMutableList ()Ljava/util/List;
-	public final fun toMutableSet ()Ljava/util/Set;
-	public final fun toSet ()Ljava/util/Set;
-	public final fun toTypedArray ()[Ljava/lang/Object;
-	public final fun union (Ljava/lang/Iterable;)Ljava/util/Set;
-	public final fun windowed (IIZ)Ljava/util/List;
-	public final fun windowed (IIZLkotlin/jvm/functions/Function1;)Ljava/util/List;
-	public static synthetic fun windowed$default (Lnet/benwoodworth/knbt/NbtListLikeDeprecations;IIZILjava/lang/Object;)Ljava/util/List;
-	public static synthetic fun windowed$default (Lnet/benwoodworth/knbt/NbtListLikeDeprecations;IIZLkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ljava/util/List;
-	public final fun withIndex ()Ljava/lang/Iterable;
-	public final fun zip (Ljava/lang/Iterable;)Ljava/util/List;
-	public final fun zip (Ljava/lang/Iterable;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
-	public final fun zip ([Ljava/lang/Object;)Ljava/util/List;
-	public final fun zip ([Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
-	public final fun zipWithNext ()Ljava/util/List;
-	public final fun zipWithNext (Lkotlin/jvm/functions/Function2;)Ljava/util/List;
-}
-
-public final class net/benwoodworth/knbt/NbtLong : net/benwoodworth/knbt/NbtTag {
-	public static final field Companion Lnet/benwoodworth/knbt/NbtLong$Companion;
-	public fun <init> (J)V
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getType ()Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public final fun getValue ()J
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class net/benwoodworth/knbt/NbtLong$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class net/benwoodworth/knbt/NbtLongArray : net/benwoodworth/knbt/NbtLongArrayDeprecations, net/benwoodworth/knbt/NbtTag {
-	public static final field Companion Lnet/benwoodworth/knbt/NbtLongArray$Companion;
-	public fun <init> (Ljava/util/List;)V
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun get (I)J
-	public final fun getContent ()Ljava/util/List;
-	public final fun getSize ()I
-	public fun getType ()Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class net/benwoodworth/knbt/NbtLongArray$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public abstract class net/benwoodworth/knbt/NbtLongArrayDeprecations : net/benwoodworth/knbt/NbtListLikeDeprecations {
-	public final fun average ()D
-	public final fun binarySearch (Ljava/lang/Long;II)I
-	public static synthetic fun binarySearch$default (Lnet/benwoodworth/knbt/NbtLongArrayDeprecations;Ljava/lang/Long;IIILjava/lang/Object;)I
-	public final fun max ()J
-	public final fun maxOrNull ()Ljava/lang/Long;
-	public final fun min ()J
-	public final fun minOrNull ()Ljava/lang/Long;
-	public final fun sorted ()Ljava/util/List;
-	public final fun sortedDescending ()Ljava/util/List;
-	public final fun sum ()J
-	public final fun toLongArray ()[J
 }
 
 public abstract interface annotation class net/benwoodworth/knbt/NbtName : java/lang/annotation/Annotation {
@@ -965,157 +302,13 @@ public final class net/benwoodworth/knbt/NbtNamed$Companion {
 	public final fun serializer (Lkotlinx/serialization/KSerializer;)Lkotlinx/serialization/KSerializer;
 }
 
-public final class net/benwoodworth/knbt/NbtShort : net/benwoodworth/knbt/NbtTag {
-	public static final field Companion Lnet/benwoodworth/knbt/NbtShort$Companion;
-	public fun <init> (S)V
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getType ()Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public final fun getValue ()S
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class net/benwoodworth/knbt/NbtShort$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class net/benwoodworth/knbt/NbtString : net/benwoodworth/knbt/NbtTag {
-	public static final field Companion Lnet/benwoodworth/knbt/NbtString$Companion;
-	public fun <init> (Ljava/lang/String;)V
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getType ()Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public final fun getValue ()Ljava/lang/String;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class net/benwoodworth/knbt/NbtString$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public abstract interface class net/benwoodworth/knbt/NbtTag {
-	public static final field Companion Lnet/benwoodworth/knbt/NbtTag$Companion;
-	public abstract fun getType ()Lnet/benwoodworth/knbt/internal/NbtTagType;
-}
-
-public final class net/benwoodworth/knbt/NbtTag$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class net/benwoodworth/knbt/NbtTagBuildersKt {
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;B)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;D)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;F)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;I)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;J)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;Ljava/lang/String;)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;Lnet/benwoodworth/knbt/NbtByte;)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;Lnet/benwoodworth/knbt/NbtByteArray;)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;Lnet/benwoodworth/knbt/NbtCompound;)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;Lnet/benwoodworth/knbt/NbtDouble;)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;Lnet/benwoodworth/knbt/NbtFloat;)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;Lnet/benwoodworth/knbt/NbtInt;)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;Lnet/benwoodworth/knbt/NbtIntArray;)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;Lnet/benwoodworth/knbt/NbtList;)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;Lnet/benwoodworth/knbt/NbtLong;)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;Lnet/benwoodworth/knbt/NbtLongArray;)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;Lnet/benwoodworth/knbt/NbtShort;)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;Lnet/benwoodworth/knbt/NbtString;)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;S)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;Z)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;[B)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;[I)Z
-	public static final fun add (Lnet/benwoodworth/knbt/NbtListBuilder;[J)Z
-	public static final fun addNbtCompound (Lnet/benwoodworth/knbt/NbtListBuilder;Lkotlin/jvm/functions/Function1;)Z
-	public static final fun addNbtList (Lnet/benwoodworth/knbt/NbtListBuilder;Lkotlin/jvm/functions/Function1;)Z
-	public static final fun addNbtList$T (Lnet/benwoodworth/knbt/NbtListBuilder;Lkotlin/jvm/functions/Function1;)Z
-	public static final fun buildNbtCompound (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lnet/benwoodworth/knbt/NbtNamed;
-	public static final fun buildNbtCompound (Lkotlin/jvm/functions/Function1;)Lnet/benwoodworth/knbt/NbtCompound;
-	public static final fun buildNbtList (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lnet/benwoodworth/knbt/NbtNamed;
-	public static final fun buildNbtList (Lkotlin/jvm/functions/Function1;)Lnet/benwoodworth/knbt/NbtList;
-	public static final fun put (Lnet/benwoodworth/knbt/NbtCompoundBuilder;Ljava/lang/String;B)Lnet/benwoodworth/knbt/NbtTag;
-	public static final fun put (Lnet/benwoodworth/knbt/NbtCompoundBuilder;Ljava/lang/String;D)Lnet/benwoodworth/knbt/NbtTag;
-	public static final fun put (Lnet/benwoodworth/knbt/NbtCompoundBuilder;Ljava/lang/String;F)Lnet/benwoodworth/knbt/NbtTag;
-	public static final fun put (Lnet/benwoodworth/knbt/NbtCompoundBuilder;Ljava/lang/String;I)Lnet/benwoodworth/knbt/NbtTag;
-	public static final fun put (Lnet/benwoodworth/knbt/NbtCompoundBuilder;Ljava/lang/String;J)Lnet/benwoodworth/knbt/NbtTag;
-	public static final fun put (Lnet/benwoodworth/knbt/NbtCompoundBuilder;Ljava/lang/String;Ljava/lang/String;)Lnet/benwoodworth/knbt/NbtTag;
-	public static final fun put (Lnet/benwoodworth/knbt/NbtCompoundBuilder;Ljava/lang/String;S)Lnet/benwoodworth/knbt/NbtTag;
-	public static final fun put (Lnet/benwoodworth/knbt/NbtCompoundBuilder;Ljava/lang/String;Z)Lnet/benwoodworth/knbt/NbtTag;
-	public static final fun put (Lnet/benwoodworth/knbt/NbtCompoundBuilder;Ljava/lang/String;[B)Lnet/benwoodworth/knbt/NbtTag;
-	public static final fun put (Lnet/benwoodworth/knbt/NbtCompoundBuilder;Ljava/lang/String;[I)Lnet/benwoodworth/knbt/NbtTag;
-	public static final fun put (Lnet/benwoodworth/knbt/NbtCompoundBuilder;Ljava/lang/String;[J)Lnet/benwoodworth/knbt/NbtTag;
-	public static final fun putNbtCompound (Lnet/benwoodworth/knbt/NbtCompoundBuilder;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lnet/benwoodworth/knbt/NbtTag;
-	public static final fun putNbtList$T (Lnet/benwoodworth/knbt/NbtCompoundBuilder;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lnet/benwoodworth/knbt/NbtTag;
-}
-
-public final class net/benwoodworth/knbt/NbtTagKt {
-	public static final fun fromBoolean (Lnet/benwoodworth/knbt/NbtByte$Companion;Z)Lnet/benwoodworth/knbt/NbtByte;
-	public static final fun getNbtByte (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/NbtByte;
-	public static final fun getNbtByte (Lnet/benwoodworth/knbt/NbtTag;)Lnet/benwoodworth/knbt/NbtByte;
-	public static final fun getNbtByteArray (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/NbtByteArray;
-	public static final fun getNbtByteArray (Lnet/benwoodworth/knbt/NbtTag;)Lnet/benwoodworth/knbt/NbtByteArray;
-	public static final fun getNbtCompound (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/NbtCompound;
-	public static final fun getNbtCompound (Lnet/benwoodworth/knbt/NbtTag;)Lnet/benwoodworth/knbt/NbtCompound;
-	public static final fun getNbtDouble (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/NbtDouble;
-	public static final fun getNbtDouble (Lnet/benwoodworth/knbt/NbtTag;)Lnet/benwoodworth/knbt/NbtDouble;
-	public static final fun getNbtFloat (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/NbtFloat;
-	public static final fun getNbtFloat (Lnet/benwoodworth/knbt/NbtTag;)Lnet/benwoodworth/knbt/NbtFloat;
-	public static final fun getNbtInt (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/NbtInt;
-	public static final fun getNbtInt (Lnet/benwoodworth/knbt/NbtTag;)Lnet/benwoodworth/knbt/NbtInt;
-	public static final fun getNbtIntArray (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/NbtIntArray;
-	public static final fun getNbtIntArray (Lnet/benwoodworth/knbt/NbtTag;)Lnet/benwoodworth/knbt/NbtIntArray;
-	public static final fun getNbtList (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/NbtList;
-	public static final fun getNbtList (Lnet/benwoodworth/knbt/NbtTag;)Lnet/benwoodworth/knbt/NbtList;
-	public static final fun getNbtLong (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/NbtLong;
-	public static final fun getNbtLong (Lnet/benwoodworth/knbt/NbtTag;)Lnet/benwoodworth/knbt/NbtLong;
-	public static final fun getNbtLongArray (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/NbtLongArray;
-	public static final fun getNbtLongArray (Lnet/benwoodworth/knbt/NbtTag;)Lnet/benwoodworth/knbt/NbtLongArray;
-	public static final fun getNbtShort (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/NbtShort;
-	public static final fun getNbtShort (Lnet/benwoodworth/knbt/NbtTag;)Lnet/benwoodworth/knbt/NbtShort;
-	public static final fun getNbtString (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/NbtString;
-	public static final fun getNbtString (Lnet/benwoodworth/knbt/NbtTag;)Lnet/benwoodworth/knbt/NbtString;
-	public static final fun getOrNull (Lnet/benwoodworth/knbt/NbtByteArray;I)Ljava/lang/Byte;
-	public static final fun getOrNull (Lnet/benwoodworth/knbt/NbtCompound;Ljava/lang/String;)Lnet/benwoodworth/knbt/NbtTag;
-	public static final fun getOrNull (Lnet/benwoodworth/knbt/NbtIntArray;I)Ljava/lang/Integer;
-	public static final fun getOrNull (Lnet/benwoodworth/knbt/NbtList;I)Lnet/benwoodworth/knbt/NbtTag;
-	public static final fun getOrNull (Lnet/benwoodworth/knbt/NbtLongArray;I)Ljava/lang/Long;
-	public static final fun nbtList (Lnet/benwoodworth/knbt/NbtTag;Lkotlin/reflect/KClass;)Lnet/benwoodworth/knbt/NbtList;
-	public static final fun toBoolean (Lnet/benwoodworth/knbt/NbtByte;)Z
-}
-
 public abstract class net/benwoodworth/knbt/NbtTransformingSerializer : kotlinx/serialization/KSerializer {
 	public fun <init> (Lkotlinx/serialization/KSerializer;)V
 	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
 	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
 	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-	protected fun transformDeserialize (Lnet/benwoodworth/knbt/NbtTag;)Lnet/benwoodworth/knbt/NbtTag;
-	protected fun transformSerialize (Lnet/benwoodworth/knbt/NbtTag;)Lnet/benwoodworth/knbt/NbtTag;
-}
-
-public final class net/benwoodworth/knbt/NbtVariant {
-	public static final field INSTANCE Lnet/benwoodworth/knbt/NbtVariant;
-}
-
-public final class net/benwoodworth/knbt/NbtVariant$Bedrock {
-	public static final field INSTANCE Lnet/benwoodworth/knbt/NbtVariant$Bedrock;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class net/benwoodworth/knbt/NbtVariant$BedrockNetwork {
-	public static final field INSTANCE Lnet/benwoodworth/knbt/NbtVariant$BedrockNetwork;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class net/benwoodworth/knbt/NbtVariant$Java {
-	public static final field INSTANCE Lnet/benwoodworth/knbt/NbtVariant$Java;
-}
-
-public final class net/benwoodworth/knbt/NbtVariant$JavaNetwork {
-	public static final field INSTANCE Lnet/benwoodworth/knbt/NbtVariant$JavaNetwork;
+	protected fun transformDeserialize (Lnet/benwoodworth/knbt/tag/NbtTag;)Lnet/benwoodworth/knbt/tag/NbtTag;
+	protected fun transformSerialize (Lnet/benwoodworth/knbt/tag/NbtTag;)Lnet/benwoodworth/knbt/tag/NbtTag;
 }
 
 public abstract interface annotation class net/benwoodworth/knbt/OkioApi : java/lang/annotation/Annotation {
@@ -1123,9 +316,9 @@ public abstract interface annotation class net/benwoodworth/knbt/OkioApi : java/
 
 public class net/benwoodworth/knbt/StringifiedNbt : net/benwoodworth/knbt/NbtFormat, kotlinx/serialization/StringFormat {
 	public static final field Default Lnet/benwoodworth/knbt/StringifiedNbt$Default;
-	public final fun decodeFromNbtTag (Lkotlinx/serialization/DeserializationStrategy;Lnet/benwoodworth/knbt/NbtTag;)Ljava/lang/Object;
+	public final fun decodeFromNbtTag (Lkotlinx/serialization/DeserializationStrategy;Lnet/benwoodworth/knbt/tag/NbtTag;)Ljava/lang/Object;
 	public fun decodeFromString (Lkotlinx/serialization/DeserializationStrategy;Ljava/lang/String;)Ljava/lang/Object;
-	public final fun encodeToNbtTag (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)Lnet/benwoodworth/knbt/NbtTag;
+	public final fun encodeToNbtTag (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)Lnet/benwoodworth/knbt/tag/NbtTag;
 	public fun encodeToString (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)Ljava/lang/String;
 	public synthetic fun getConfiguration ()Lnet/benwoodworth/knbt/NbtFormatConfiguration;
 	public fun getConfiguration ()Lnet/benwoodworth/knbt/StringifiedNbtConfiguration;
@@ -1144,7 +337,6 @@ public final class net/benwoodworth/knbt/StringifiedNbtBuilder : net/benwoodwort
 }
 
 public final class net/benwoodworth/knbt/StringifiedNbtConfiguration : net/benwoodworth/knbt/NbtFormatConfiguration {
-	public fun getClassDiscriminator ()Ljava/lang/String;
 	public fun getEncodeDefaults ()Z
 	public fun getIgnoreUnknownKeys ()Z
 	public fun getLenientNbtNames ()Z
@@ -1158,58 +350,320 @@ public final class net/benwoodworth/knbt/StringifiedNbtKt {
 	public static synthetic fun StringifiedNbt$default (Lnet/benwoodworth/knbt/StringifiedNbt;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lnet/benwoodworth/knbt/StringifiedNbt;
 }
 
-public final class net/benwoodworth/knbt/_DeprecationsKt {
-	public static final fun NbtByte (Z)Lnet/benwoodworth/knbt/NbtByte;
-	public static final fun NbtByteArray ([B)Lnet/benwoodworth/knbt/NbtByteArray;
-	public static final fun NbtIntArray ([I)Lnet/benwoodworth/knbt/NbtIntArray;
-	public static final fun NbtLongArray ([J)Lnet/benwoodworth/knbt/NbtLongArray;
-	public static final fun asNbtDecoder (Lkotlinx/serialization/encoding/Decoder;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public static synthetic fun asNbtDecoder$default (Lkotlinx/serialization/encoding/Decoder;Ljava/lang/Void;ILjava/lang/Object;)Lnet/benwoodworth/knbt/NbtDecoder;
-	public static final fun asNbtEncoder (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public static synthetic fun asNbtEncoder$default (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Void;ILjava/lang/Object;)Lnet/benwoodworth/knbt/NbtEncoder;
-	public static final fun detect (Lnet/benwoodworth/knbt/NbtCompression$Companion;Lokio/BufferedSource;Ljava/lang/Void;)Lnet/benwoodworth/knbt/NbtCompression;
-	public static synthetic fun detect$default (Lnet/benwoodworth/knbt/NbtCompression$Companion;Lokio/BufferedSource;Ljava/lang/Void;ILjava/lang/Object;)Lnet/benwoodworth/knbt/NbtCompression;
-	public static final fun getBoolean (Lnet/benwoodworth/knbt/NbtTag;)Z
-	public static final fun getBooleanOrNull (Lnet/benwoodworth/knbt/NbtTag;)Ljava/lang/Boolean;
-	public static final fun getByte (Lnet/benwoodworth/knbt/NbtTag;)B
-	public static final fun getByteOrNull (Lnet/benwoodworth/knbt/NbtTag;)Ljava/lang/Byte;
-	public static final fun getDouble (Lnet/benwoodworth/knbt/NbtTag;)D
-	public static final fun getDoubleOrNull (Lnet/benwoodworth/knbt/NbtTag;)Ljava/lang/Double;
-	public static final fun getFloat (Lnet/benwoodworth/knbt/NbtTag;)F
-	public static final fun getFloatOrNull (Lnet/benwoodworth/knbt/NbtTag;)Ljava/lang/Float;
-	public static final fun getInt (Lnet/benwoodworth/knbt/NbtTag;)I
-	public static final fun getIntOrNull (Lnet/benwoodworth/knbt/NbtTag;)Ljava/lang/Integer;
-	public static final fun getLong (Lnet/benwoodworth/knbt/NbtTag;)J
-	public static final fun getLongOrNull (Lnet/benwoodworth/knbt/NbtTag;)Ljava/lang/Long;
-	public static final fun getShort (Lnet/benwoodworth/knbt/NbtTag;)S
-	public static final fun getShortOrNull (Lnet/benwoodworth/knbt/NbtTag;)Ljava/lang/Short;
-	public static final fun getString (Lnet/benwoodworth/knbt/NbtTag;)Ljava/lang/String;
-	public static final fun getStringOrNull (Lnet/benwoodworth/knbt/NbtTag;)Ljava/lang/String;
-}
-
-public final class net/benwoodworth/knbt/internal/NbtTagType : java/lang/Enum {
-	public static final field TAG_Byte Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public static final field TAG_Byte_Array Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public static final field TAG_Compound Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public static final field TAG_Double Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public static final field TAG_End Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public static final field TAG_Float Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public static final field TAG_Int Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public static final field TAG_Int_Array Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public static final field TAG_List Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public static final field TAG_Long Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public static final field TAG_Long_Array Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public static final field TAG_Short Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public static final field TAG_String Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public static fun valueOf (Ljava/lang/String;)Lnet/benwoodworth/knbt/internal/NbtTagType;
-	public static fun values ()[Lnet/benwoodworth/knbt/internal/NbtTagType;
-}
-
 public final class net/benwoodworth/knbt/okio/OkioStreamsKt {
 	public static final fun decodeFromBufferedSource (Lnet/benwoodworth/knbt/BinaryNbtFormat;Lkotlinx/serialization/DeserializationStrategy;Lokio/BufferedSource;)Ljava/lang/Object;
 	public static final fun detect (Lnet/benwoodworth/knbt/NbtCompression$Companion;Lokio/BufferedSource;)Lnet/benwoodworth/knbt/NbtCompression;
 	public static final fun encodeToBufferedSink (Lnet/benwoodworth/knbt/BinaryNbtFormat;Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;Lokio/BufferedSink;)V
+}
+
+public final class net/benwoodworth/knbt/tag/NbtByte : net/benwoodworth/knbt/tag/NbtTag {
+	public static final field Companion Lnet/benwoodworth/knbt/tag/NbtByte$Companion;
+	public fun <init> (B)V
+	public fun <init> (Z)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getContent ()Ljava/lang/Byte;
+	public synthetic fun getContent ()Ljava/lang/Object;
+	public fun getType ()Lnet/benwoodworth/knbt/tag/NbtType;
+	public fun hashCode ()I
+	public final fun toBoolean ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtByte$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtByteArray : net/benwoodworth/knbt/tag/NbtTag {
+	public static final field Companion Lnet/benwoodworth/knbt/tag/NbtByteArray$Companion;
+	public fun <init> ([B)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get (I)B
+	public synthetic fun getContent ()Ljava/lang/Object;
+	public fun getContent ()[B
+	public final fun getSize ()I
+	public fun getType ()Lnet/benwoodworth/knbt/tag/NbtType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtByteArray$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtCompound : java/util/Map, kotlin/jvm/internal/markers/KMutableMap, net/benwoodworth/knbt/tag/NbtTag {
+	public static final field Companion Lnet/benwoodworth/knbt/tag/NbtCompound$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/util/Map;)V
+	public fun clear ()V
+	public final fun containsKey (Ljava/lang/Object;)Z
+	public fun containsKey (Ljava/lang/String;)Z
+	public final fun containsValue (Ljava/lang/Object;)Z
+	public fun containsValue (Lnet/benwoodworth/knbt/tag/NbtTag;)Z
+	public final fun entrySet ()Ljava/util/Set;
+	public fun equals (Ljava/lang/Object;)Z
+	public final synthetic fun get (Ljava/lang/Object;)Ljava/lang/Object;
+	public final fun get (Ljava/lang/Object;)Lnet/benwoodworth/knbt/tag/NbtTag;
+	public fun get (Ljava/lang/String;)Lnet/benwoodworth/knbt/tag/NbtTag;
+	public synthetic fun getContent ()Ljava/lang/Object;
+	public fun getContent ()Ljava/util/Map;
+	public fun getEntries ()Ljava/util/Set;
+	public fun getKeys ()Ljava/util/Set;
+	public fun getSize ()I
+	public fun getType ()Lnet/benwoodworth/knbt/tag/NbtType;
+	public fun getValues ()Ljava/util/Collection;
+	public fun hashCode ()I
+	public fun isEmpty ()Z
+	public final fun keySet ()Ljava/util/Set;
+	public synthetic fun put (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+	public fun put (Ljava/lang/String;Lnet/benwoodworth/knbt/tag/NbtTag;)Lnet/benwoodworth/knbt/tag/NbtTag;
+	public fun putAll (Ljava/util/Map;)V
+	public final synthetic fun remove (Ljava/lang/Object;)Ljava/lang/Object;
+	public final fun remove (Ljava/lang/Object;)Lnet/benwoodworth/knbt/tag/NbtTag;
+	public fun remove (Ljava/lang/String;)Lnet/benwoodworth/knbt/tag/NbtTag;
+	public final fun size ()I
+	public fun toString ()Ljava/lang/String;
+	public final fun values ()Ljava/util/Collection;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtCompound$Companion {
+	public final fun of (Ljava/util/Map;)Lnet/benwoodworth/knbt/tag/NbtCompound;
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtDouble : net/benwoodworth/knbt/tag/NbtTag {
+	public static final field Companion Lnet/benwoodworth/knbt/tag/NbtDouble$Companion;
+	public fun <init> (D)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getContent ()Ljava/lang/Double;
+	public synthetic fun getContent ()Ljava/lang/Object;
+	public fun getType ()Lnet/benwoodworth/knbt/tag/NbtType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtDouble$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtFloat : net/benwoodworth/knbt/tag/NbtTag {
+	public static final field Companion Lnet/benwoodworth/knbt/tag/NbtFloat$Companion;
+	public fun <init> (F)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getContent ()Ljava/lang/Float;
+	public synthetic fun getContent ()Ljava/lang/Object;
+	public fun getType ()Lnet/benwoodworth/knbt/tag/NbtType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtFloat$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtInt : net/benwoodworth/knbt/tag/NbtTag {
+	public static final field Companion Lnet/benwoodworth/knbt/tag/NbtInt$Companion;
+	public fun <init> (I)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getContent ()Ljava/lang/Integer;
+	public synthetic fun getContent ()Ljava/lang/Object;
+	public fun getType ()Lnet/benwoodworth/knbt/tag/NbtType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtInt$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtIntArray : net/benwoodworth/knbt/tag/NbtTag {
+	public static final field Companion Lnet/benwoodworth/knbt/tag/NbtIntArray$Companion;
+	public fun <init> ([I)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get (I)I
+	public synthetic fun getContent ()Ljava/lang/Object;
+	public fun getContent ()[I
+	public final fun getSize ()I
+	public fun getType ()Lnet/benwoodworth/knbt/tag/NbtType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtIntArray$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtList : java/util/List, kotlin/jvm/internal/markers/KMutableList, net/benwoodworth/knbt/tag/NbtTag {
+	public static final field Companion Lnet/benwoodworth/knbt/tag/NbtList$Companion;
+	public fun <init> (I)V
+	public fun <init> (Ljava/util/List;)V
+	public synthetic fun add (ILjava/lang/Object;)V
+	public fun add (ILnet/benwoodworth/knbt/tag/NbtTag;)V
+	public synthetic fun add (Ljava/lang/Object;)Z
+	public fun add (Lnet/benwoodworth/knbt/tag/NbtTag;)Z
+	public fun addAll (ILjava/util/Collection;)Z
+	public fun addAll (Ljava/util/Collection;)Z
+	public fun clear ()V
+	public final fun contains (Ljava/lang/Object;)Z
+	public fun contains (Lnet/benwoodworth/knbt/tag/NbtTag;)Z
+	public fun containsAll (Ljava/util/Collection;)Z
+	public fun equals (Ljava/lang/Object;)Z
+	public synthetic fun get (I)Ljava/lang/Object;
+	public fun get (I)Lnet/benwoodworth/knbt/tag/NbtTag;
+	public synthetic fun getContent ()Ljava/lang/Object;
+	public fun getContent ()Ljava/util/List;
+	public fun getSize ()I
+	public fun getType ()Lnet/benwoodworth/knbt/tag/NbtType;
+	public fun hashCode ()I
+	public final fun indexOf (Ljava/lang/Object;)I
+	public fun indexOf (Lnet/benwoodworth/knbt/tag/NbtTag;)I
+	public fun isEmpty ()Z
+	public fun iterator ()Ljava/util/Iterator;
+	public final fun lastIndexOf (Ljava/lang/Object;)I
+	public fun lastIndexOf (Lnet/benwoodworth/knbt/tag/NbtTag;)I
+	public fun listIterator ()Ljava/util/ListIterator;
+	public fun listIterator (I)Ljava/util/ListIterator;
+	public synthetic fun remove (I)Ljava/lang/Object;
+	public final fun remove (I)Lnet/benwoodworth/knbt/tag/NbtTag;
+	public final fun remove (Ljava/lang/Object;)Z
+	public fun remove (Lnet/benwoodworth/knbt/tag/NbtTag;)Z
+	public fun removeAll (Ljava/util/Collection;)Z
+	public fun removeAt (I)Lnet/benwoodworth/knbt/tag/NbtTag;
+	public fun retainAll (Ljava/util/Collection;)Z
+	public synthetic fun set (ILjava/lang/Object;)Ljava/lang/Object;
+	public fun set (ILnet/benwoodworth/knbt/tag/NbtTag;)Lnet/benwoodworth/knbt/tag/NbtTag;
+	public final fun size ()I
+	public fun subList (II)Ljava/util/List;
+	public fun toArray ()[Ljava/lang/Object;
+	public fun toArray ([Ljava/lang/Object;)[Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtList$Companion {
+	public final fun of (Ljava/util/List;)Lnet/benwoodworth/knbt/tag/NbtList;
+	public final fun serializer (Lkotlinx/serialization/KSerializer;)Lkotlinx/serialization/KSerializer;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtLong : net/benwoodworth/knbt/tag/NbtTag {
+	public static final field Companion Lnet/benwoodworth/knbt/tag/NbtLong$Companion;
+	public fun <init> (J)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getContent ()Ljava/lang/Long;
+	public synthetic fun getContent ()Ljava/lang/Object;
+	public fun getType ()Lnet/benwoodworth/knbt/tag/NbtType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtLong$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtLongArray : net/benwoodworth/knbt/tag/NbtTag {
+	public static final field Companion Lnet/benwoodworth/knbt/tag/NbtLongArray$Companion;
+	public fun <init> ([J)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun get (I)J
+	public synthetic fun getContent ()Ljava/lang/Object;
+	public fun getContent ()[J
+	public final fun getSize ()I
+	public fun getType ()Lnet/benwoodworth/knbt/tag/NbtType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtLongArray$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtShort : net/benwoodworth/knbt/tag/NbtTag {
+	public static final field Companion Lnet/benwoodworth/knbt/tag/NbtShort$Companion;
+	public fun <init> (S)V
+	public fun equals (Ljava/lang/Object;)Z
+	public synthetic fun getContent ()Ljava/lang/Object;
+	public fun getContent ()Ljava/lang/Short;
+	public fun getType ()Lnet/benwoodworth/knbt/tag/NbtType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtShort$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtString : net/benwoodworth/knbt/tag/NbtTag {
+	public static final field Companion Lnet/benwoodworth/knbt/tag/NbtString$Companion;
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public synthetic fun getContent ()Ljava/lang/Object;
+	public fun getContent ()Ljava/lang/String;
+	public fun getType ()Lnet/benwoodworth/knbt/tag/NbtType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtString$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public abstract interface class net/benwoodworth/knbt/tag/NbtTag {
+	public static final field Companion Lnet/benwoodworth/knbt/tag/NbtTag$Companion;
+	public abstract fun getContent ()Ljava/lang/Object;
+	public abstract fun getType ()Lnet/benwoodworth/knbt/tag/NbtType;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtTag$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtType : java/lang/Enum {
+	public static final field BYTE Lnet/benwoodworth/knbt/tag/NbtType;
+	public static final field BYTE_ARRAY Lnet/benwoodworth/knbt/tag/NbtType;
+	public static final field COMPOUND Lnet/benwoodworth/knbt/tag/NbtType;
+	public static final field Companion Lnet/benwoodworth/knbt/tag/NbtType$Companion;
+	public static final field DOUBLE Lnet/benwoodworth/knbt/tag/NbtType;
+	public static final field END Lnet/benwoodworth/knbt/tag/NbtType;
+	public static final field FLOAT Lnet/benwoodworth/knbt/tag/NbtType;
+	public static final field INT Lnet/benwoodworth/knbt/tag/NbtType;
+	public static final field INT_ARRAY Lnet/benwoodworth/knbt/tag/NbtType;
+	public static final field LIST Lnet/benwoodworth/knbt/tag/NbtType;
+	public static final field LONG Lnet/benwoodworth/knbt/tag/NbtType;
+	public static final field LONG_ARRAY Lnet/benwoodworth/knbt/tag/NbtType;
+	public static final field SHORT Lnet/benwoodworth/knbt/tag/NbtType;
+	public static final field STRING Lnet/benwoodworth/knbt/tag/NbtType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lnet/benwoodworth/knbt/tag/NbtType;
+	public static fun values ()[Lnet/benwoodworth/knbt/tag/NbtType;
+}
+
+public final class net/benwoodworth/knbt/tag/NbtType$Companion {
+	public final fun from (B)Lnet/benwoodworth/knbt/tag/NbtType;
+}
+
+public final class net/benwoodworth/knbt/tag/UtilsKt {
+	public static final fun getNbtByte (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/tag/NbtByte;
+	public static final fun getNbtByte (Lnet/benwoodworth/knbt/tag/NbtTag;)Lnet/benwoodworth/knbt/tag/NbtByte;
+	public static final fun getNbtByteArray (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/tag/NbtByteArray;
+	public static final fun getNbtByteArray (Lnet/benwoodworth/knbt/tag/NbtTag;)Lnet/benwoodworth/knbt/tag/NbtByteArray;
+	public static final fun getNbtCompound (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/tag/NbtCompound;
+	public static final fun getNbtCompound (Lnet/benwoodworth/knbt/tag/NbtTag;)Lnet/benwoodworth/knbt/tag/NbtCompound;
+	public static final fun getNbtDouble (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/tag/NbtDouble;
+	public static final fun getNbtDouble (Lnet/benwoodworth/knbt/tag/NbtTag;)Lnet/benwoodworth/knbt/tag/NbtDouble;
+	public static final fun getNbtFloat (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/tag/NbtFloat;
+	public static final fun getNbtFloat (Lnet/benwoodworth/knbt/tag/NbtTag;)Lnet/benwoodworth/knbt/tag/NbtFloat;
+	public static final fun getNbtInt (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/tag/NbtInt;
+	public static final fun getNbtInt (Lnet/benwoodworth/knbt/tag/NbtTag;)Lnet/benwoodworth/knbt/tag/NbtInt;
+	public static final fun getNbtIntArray (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/tag/NbtIntArray;
+	public static final fun getNbtIntArray (Lnet/benwoodworth/knbt/tag/NbtTag;)Lnet/benwoodworth/knbt/tag/NbtIntArray;
+	public static final fun getNbtList (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/tag/NbtList;
+	public static final fun getNbtList (Lnet/benwoodworth/knbt/tag/NbtTag;)Lnet/benwoodworth/knbt/tag/NbtList;
+	public static final fun getNbtLong (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/tag/NbtLong;
+	public static final fun getNbtLong (Lnet/benwoodworth/knbt/tag/NbtTag;)Lnet/benwoodworth/knbt/tag/NbtLong;
+	public static final fun getNbtLongArray (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/tag/NbtLongArray;
+	public static final fun getNbtLongArray (Lnet/benwoodworth/knbt/tag/NbtTag;)Lnet/benwoodworth/knbt/tag/NbtLongArray;
+	public static final fun getNbtShort (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/tag/NbtShort;
+	public static final fun getNbtShort (Lnet/benwoodworth/knbt/tag/NbtTag;)Lnet/benwoodworth/knbt/tag/NbtShort;
+	public static final fun getNbtString (Lnet/benwoodworth/knbt/NbtNamed;)Lnet/benwoodworth/knbt/tag/NbtString;
+	public static final fun getNbtString (Lnet/benwoodworth/knbt/tag/NbtTag;)Lnet/benwoodworth/knbt/tag/NbtString;
+	public static final fun nbtList (Lnet/benwoodworth/knbt/tag/NbtTag;Lkotlin/reflect/KClass;)Lnet/benwoodworth/knbt/tag/NbtList;
 }
 

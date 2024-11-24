@@ -61,7 +61,7 @@ class ArraySerializerTest {
     )
 
     @Test
-    fun should_serialize_array_correctly() = parameterizeTest {
+    fun should_serialize_ARRAY_correctly() = parameterizeTest {
         val nbt by parameterOfVerifyingNbt()
         val arraySerializer by parameter(arraySerializerTestCases)
 

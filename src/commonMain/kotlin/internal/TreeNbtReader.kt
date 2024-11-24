@@ -1,14 +1,8 @@
 package net.benwoodworth.knbt.internal
 
-import net.benwoodworth.knbt.*
+import net.benwoodworth.knbt.NbtNamed
 import net.benwoodworth.knbt.internal.NbtReader.*
-import net.benwoodworth.knbt.nbtByte
-import net.benwoodworth.knbt.nbtDouble
-import net.benwoodworth.knbt.nbtFloat
-import net.benwoodworth.knbt.nbtInt
-import net.benwoodworth.knbt.nbtLong
-import net.benwoodworth.knbt.nbtShort
-import net.benwoodworth.knbt.nbtString
+import net.benwoodworth.knbt.tag.*
 
 internal class TreeNbtReader(tag: NbtNamed<NbtTag>) : NbtReader {
     private var reader: NbtTagReader = RootNbtTagReader(tag)
@@ -94,13 +88,13 @@ internal class TreeNbtReader(tag: NbtNamed<NbtTag>) : NbtReader {
             return ArrayInfo(nbtLongArray.size)
         }
 
-        override fun readByte(): Byte = tag.nbtByte.value
-        override fun readShort(): Short = tag.nbtShort.value
-        override fun readInt(): Int = tag.nbtInt.value
-        override fun readLong(): Long = tag.nbtLong.value
-        override fun readFloat(): Float = tag.nbtFloat.value
-        override fun readDouble(): Double = tag.nbtDouble.value
-        override fun readString(): String = tag.nbtString.value
+        override fun readByte(): Byte = tag.nbtByte.content
+        override fun readShort(): Short = tag.nbtShort.content
+        override fun readInt(): Int = tag.nbtInt.content
+        override fun readLong(): Long = tag.nbtLong.content
+        override fun readFloat(): Float = tag.nbtFloat.content
+        override fun readDouble(): Double = tag.nbtDouble.content
+        override fun readString(): String = tag.nbtString.content
     }
 
     private inner class NbtCompoundReader(val parent: NbtTagReader, tag: NbtCompound) : NbtTagReader {
@@ -148,13 +142,13 @@ internal class TreeNbtReader(tag: NbtNamed<NbtTag>) : NbtReader {
             return ArrayInfo(entry.size)
         }
 
-        override fun readByte(): Byte = readEntry<NbtByte>().value
-        override fun readShort(): Short = readEntry<NbtShort>().value
-        override fun readInt(): Int = readEntry<NbtInt>().value
-        override fun readLong(): Long = readEntry<NbtLong>().value
-        override fun readFloat(): Float = readEntry<NbtFloat>().value
-        override fun readDouble(): Double = readEntry<NbtDouble>().value
-        override fun readString(): String = readEntry<NbtString>().value
+        override fun readByte(): Byte = readEntry<NbtByte>().content
+        override fun readShort(): Short = readEntry<NbtShort>().content
+        override fun readInt(): Int = readEntry<NbtInt>().content
+        override fun readLong(): Long = readEntry<NbtLong>().content
+        override fun readFloat(): Float = readEntry<NbtFloat>().content
+        override fun readDouble(): Double = readEntry<NbtDouble>().content
+        override fun readString(): String = readEntry<NbtString>().content
     }
 
     private inner class NbtListReader(val parent: NbtTagReader, tag: NbtList<*>) : NbtTagReader {
@@ -202,13 +196,13 @@ internal class TreeNbtReader(tag: NbtNamed<NbtTag>) : NbtReader {
             return ArrayInfo(entry.size)
         }
 
-        override fun readByte(): Byte = readEntry<NbtByte>().value
-        override fun readShort(): Short = readEntry<NbtShort>().value
-        override fun readInt(): Int = readEntry<NbtInt>().value
-        override fun readLong(): Long = readEntry<NbtLong>().value
-        override fun readFloat(): Float = readEntry<NbtFloat>().value
-        override fun readDouble(): Double = readEntry<NbtDouble>().value
-        override fun readString(): String = readEntry<NbtString>().value
+        override fun readByte(): Byte = readEntry<NbtByte>().content
+        override fun readShort(): Short = readEntry<NbtShort>().content
+        override fun readInt(): Int = readEntry<NbtInt>().content
+        override fun readLong(): Long = readEntry<NbtLong>().content
+        override fun readFloat(): Float = readEntry<NbtFloat>().content
+        override fun readDouble(): Double = readEntry<NbtDouble>().content
+        override fun readString(): String = readEntry<NbtString>().content
     }
 
     private inner class NbtByteArrayReader(val parent: NbtTagReader, tag: NbtByteArray) : NbtTagReader {

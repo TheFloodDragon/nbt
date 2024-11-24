@@ -2,6 +2,7 @@ package net.benwoodworth.knbt.internal
 
 import net.benwoodworth.knbt.ExperimentalNbtApi
 import net.benwoodworth.knbt.StringifiedNbt
+import net.benwoodworth.knbt.tag.NbtType
 
 @OptIn(ExperimentalNbtApi::class)
 internal class StringifiedNbtWriter(
@@ -55,18 +56,18 @@ internal class StringifiedNbtWriter(
         inArray = false
     }
 
-    override fun beginRootTag(type: NbtTagType, name: String): Unit = Unit
+    override fun beginRootTag(type: NbtType, name: String): Unit = Unit
 
     override fun beginCompound(): Unit = beginCollection("{", false)
 
-    override fun beginCompoundEntry(type: NbtTagType, name: String) {
+    override fun beginCompoundEntry(type: NbtType, name: String) {
         beginCollectionEntry()
         appendable.appendNbtString(name).append(":$prettySpace")
     }
 
     override fun endCompound(): Unit = endCollection("}", true)
 
-    override fun beginList(type: NbtTagType, size: Int): Unit = beginCollection("[", false)
+    override fun beginList(type: NbtType, size: Int): Unit = beginCollection("[", false)
     override fun beginListEntry(): Unit = beginCollectionEntry()
     override fun endList(): Unit = endCollection("]", true)
 

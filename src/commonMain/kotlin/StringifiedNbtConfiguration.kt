@@ -16,8 +16,6 @@ public class StringifiedNbtConfiguration internal constructor(
                 ", lenientNbtNames=$lenientNbtNames" +
                 ", prettyPrint=$prettyPrint" +
                 ", prettyPrintIndent='$prettyPrintIndent'" +
-                ", classDiscriminator='$classDiscriminator'" +
-                ", nameRootClasses=$nameRootClasses" +
                 ")"
 }
 

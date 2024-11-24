@@ -2,7 +2,7 @@ package net.benwoodworth.knbt.internal
 
 import net.benwoodworth.knbt.internal.CharSource.ReadResult
 import net.benwoodworth.knbt.internal.CharSource.ReadResult.Companion.EOF
-import net.benwoodworth.knbt.internal.NbtTagType.*
+import net.benwoodworth.knbt.tag.NbtType
 import okio.Closeable
 
 internal class StringifiedNbtReader(
@@ -84,34 +84,43 @@ internal class StringifiedNbtReader(
         }
     }
 
-    private fun CharSource.peekTagType(): NbtTagType? {
+    private fun CharSource.peekTagType(): NbtType? {
         val peek = peek()
         return when (peek.read()) {
             EOF -> null
             ReadResult('[') -> when (peek.skipWhitespace().read()) {
-                ReadResult('B') -> if (peek.skipWhitespace().read() == ReadResult(';')) TAG_Byte_Array else TAG_List
-                ReadResult('I') -> if (peek.skipWhitespace().read() == ReadResult(';')) TAG_Int_Array else TAG_List
-                ReadResult('L') -> if (peek.skipWhitespace().read() == ReadResult(';')) TAG_Long_Array else TAG_List
-                else -> TAG_List
+                ReadResult('B') -> if (peek.skipWhitespace()
+                        .read() == ReadResult(';')
+                ) NbtType.BYTE_ARRAY else NbtType.LIST
+
+                ReadResult('I') -> if (peek.skipWhitespace()
+                        .read() == ReadResult(';')
+                ) NbtType.INT_ARRAY else NbtType.LIST
+
+                ReadResult('L') -> if (peek.skipWhitespace()
+                        .read() == ReadResult(';')
+                ) NbtType.LONG_ARRAY else NbtType.LIST
+
+                else -> NbtType.LIST
             }
 
-            ReadResult('{') -> TAG_Compound
-            ReadResult('\''), ReadResult('"') -> TAG_String
+            ReadResult('{') -> NbtType.COMPOUND
+            ReadResult('\''), ReadResult('"') -> NbtType.STRING
             else -> {
                 peek().bufferUnquotedString()
                 when {
                     buffer.isEmpty() -> null
-                    FLOAT_A.matches(buffer) -> TAG_Float
-                    FLOAT_B.matches(buffer) -> TAG_Float
-                    BYTE.matches(buffer) -> TAG_Byte
-                    LONG.matches(buffer) -> TAG_Long
-                    SHORT.matches(buffer) -> TAG_Short
-                    INT.matches(buffer) -> TAG_Int
-                    DOUBLE_A.matches(buffer) -> TAG_Double
-                    DOUBLE_B.matches(buffer) -> TAG_Double
-                    "true".contentEquals(buffer, true) -> TAG_Byte
-                    "false".contentEquals(buffer, true) -> TAG_Byte
-                    else -> TAG_String
+                    FLOAT_A.matches(buffer) -> NbtType.FLOAT
+                    FLOAT_B.matches(buffer) -> NbtType.FLOAT
+                    BYTE.matches(buffer) -> NbtType.BYTE
+                    LONG.matches(buffer) -> NbtType.LONG
+                    SHORT.matches(buffer) -> NbtType.SHORT
+                    INT.matches(buffer) -> NbtType.INT
+                    DOUBLE_A.matches(buffer) -> NbtType.DOUBLE
+                    DOUBLE_B.matches(buffer) -> NbtType.DOUBLE
+                    "true".contentEquals(buffer, true) -> NbtType.BYTE
+                    "false".contentEquals(buffer, true) -> NbtType.BYTE
+                    else -> NbtType.STRING
                 }
             }
         }
@@ -209,8 +218,8 @@ internal class StringifiedNbtReader(
 
         firstEntry = true
 
-        val type = source.peekTagType() ?: TAG_End
-        val size = if (type == TAG_End) 0 else NbtReader.UNKNOWN_SIZE
+        val type = source.peekTagType() ?: NbtType.END
+        val size = if (type == NbtType.END) 0 else NbtReader.UNKNOWN_SIZE
 
         return NbtReader.ListInfo(type, size)
     }

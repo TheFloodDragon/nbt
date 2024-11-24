@@ -12,14 +12,16 @@ import net.benwoodworth.knbt.internal.JavaNbtReader
 import net.benwoodworth.knbt.internal.JavaNbtWriter
 import net.benwoodworth.knbt.internal.NbtCapabilities
 import net.benwoodworth.knbt.internal.NbtContext
-import net.benwoodworth.knbt.internal.NbtTagTypeSet
+import net.benwoodworth.knbt.internal.NbtTypeSet
+import net.benwoodworth.knbt.tag.NbtCompound
+import net.benwoodworth.knbt.tag.NbtType
 import okio.BufferedSink
 import okio.BufferedSource
 
 private val javaNbtCapabilities = NbtCapabilities(
     namedRoot = true,
     definiteLengthEncoding = true,
-    rootTagTypes = NbtTagTypeSet(listOf(NbtTagType.TAG_Compound)),
+    rootTagTypes = NbtTypeSet(listOf(NbtType.COMPOUND)),
 )
 
 public class JavaNbt internal constructor(
