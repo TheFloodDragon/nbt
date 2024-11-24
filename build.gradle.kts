@@ -32,19 +32,13 @@ kotlin {
     explicitApi()
 
     jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
-        }
-        testRuns["test"].executionTask.configure {
-            useJUnitPlatform()
-        }
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget = JvmTarget.JVM_1_8
         }
-        testRuns["test"].executionTask.configure {
-            useJUnitPlatform()
-        }
+        //testRuns["test"].executionTask.configure {
+        //    useJUnitPlatform()
+        //}
     }
 
     js(IR) {
@@ -144,9 +138,9 @@ kotlin {
     }
 }
 
-tasks.named<Test>("jvmTest") {
-    useJUnitPlatform()
-}
+//tasks.named<Test>("jvmTest") {
+//    useJUnitPlatform()
+//}
 
 apiValidation {
     nonPublicMarkers.add("net.benwoodworth.knbt.NbtDeprecated")
