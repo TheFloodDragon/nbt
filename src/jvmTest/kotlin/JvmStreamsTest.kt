@@ -1,5 +1,7 @@
 package net.benwoodworth.knbt
 
+import net.benwoodworth.knbt.*
+import net.benwoodworth.knbt.tag.*
 import kotlinx.serialization.encodeToByteArray
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
