@@ -1,5 +1,6 @@
 package net.benwoodworth.knbt
 
+import net.benwoodworth.knbt.tag.NbtTag
 import kotlinx.serialization.decodeFromByteArray
 import kotlinx.serialization.encodeToByteArray
 import java.io.IOException
