@@ -170,7 +170,7 @@ fun assertStructureEquals(expected: BigTestExtendedNbt, actual: BigTestExtendedN
     }
 
 val bigTestExtendedClass
-    get() = BigTestExtendedNbt(
+    get() = NbtNamed("", BigTestExtendedNbt(
         longTest = 9223372036854775807L,
         shortTest = 32767,
         stringTest = "HELLO WORLD THIS IS A TEST STRING ÅÄÖ!",
@@ -202,4 +202,5 @@ val bigTestExtendedClass
         doubleTest = 0.4931287132182315,
         intArrayTest = IntArray(1000) { n -> ((n - 500) pow 3) * 16 },
         longArrayTest = LongArray(1000) { n -> ((n.toLong() - 500) pow 5) * 16 },
+    )
     )

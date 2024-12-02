@@ -13,15 +13,15 @@ Technical information about NBT can be found [here](https://wiki.vg/NBT).
 
 ### Features
 
-- Kotlin Multiplatform: JVM, JS, Linux, Windows, macOS, iOS, watchOS
-- Serialize any data to/from NBT or SNBT
-- Support for all NBT variants: Java, Java Network, Bedrock, Bedrock Network
-- Support for all NBT compressions: gzip, zlib
-- Type-safe `NbtTag` classes, with convenient builder DSLs
+* Kotlin Multiplatform: JVM, JS, Linux, Windows, macOS, iOS, watchOS
+* Serialize any data to/from NBT or SNBT
+* Support for all NBT variants: Java, Java Network, Bedrock, Bedrock Network
+* Support for all NBT compressions: gzip, zlib
+* Type-safe `NbtTag` classes, with convenient builder DSLs
 
 ## Serialization
 
-`NbtFormat`s are used to encode/decode `@Serializable` data.
+`NbtFormat` s are used to encode/decode `@Serializable` data.
 
 ### Configuration
 
@@ -85,8 +85,8 @@ nbt.encodeToNbtTag(Example(string = "Hello, World!", int = 42))
 
 ### Serializing Lists/Arrays
 
-Kotlin's builtin `ByteArray`, `IntArray`, and `LongArray` types will serialize to NBT array tags,
-as well as any other lists marked with `@NbtArray`.
+Kotlin's builtin `ByteArray` , `IntArray` , and `LongArray` types will serialize to NBT array tags, 
+as well as any other lists marked with `@NbtArray` .
 All other kinds of lists will serialize as NBT list tags.
 
 ```kotlin
@@ -146,9 +146,9 @@ class NbtList<T : NbtTag> : NbtTag, List<T> // Only contains entries of a single
 class NbtCompound : NbtTag, Map<String, NbtTag>
 ```
 
-### Creating `NbtTag`s
+### Creating `NbtTag` s
 
-`NbtTag`s can be created with constructors and builder functions:
+`NbtTag` s can be created with constructors and builder functions:
 
 ```kotlin
 val nbtByte = NbtByte(5)
@@ -177,8 +177,10 @@ val nbtCompound = buildNbtCompound {
 
 <details>
 <summary>
+
     <strong>Building bigtest.nbt with the DSL</strong>
     (<a href="https://wiki.vg/NBT#bigtest.nbt">wiki.vg/NBT#bigtest.nbt</a>)
+
 </summary>
 
 ```kotlin
