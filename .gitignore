@@ -8,6 +8,9 @@
 out/
 *.iml
 
+# VSCode files
+.vscode/
+
 # Gradle files
 build/
 .gradle/
