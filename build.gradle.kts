@@ -21,7 +21,6 @@ plugins {
     id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.16.3"
     id("org.jetbrains.dokka") version "1.9.20"
     id("maven-publish")
-    id("signing")
 }
 
 repositories {
@@ -157,26 +156,6 @@ tasks.withType<DokkaTask> {
 
 val javadocJar by tasks.registering(Jar::class) {
     archiveClassifier.set("javadoc")
-}
-
-signing {
-    gradle.taskGraph.whenReady {
-        isRequired = allTasks.any { it is PublishToMavenRepository }
-    }
-
-    useInMemoryPgpKeys(
-        System.getenv("SIGNING_KEY_ID"),
-        System.getenv("SIGNING_KEY"),
-        System.getenv("SIGNING_PASSWORD"),
-    )
-
-    sign(publishing.publications)
-
-    // https://github.com/gradle/gradle/issues/26091#issuecomment-1722947958
-    tasks.withType<AbstractPublishToMaven>().configureEach {
-        val signingTasks = tasks.withType<Sign>()
-        mustRunAfter(signingTasks)
-    }
 }
 
 publishing {
