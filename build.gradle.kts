@@ -13,11 +13,9 @@ System.getenv("GIT_REF")?.let { gitRef ->
     }
 }
 
-val isSnapshot = version.toString().contains("SNAPSHOT", true)
-
 plugins {
-    kotlin("multiplatform") version "2.0.20"
-    kotlin("plugin.serialization") version "2.0.20"
+    kotlin("multiplatform") version "2.1.0"
+    kotlin("plugin.serialization") version "2.1.0"
     id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.16.3"
     id("org.jetbrains.dokka") version "1.9.20"
     id("maven-publish")
@@ -192,15 +190,13 @@ publishing {
                 license {
                     name.set("GNU Lesser General Public License")
                     url.set("https://www.gnu.org/licenses/lgpl-3.0.txt")
-                    name.set("GNU Lesser General Public License")
-                    url.set("https://www.gnu.org/licenses/lgpl-3.0.txt")
                 }
             }
             developers {
                 developer {
-                    id.set("BenWoodworth")
-                    name.set("Ben Woodworth")
-                    email.set("ben@benwoodworth.net")
+                    id.set("TheFloodDragon")
+                    name.set("Flood Dragon")
+                    email.set("theflooddragon@foxmail.com")
                 }
             }
             scm {
