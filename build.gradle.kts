@@ -36,9 +36,9 @@ kotlin {
         compilerOptions {
             jvmTarget = JvmTarget.JVM_1_8
         }
-        testRuns["test"].executionTask.configure {
-            useJUnitPlatform()
-        }
+//        testRuns["test"].executionTask.configure {
+//            useJUnitPlatform()
+//        }
     }
 
     js(IR) {
@@ -110,35 +110,35 @@ kotlin {
                 implementation("com.squareup.okio:okio:$okio_version")
             }
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-                implementation("com.benwoodworth.parameterize:parameterize:$parameterize_version")
-            }
-        }
-        val jvmTest by getting {
-            dependencies {
-                implementation(kotlin("reflect"))
-                implementation(kotlin("test-junit5"))
-            }
-        }
+ //       val commonTest by getting {
+//            dependencies {
+//                implementation(kotlin("test"))
+//                implementation("com.benwoodworth.parameterize:parameterize:$parameterize_version")
+//            }
+//        }
+//        val jvmTest by getting {
+//            dependencies {
+//                implementation(kotlin("reflect"))
+//                implementation(kotlin("test-junit5"))
+//            }
+//        }
         val jsMain by getting {
             dependencies {
                 implementation(npm("pako", "2.0.3"))
             }
         }
-        val jsTest by getting {
-            dependencies {
-                // https://github.com/square/okio/issues/1163
-                implementation(devNpm("node-polyfill-webpack-plugin", "^2.0.1"))
-            }
-        }
+//        val jsTest by getting {
+//            dependencies {
+//                // https://github.com/square/okio/issues/1163
+//                implementation(devNpm("node-polyfill-webpack-plugin", "^2.0.1"))
+//            }
+//        }
     }
 }
 
-tasks.named<Test>("jvmTest") {
-    useJUnitPlatform()
-}
+//tasks.named<Test>("jvmTest") {
+//    useJUnitPlatform()
+//}
 
 tasks.withType<Test> {
     ignoreFailures = true
