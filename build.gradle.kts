@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     kotlin("multiplatform") version "2.1.0"
     kotlin("plugin.serialization") version "2.1.0"
@@ -6,11 +8,7 @@ plugins {
     `maven-publish`
 }
 
-repositories {
-    mavenCentral()
-}
-
-subprojects {
+allprojects {
 
     apply(plugin = "org.jetbrains.kotlin.multiplatform")
     apply(plugin = "maven-publish")
@@ -21,6 +19,14 @@ subprojects {
 
     kotlin {
         explicitApi()
+
+        jvm()
+
+        jvm {
+            compilerOptions {
+                jvmTarget = JvmTarget.JVM_1_8
+            }
+        }
     }
 
     tasks.withType<Test> {
