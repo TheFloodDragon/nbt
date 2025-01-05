@@ -1,16 +1,4 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
-val kotlinx_serialization_version: String by extra
-val kotlinx_coroutines_version: String by extra
-val okio_version: String by extra
-val parameterize_version: String by extra
-
-System.getenv("GIT_REF")?.let { gitRef ->
-    Regex("refs/tags/v(.*)").matchEntire(gitRef)?.let { gitVersionMatch ->
-        version = gitVersionMatch.groupValues[1]
-    }
-}
 
 plugins {
     kotlin("multiplatform") version "2.1.0"

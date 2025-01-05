@@ -1,0 +1,183 @@
+public abstract interface class cn/altawk/nbt/tag/NbtByte : cn/altawk/nbt/tag/NbtTag {
+	public abstract fun clone ()Lcn/altawk/nbt/tag/NbtByte;
+	public abstract fun getContent ()Ljava/lang/Byte;
+	public abstract fun getType ()Lcn/altawk/nbt/tag/NbtType;
+}
+
+public final class cn/altawk/nbt/tag/NbtByte$DefaultImpls {
+	public static fun getType (Lcn/altawk/nbt/tag/NbtByte;)Lcn/altawk/nbt/tag/NbtType;
+}
+
+public abstract interface class cn/altawk/nbt/tag/NbtByteArray : cn/altawk/nbt/tag/NbtTag {
+	public abstract fun clone ()Lcn/altawk/nbt/tag/NbtByteArray;
+	public abstract fun get (I)B
+	public abstract fun getContent ()[B
+	public abstract fun getSize ()I
+	public abstract fun getType ()Lcn/altawk/nbt/tag/NbtType;
+}
+
+public final class cn/altawk/nbt/tag/NbtByteArray$DefaultImpls {
+	public static fun get (Lcn/altawk/nbt/tag/NbtByteArray;I)B
+	public static fun getSize (Lcn/altawk/nbt/tag/NbtByteArray;)I
+	public static fun getType (Lcn/altawk/nbt/tag/NbtByteArray;)Lcn/altawk/nbt/tag/NbtType;
+}
+
+public abstract interface class cn/altawk/nbt/tag/NbtCompound : cn/altawk/nbt/tag/NbtTag {
+	public abstract fun clear ()V
+	public abstract fun clone ()Lcn/altawk/nbt/tag/NbtCompound;
+	public abstract fun cloneShallow ()Lcn/altawk/nbt/tag/NbtCompound;
+	public abstract fun contains (Ljava/lang/String;)Z
+	public abstract fun get (Ljava/lang/String;)Lcn/altawk/nbt/tag/NbtTag;
+	public abstract fun getContent ()Ljava/util/Map;
+	public abstract fun getSize ()I
+	public abstract fun getType ()Lcn/altawk/nbt/tag/NbtType;
+	public abstract fun isEmpty ()Z
+	public abstract fun merge (Lcn/altawk/nbt/tag/NbtCompound;Z)Lcn/altawk/nbt/tag/NbtCompound;
+	public abstract fun mergeShallow (Lcn/altawk/nbt/tag/NbtCompound;Z)Lcn/altawk/nbt/tag/NbtCompound;
+	public abstract fun put (Ljava/lang/String;Lcn/altawk/nbt/tag/NbtTag;)V
+	public abstract fun remove (Ljava/lang/String;)V
+}
+
+public final class cn/altawk/nbt/tag/NbtCompound$DefaultImpls {
+	public static fun getType (Lcn/altawk/nbt/tag/NbtCompound;)Lcn/altawk/nbt/tag/NbtType;
+	public static synthetic fun merge$default (Lcn/altawk/nbt/tag/NbtCompound;Lcn/altawk/nbt/tag/NbtCompound;ZILjava/lang/Object;)Lcn/altawk/nbt/tag/NbtCompound;
+	public static synthetic fun mergeShallow$default (Lcn/altawk/nbt/tag/NbtCompound;Lcn/altawk/nbt/tag/NbtCompound;ZILjava/lang/Object;)Lcn/altawk/nbt/tag/NbtCompound;
+}
+
+public abstract interface class cn/altawk/nbt/tag/NbtDouble : cn/altawk/nbt/tag/NbtTag {
+	public abstract fun clone ()Lcn/altawk/nbt/tag/NbtDouble;
+	public abstract fun getContent ()Ljava/lang/Double;
+	public abstract fun getType ()Lcn/altawk/nbt/tag/NbtType;
+}
+
+public final class cn/altawk/nbt/tag/NbtDouble$DefaultImpls {
+	public static fun getType (Lcn/altawk/nbt/tag/NbtDouble;)Lcn/altawk/nbt/tag/NbtType;
+}
+
+public abstract interface class cn/altawk/nbt/tag/NbtFloat : cn/altawk/nbt/tag/NbtTag {
+	public abstract fun clone ()Lcn/altawk/nbt/tag/NbtFloat;
+	public abstract fun getContent ()Ljava/lang/Float;
+	public abstract fun getType ()Lcn/altawk/nbt/tag/NbtType;
+}
+
+public final class cn/altawk/nbt/tag/NbtFloat$DefaultImpls {
+	public static fun getType (Lcn/altawk/nbt/tag/NbtFloat;)Lcn/altawk/nbt/tag/NbtType;
+}
+
+public abstract interface class cn/altawk/nbt/tag/NbtInt : cn/altawk/nbt/tag/NbtTag {
+	public abstract fun clone ()Lcn/altawk/nbt/tag/NbtInt;
+	public abstract fun getContent ()Ljava/lang/Integer;
+	public abstract fun getType ()Lcn/altawk/nbt/tag/NbtType;
+}
+
+public final class cn/altawk/nbt/tag/NbtInt$DefaultImpls {
+	public static fun getType (Lcn/altawk/nbt/tag/NbtInt;)Lcn/altawk/nbt/tag/NbtType;
+}
+
+public abstract interface class cn/altawk/nbt/tag/NbtIntArray : cn/altawk/nbt/tag/NbtTag {
+	public abstract fun clone ()Lcn/altawk/nbt/tag/NbtIntArray;
+	public abstract fun get (I)I
+	public abstract fun getContent ()[I
+	public abstract fun getSize ()I
+	public abstract fun getType ()Lcn/altawk/nbt/tag/NbtType;
+}
+
+public final class cn/altawk/nbt/tag/NbtIntArray$DefaultImpls {
+	public static fun getType (Lcn/altawk/nbt/tag/NbtIntArray;)Lcn/altawk/nbt/tag/NbtType;
+}
+
+public abstract interface class cn/altawk/nbt/tag/NbtList : cn/altawk/nbt/tag/NbtTag {
+	public abstract fun add (Lcn/altawk/nbt/tag/NbtTag;)V
+	public abstract fun clear ()V
+	public abstract fun clone ()Lcn/altawk/nbt/tag/NbtList;
+	public abstract fun contains (Lcn/altawk/nbt/tag/NbtTag;)Z
+	public abstract fun get (I)Lcn/altawk/nbt/tag/NbtTag;
+	public abstract fun getContent ()Ljava/util/List;
+	public abstract fun getElementType ()Lcn/altawk/nbt/tag/NbtType;
+	public abstract fun getSize ()I
+	public abstract fun getType ()Lcn/altawk/nbt/tag/NbtType;
+	public abstract fun isEmpty ()Z
+	public abstract fun removeAt (I)V
+	public abstract fun set (ILcn/altawk/nbt/tag/NbtTag;)V
+}
+
+public final class cn/altawk/nbt/tag/NbtList$DefaultImpls {
+	public static fun getType (Lcn/altawk/nbt/tag/NbtList;)Lcn/altawk/nbt/tag/NbtType;
+}
+
+public abstract interface class cn/altawk/nbt/tag/NbtLong : cn/altawk/nbt/tag/NbtTag {
+	public abstract fun clone ()Lcn/altawk/nbt/tag/NbtLong;
+	public abstract fun getContent ()Ljava/lang/Long;
+	public abstract fun getType ()Lcn/altawk/nbt/tag/NbtType;
+}
+
+public final class cn/altawk/nbt/tag/NbtLong$DefaultImpls {
+	public static fun getType (Lcn/altawk/nbt/tag/NbtLong;)Lcn/altawk/nbt/tag/NbtType;
+}
+
+public abstract interface class cn/altawk/nbt/tag/NbtLongArray : cn/altawk/nbt/tag/NbtTag {
+	public abstract fun clone ()Lcn/altawk/nbt/tag/NbtLongArray;
+	public abstract fun get (I)J
+	public abstract fun getContent ()[J
+	public abstract fun getSize ()I
+	public abstract fun getType ()Lcn/altawk/nbt/tag/NbtType;
+}
+
+public final class cn/altawk/nbt/tag/NbtLongArray$DefaultImpls {
+	public static fun getType (Lcn/altawk/nbt/tag/NbtLongArray;)Lcn/altawk/nbt/tag/NbtType;
+}
+
+public abstract interface class cn/altawk/nbt/tag/NbtShort : cn/altawk/nbt/tag/NbtTag {
+	public abstract fun clone ()Lcn/altawk/nbt/tag/NbtShort;
+	public abstract fun getContent ()Ljava/lang/Short;
+	public abstract fun getType ()Lcn/altawk/nbt/tag/NbtType;
+}
+
+public final class cn/altawk/nbt/tag/NbtShort$DefaultImpls {
+	public static fun getType (Lcn/altawk/nbt/tag/NbtShort;)Lcn/altawk/nbt/tag/NbtType;
+}
+
+public abstract interface class cn/altawk/nbt/tag/NbtString : cn/altawk/nbt/tag/NbtTag {
+	public abstract fun clone ()Lcn/altawk/nbt/tag/NbtString;
+	public abstract fun getContent ()Ljava/lang/String;
+	public abstract fun getType ()Lcn/altawk/nbt/tag/NbtType;
+}
+
+public final class cn/altawk/nbt/tag/NbtString$DefaultImpls {
+	public static fun getType (Lcn/altawk/nbt/tag/NbtString;)Lcn/altawk/nbt/tag/NbtType;
+}
+
+public abstract interface class cn/altawk/nbt/tag/NbtTag {
+	public abstract fun clone ()Lcn/altawk/nbt/tag/NbtTag;
+	public abstract fun equals (Ljava/lang/Object;)Z
+	public abstract fun getContent ()Ljava/lang/Object;
+	public abstract fun getType ()Lcn/altawk/nbt/tag/NbtType;
+	public abstract fun hashCode ()I
+	public abstract fun toString ()Ljava/lang/String;
+}
+
+public final class cn/altawk/nbt/tag/NbtType : java/lang/Enum {
+	public static final field BYTE Lcn/altawk/nbt/tag/NbtType;
+	public static final field BYTE_ARRAY Lcn/altawk/nbt/tag/NbtType;
+	public static final field COMPOUND Lcn/altawk/nbt/tag/NbtType;
+	public static final field Companion Lcn/altawk/nbt/tag/NbtType$Companion;
+	public static final field DOUBLE Lcn/altawk/nbt/tag/NbtType;
+	public static final field END Lcn/altawk/nbt/tag/NbtType;
+	public static final field FLOAT Lcn/altawk/nbt/tag/NbtType;
+	public static final field INT Lcn/altawk/nbt/tag/NbtType;
+	public static final field INT_ARRAY Lcn/altawk/nbt/tag/NbtType;
+	public static final field LIST Lcn/altawk/nbt/tag/NbtType;
+	public static final field LONG Lcn/altawk/nbt/tag/NbtType;
+	public static final field LONG_ARRAY Lcn/altawk/nbt/tag/NbtType;
+	public static final field SHORT Lcn/altawk/nbt/tag/NbtType;
+	public static final field STRING Lcn/altawk/nbt/tag/NbtType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getId ()B
+	public static fun valueOf (Ljava/lang/String;)Lcn/altawk/nbt/tag/NbtType;
+	public static fun values ()[Lcn/altawk/nbt/tag/NbtType;
+}
+
+public final class cn/altawk/nbt/tag/NbtType$Companion {
+	public final fun from (B)Lcn/altawk/nbt/tag/NbtType;
+}
+

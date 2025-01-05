@@ -19,10 +19,8 @@ jobs:
         distribution: 'temurin'
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
-    - name: Build with Gradle
-      run: ./gradlew build
-    - name: Publish to GitHub Packages
-      run: ./gradlew publish
+    - name: Build and Publish
+      run: ./gradlew build publish
       env:
         GITHUB_ACTOR: ${{ github.actor }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
