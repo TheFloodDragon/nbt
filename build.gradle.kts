@@ -8,7 +8,7 @@ plugins {
     `maven-publish`
 }
 
-allprojects {
+subprojects {
 
     apply(plugin = "org.jetbrains.kotlin.multiplatform")
     apply(plugin = "maven-publish")

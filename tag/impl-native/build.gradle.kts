@@ -2,7 +2,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":tag-api"))
+                api(projects.tagApi)
             }
         }
     }
