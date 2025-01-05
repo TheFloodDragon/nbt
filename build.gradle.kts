@@ -93,30 +93,30 @@ subprojects {
 //    nonPublicMarkers.add("net.benwoodworth.knbt.NbtDeprecated")
 //}
 
-kotlin {
-    explicitApi()
-
-    jvm {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        compilerOptions {
-            jvmTarget = JvmTarget.JVM_1_8
-        }
+//kotlin {
+//    explicitApi()
+//
+//    jvm {
+//        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+//        compilerOptions {
+//            jvmTarget = JvmTarget.JVM_1_8
+//        }
 //        testRuns["test"].executionTask.configure {
 //            useJUnitPlatform()
 //        }
-    }
-
-    js(IR) {
-        browser {
-            testTask {
-                useKarma {
-                    useFirefoxHeadless()
-                    useChromeHeadless()
-                }
-            }
-        }
-        nodejs()
-    }
+//    }
+//
+//    js(IR) {
+//        browser {
+//            testTask {
+//                useKarma {
+//                    useFirefoxHeadless()
+//                    useChromeHeadless()
+//                }
+//            }
+//        }
+//        nodejs()
+//    }
 //
 //    //wasmJs() // Requires gzip/zlib support to be implemented
 //    //wasmWasi()
@@ -158,24 +158,24 @@ kotlin {
 //    iosArm64()
 //    watchosDeviceArm64()
 //    mingwX64()
-
-    sourceSets {
-        configureEach {
-            languageSettings.apply {
-                optIn("kotlin.contracts.ExperimentalContracts")
-                optIn("net.benwoodworth.knbt.InternalNbtApi")
-                optIn("net.benwoodworth.knbt.MIGRATION Acknowledge that NbtCompound now has a stricter get")
-            }
-        }
-
-        val commonMain by getting {
-            dependencies {
-                api("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinx_serialization_version")
-                implementation("com.squareup.okio:okio:$okio_version")
-                implementation("com.squareup.okio:okio:$okio_version")
-            }
-        }
-        //       val commonTest by getting {
+//
+//    sourceSets {
+//        configureEach {
+//            languageSettings.apply {
+//                optIn("kotlin.contracts.ExperimentalContracts")
+//                optIn("net.benwoodworth.knbt.InternalNbtApi")
+//                optIn("net.benwoodworth.knbt.MIGRATION Acknowledge that NbtCompound now has a stricter get")
+//            }
+//        }
+//
+//        val commonMain by getting {
+//            dependencies {
+//                api("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinx_serialization_version")
+//                implementation("com.squareup.okio:okio:$okio_version")
+//                implementation("com.squareup.okio:okio:$okio_version")
+//            }
+//        }
+//        //       val commonTest by getting {
 //            dependencies {
 //                implementation(kotlin("test"))
 //                implementation("com.benwoodworth.parameterize:parameterize:$parameterize_version")
@@ -187,19 +187,19 @@ kotlin {
 //                implementation(kotlin("test-junit5"))
 //            }
 //        }
-        val jsMain by getting {
-            dependencies {
-                implementation(npm("pako", "2.0.3"))
-            }
-        }
+//        val jsMain by getting {
+//            dependencies {
+//                implementation(npm("pako", "2.0.3"))
+//            }
+//        }
 //        val jsTest by getting {
 //            dependencies {
 //                // https://github.com/square/okio/issues/1163
 //                implementation(devNpm("node-polyfill-webpack-plugin", "^2.0.1"))
 //            }
 //        }
-    }
-}
+//    }
+//}
 
 //tasks.named<Test>("jvmTest") {
 //    useJUnitPlatform()
