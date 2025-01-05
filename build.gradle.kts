@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     kotlin("multiplatform") version "2.1.0"
     kotlin("plugin.serialization") version "2.1.0"
@@ -23,12 +21,6 @@ subprojects {
 
     kotlin {
         explicitApi()
-
-        jvm {
-            compilerOptions {
-                jvmTarget = JvmTarget.JVM_1_8
-            }
-        }
     }
 
     tasks.withType<Test> {
@@ -39,7 +31,7 @@ subprojects {
         repositories {
             maven {
                 name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/TheFloodDragon/knbt")
+                url = uri("https://maven.pkg.github.com/TheFloodDragon/nbt")
                 credentials {
                     username = System.getenv("GITHUB_ACTOR")
                     password = System.getenv("GITHUB_TOKEN")
@@ -206,54 +198,3 @@ subprojects {
 //    archiveClassifier.set("javadoc")
 //}
 //
-//publishing {
-//    repositories {
-//        maven {
-//            name = "GitHubPackages"
-//            url = uri("https://maven.pkg.github.com/TheFloodDragon/knbt")
-//            credentials {
-//                username = System.getenv("GITHUB_ACTOR")
-//                password = System.getenv("GITHUB_TOKEN")
-//            }
-//        }
-//        // maven {
-//        //     val releasesRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-//        //     val snapshotsRepoUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-//        //     url = if (isSnapshot) snapshotsRepoUrl else releasesRepoUrl
-//
-//        //     credentials {
-//        //         username = System.getenv("OSSRH_USERNAME")
-//        //         password = System.getenv("OSSRH_TOKEN")
-//        //     }
-//        // }
-//    }
-//
-//    publications.withType<MavenPublication> {
-//        artifact(javadocJar.get())
-//
-//        pom {
-//            name.set("knbt")
-//            description.set("Minecraft NBT support for kotlinx.serialization")
-//            url.set("https://github.com/BenWoodworth/knbt")
-//
-//            licenses {
-//                license {
-//                    name.set("GNU Lesser General Public License")
-//                    url.set("https://www.gnu.org/licenses/lgpl-3.0.txt")
-//                }
-//            }
-//            developers {
-//                developer {
-//                    id.set("TheFloodDragon")
-//                    name.set("Flood Dragon")
-//                    email.set("theflooddragon@foxmail.com")
-//                }
-//            }
-//            scm {
-//                connection.set("scm:git:git://github.com:BenWoodworth/knbt.git")
-//                developerConnection.set("scm:git:ssh://github.com:BenWoodworth/knbt.git")
-//                url.set("https://github.com/BenWoodworth/knbt")
-//            }
-//        }
-//    }
-//}

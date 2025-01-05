@@ -6,6 +6,7 @@ on:
 
 jobs:
   build:
+    if: contains(github.event.head_commit.message, '[skip]') == false
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -20,7 +21,7 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
     - name: Build and Publish
-      run: ./gradlew build publish
+      run: ./gradlew build publish clean
       env:
         GITHUB_ACTOR: ${{ github.actor }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
