@@ -4,9 +4,7 @@
 .kotlin/
 
 # IntelliJ files
-**/.idea/*
-out/
-*.iml
+.idea/
 
 # VSCode files
 .vscode/
@@ -14,9 +12,3 @@ out/
 # Gradle files
 build/
 .gradle/
-
-# Maven files
-target
-
-# Modules for JS projects build
-node_modules
