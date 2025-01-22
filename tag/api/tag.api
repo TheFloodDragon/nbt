@@ -8,8 +8,8 @@ public final class cn/altawk/nbt/tag/NbtByte : cn/altawk/nbt/tag/NbtTag {
 	public synthetic fun getContent ()Ljava/lang/Object;
 	public fun getType ()Lcn/altawk/nbt/tag/NbtType;
 	public fun hashCode ()I
-	public final fun toBoolean ()Ljava/lang/Boolean;
-	public final fun toBooleanStrict ()Z
+	public final fun toBoolean ()Z
+	public final fun toBooleanStrict ()Ljava/lang/Boolean;
 	public fun toString ()Ljava/lang/String;
 }
 
