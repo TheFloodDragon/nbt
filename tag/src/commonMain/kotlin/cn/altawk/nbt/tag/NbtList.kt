@@ -5,12 +5,12 @@ package cn.altawk.nbt.tag
  *
  * @since 2025/1/5 16:43
  */
-public class NbtList<T : NbtTag>(
+public class NbtList(
     /**
      * The content of the tag, for compatibility.
      */
-    public override val content: MutableList<T>
-) : NbtTag, MutableList<T> by content {
+    public override val content: MutableList<NbtTag>
+) : NbtTag, MutableList<NbtTag> by content {
 
     /**
      * Create an empty list.
@@ -30,11 +30,10 @@ public class NbtList<T : NbtTag>(
     /**
      * Clone the tag.
      */
-    override fun clone(): NbtList<T> {
-        val newList = NbtList<T>(this.size)
+    override fun clone(): NbtList {
+        val newList = NbtList(this.size)
         for (element in this.content) {
-            @Suppress("UNCHECKED_CAST")
-            newList.add(element.clone() as T)
+            newList.add(element.clone())
         }
         return newList
     }
@@ -47,8 +46,7 @@ public class NbtList<T : NbtTag>(
     /**
      * Check if the tag equals another.
      */
-    override fun equals(other: Any?): Boolean =
-        this === other || (other is NbtList<*> && content == other.content)
+    override fun equals(other: Any?): Boolean = this === other || (other is NbtList && content == other.content)
 
     /**
      * Get the hash code of the tag.
@@ -63,7 +61,7 @@ public class NbtList<T : NbtTag>(
     public companion object {
 
         @JvmStatic
-        public fun <T : NbtTag> of(list: Collection<T>): NbtList<T> = NbtList(list.toMutableList())
+        public fun of(list: Collection<NbtTag>): NbtList = NbtList(list.toMutableList())
 
     }
 

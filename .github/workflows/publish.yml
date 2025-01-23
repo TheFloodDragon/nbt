@@ -22,5 +22,5 @@ jobs:
     - name: Build And Publish
       run: ./gradlew build publish
       env:
-        GITHUB_ACTOR: ${{ github.actor }}
+        GITHUB_USER: ${{ github.actor }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

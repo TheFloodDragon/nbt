@@ -20,22 +20,22 @@ public class NbtByte(
 
     /**
      * Convert to its [Boolean] representation: `0b = false`, `1b = true`.
-     *
-     * In order to match Minecraft's lenient behavior, all other values convert to `true`.
      */
-    public fun toBoolean(): Boolean {
-        return content != 0.toByte()
-    }
-
-    /**
-     * Convert to its [Boolean] representation: `0b = false`, `1b = true`.
-     */
-    public fun toBooleanStrict(): Boolean? {
+    public fun toBoolean(): Boolean? {
         return when (content) {
             0.toByte() -> false
             1.toByte() -> true
             else -> null
         }
+    }
+
+    /**
+     * Convert to its [Boolean] representation: `0b = false`, `1b = true`.
+     *
+     * In order to match Minecraft's lenient behavior, all other values convert to `true`.
+     */
+    public fun toBooleanStrict(): Boolean {
+        return content != 0.toByte()
     }
 
     /**
