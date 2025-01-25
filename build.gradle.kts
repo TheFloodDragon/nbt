@@ -2,8 +2,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 plugins {
-    kotlin("multiplatform") version libs.versions.kotlin apply false
-    kotlin("plugin.serialization") version libs.versions.kotlin apply false
+    alias(libs.plugins.multiplatform) apply false
+    alias(libs.plugins.serialization) apply false
     id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.16.3"
     id("org.jetbrains.dokka") version "1.9.20"
     `maven-publish`

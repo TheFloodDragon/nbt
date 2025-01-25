@@ -6,7 +6,7 @@ package cn.altawk.nbt.tag
  * @author TheFloodDragon
  * @since 2025/1/5 16:46
  */
-public interface NbtTag {
+public sealed interface NbtTag {
 
     /**
      * The type of the tag.

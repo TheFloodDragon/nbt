@@ -262,3 +262,14 @@ public final class cn/altawk/nbt/tag/NbtType$Companion {
 	public final fun from (B)Lcn/altawk/nbt/tag/NbtType;
 }
 
+public final class cn/altawk/nbt/tag/NbtUtilsKt {
+	public static final fun put (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;B)Lcn/altawk/nbt/tag/NbtTag;
+	public static final fun put (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;D)Lcn/altawk/nbt/tag/NbtTag;
+	public static final fun put (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;F)Lcn/altawk/nbt/tag/NbtTag;
+	public static final fun put (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;I)Lcn/altawk/nbt/tag/NbtTag;
+	public static final fun put (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;J)Lcn/altawk/nbt/tag/NbtTag;
+	public static final fun put (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;Ljava/lang/String;)Lcn/altawk/nbt/tag/NbtTag;
+	public static final fun put (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;S)Lcn/altawk/nbt/tag/NbtTag;
+	public static final fun put (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;Z)Lcn/altawk/nbt/tag/NbtTag;
+}
+
