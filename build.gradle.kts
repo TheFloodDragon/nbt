@@ -51,7 +51,6 @@ publishing {
         }
     }
     publications.withType<MavenPublication> {
-
         pom {
             name.set("nbt")
             description.set("Minecraft NBT API written by Kotlin.")
