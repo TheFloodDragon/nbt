@@ -1,21 +1,17 @@
-@file:OptIn(SealedSerializationApi::class, ExperimentalSerializationApi::class, InternalSerializationApi::class)
+@file:OptIn(ExperimentalSerializationApi::class, InternalSerializationApi::class, SealedSerializationApi::class)
 
 package cn.altawk.nbt.tag
 
 import cn.altawk.nbt.NbtArray
 import cn.altawk.nbt.NbtDecoder
 import cn.altawk.nbt.NbtEncoder
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.InternalSerializationApi
-import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SealedSerializationApi
+import kotlinx.serialization.*
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.*
 import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.modules.polymorphic
 
 /**
  * NbtSerializers
@@ -25,20 +21,19 @@ import kotlinx.serialization.modules.polymorphic
  */
 
 public val nbtTagSerializersModule: SerializersModule = SerializersModule {
-    polymorphic(NbtTag::class) {
-        subclass(NbtCompound::class, NbtCompoundSerializer)
-        subclass(NbtList::class, NbtListSerializer)
-        subclass(NbtByte::class, NbtByteSerializer)
-        subclass(NbtShort::class, NbtShortSerializer)
-        subclass(NbtInt::class, NbtIntSerializer)
-        subclass(NbtLong::class, NbtLongSerializer)
-        subclass(NbtFloat::class, NbtFloatSerializer)
-        subclass(NbtDouble::class, NbtDoubleSerializer)
-        subclass(NbtString::class, NbtStringSerializer)
-        subclass(NbtByteArray::class, NbtByteArraySerializer)
-        subclass(NbtIntArray::class, NbtIntArraySerializer)
-        subclass(NbtLongArray::class, NbtLongArraySerializer)
-    }
+    contextual(NbtTag::class, NbtTagSerializer)
+    contextual(NbtCompound::class, NbtCompoundSerializer)
+    contextual(NbtList::class, NbtListSerializer)
+    contextual(NbtByte::class, NbtByteSerializer)
+    contextual(NbtShort::class, NbtShortSerializer)
+    contextual(NbtInt::class, NbtIntSerializer)
+    contextual(NbtLong::class, NbtLongSerializer)
+    contextual(NbtFloat::class, NbtFloatSerializer)
+    contextual(NbtDouble::class, NbtDoubleSerializer)
+    contextual(NbtString::class, NbtStringSerializer)
+    contextual(NbtByteArray::class, NbtByteArraySerializer)
+    contextual(NbtIntArray::class, NbtIntArraySerializer)
+    contextual(NbtLongArray::class, NbtLongArraySerializer)
 }
 
 internal object NbtTagSerializer : KSerializer<NbtTag> {
@@ -74,19 +69,20 @@ internal object NbtTagSerializer : KSerializer<NbtTag> {
         is NbtLongArray -> NbtLongArraySerializer.serialize(encoder, value)
     }
 
-    // TODO compatibility with kotlinx.serialization.json
-    override fun deserialize(decoder: Decoder): NbtTag = (decoder as NbtDecoder).decodeNbtTag()
+    override fun deserialize(decoder: Decoder): NbtTag {
+        return decoder.asNbtDecoder().decodeNbtTag()
+    }
 
 }
 
 internal object NbtListSerializer : KSerializer<NbtList> {
 
     override val descriptor: SerialDescriptor =
-        object : SerialDescriptor by listSerialDescriptor(NbtTagSerializer.descriptor) {
+        object : SerialDescriptor by listSerialDescriptor(serializer<NbtTag>().descriptor) {
             override val serialName: String = "nbt.NbtList"
         }
 
-    private val listSerializer = ListSerializer(NbtTagSerializer)
+    private val listSerializer = ListSerializer(serializer<NbtTag>())
 
     override fun serialize(encoder: Encoder, value: NbtList) = listSerializer.serialize(encoder, value.content)
 
@@ -96,12 +92,12 @@ internal object NbtListSerializer : KSerializer<NbtList> {
 
 internal object NbtCompoundSerializer : KSerializer<NbtCompound> {
 
-    override val descriptor: SerialDescriptor =
-        object : SerialDescriptor by mapSerialDescriptor(String.serializer().descriptor, NbtTagSerializer.descriptor) {
-            override val serialName: String = "nbt.NbtCompound"
-        }
+    override val descriptor: SerialDescriptor = object :
+        SerialDescriptor by mapSerialDescriptor(String.serializer().descriptor, serializer<NbtTag>().descriptor) {
+        override val serialName: String = "nbt.NbtCompound"
+    }
 
-    private val mapSerializer = MapSerializer(String.serializer(), NbtTagSerializer)
+    private val mapSerializer = MapSerializer(String.serializer(), serializer<NbtTag>())
 
     override fun serialize(encoder: Encoder, value: NbtCompound) = mapSerializer.serialize(encoder, value.content)
 
@@ -231,6 +227,14 @@ internal object NbtStringSerializer : KSerializer<NbtString> {
     override fun deserialize(decoder: Decoder): NbtString = NbtString(decoder.decodeString())
 
 }
+
+internal fun Encoder.asNbtEncoder(): NbtEncoder = this as? NbtEncoder ?: throw IllegalArgumentException(
+    "This serializer can be used only with NBT format. Expected Encoder to be NbtEncoder, got ${this::class}"
+)
+
+internal fun Decoder.asNbtDecoder(): NbtDecoder = this as? NbtDecoder ?: throw IllegalArgumentException(
+    "This serializer can be used only with NBT format. Expected Decoder to be NbtDecoder, got ${this::class}"
+)
 
 @OptIn(ExperimentalSerializationApi::class)
 private inline fun <T> Decoder.decodeList(
