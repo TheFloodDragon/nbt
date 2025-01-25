@@ -1,79 +1,82 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 plugins {
-    alias(libs.plugins.multiplatform) apply false
-    alias(libs.plugins.serialization) apply false
+    kotlin("multiplatform") version libs.versions.kotlin
+    kotlin("plugin.serialization") version libs.versions.kotlin
     id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.16.3"
     id("org.jetbrains.dokka") version "1.9.20"
     `maven-publish`
 }
 
-subprojects {
+kotlin {
+    explicitApi()
 
-    apply(plugin = "org.jetbrains.kotlin.multiplatform")
-    apply(plugin = "maven-publish")
+    jvm()
 
+    sourceSets {
+        configureEach {
+            dependencies {
+                compileOnly(libs.serialization.core)
+            }
+        }
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+                implementation(libs.serialization.core)
+                implementation(libs.serialization.json)
+            }
+        }
+    }
+
+    jvm {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_1_8
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+publishing {
     repositories {
-        mavenCentral()
-    }
-
-    configure<KotlinMultiplatformExtension> {
-        explicitApi()
-
-        jvm()
-
-        jvm {
-            compilerOptions {
-                jvmTarget = JvmTarget.JVM_1_8
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/TheFloodDragon/nbt")
+            credentials {
+                username = System.getenv("GITHUB_USER")
+                password = System.getenv("GITHUB_TOKEN")
             }
         }
     }
+    publications.withType<MavenPublication> {
 
-    tasks.withType<Test> {
-        ignoreFailures = true
-    }
+        pom {
+            name.set("nbt")
+            description.set("Minecraft NBT API written by Kotlin.")
+            url.set("https://github.com/Altawk/nbt")
 
-    publishing {
-        repositories {
-            maven {
-                name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/TheFloodDragon/nbt")
-                credentials {
-                    username = System.getenv("GITHUB_USER")
-                    password = System.getenv("GITHUB_TOKEN")
+            licenses {
+                license {
+                    name.set("GNU Lesser General Public License")
+                    url.set("https://www.gnu.org/licenses/lgpl-3.0.txt")
                 }
             }
-        }
-        publications.withType<MavenPublication> {
-
-            pom {
-                name.set("nbt")
-                description.set("Minecraft NBT API written by Kotlin.")
+            developers {
+                developer {
+                    id.set("TheFloodDragon")
+                    name.set("Flood Dragon")
+                    email.set("theflooddragon@foxmail.com")
+                }
+            }
+            scm {
+                connection.set("scm:git:git://github.com:Altawk/nbt.git")
+                developerConnection.set("scm:git:ssh://github.com:Altawk/nbt.git")
                 url.set("https://github.com/Altawk/nbt")
-
-                licenses {
-                    license {
-                        name.set("GNU Lesser General Public License")
-                        url.set("https://www.gnu.org/licenses/lgpl-3.0.txt")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("TheFloodDragon")
-                        name.set("Flood Dragon")
-                        email.set("theflooddragon@foxmail.com")
-                    }
-                }
-                scm {
-                    connection.set("scm:git:git://github.com:Altawk/nbt.git")
-                    developerConnection.set("scm:git:ssh://github.com:Altawk/nbt.git")
-                    url.set("https://github.com/Altawk/nbt")
-                }
             }
         }
     }
-
 }
 
 //apiValidation {
