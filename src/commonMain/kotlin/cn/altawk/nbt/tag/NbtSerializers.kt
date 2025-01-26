@@ -68,9 +68,9 @@ internal object NbtListSerializer : KSerializer<NbtList> {
 
     private val listSerializer = ListSerializer(serializer<NbtTag>())
 
-    override fun serialize(encoder: Encoder, value: NbtList) = listSerializer.serialize(encoder, value.content)
+    override fun serialize(encoder: Encoder, value: NbtList) = listSerializer.serialize(encoder.asNbtEncoder(), value.content)
 
-    override fun deserialize(decoder: Decoder): NbtList = NbtList.of(listSerializer.deserialize(decoder))
+    override fun deserialize(decoder: Decoder): NbtList = NbtList.of(listSerializer.deserialize(decoder.asNbtDecoder()))
 
 }
 
@@ -83,9 +83,9 @@ internal object NbtCompoundSerializer : KSerializer<NbtCompound> {
 
     private val mapSerializer = MapSerializer(String.serializer(), serializer<NbtTag>())
 
-    override fun serialize(encoder: Encoder, value: NbtCompound) = mapSerializer.serialize(encoder, value.content)
+    override fun serialize(encoder: Encoder, value: NbtCompound) = mapSerializer.serialize(encoder.asNbtEncoder(), value.content)
 
-    override fun deserialize(decoder: Decoder): NbtCompound = NbtCompound.of(mapSerializer.deserialize(decoder))
+    override fun deserialize(decoder: Decoder): NbtCompound = NbtCompound.of(mapSerializer.deserialize(decoder.asNbtDecoder()))
 
 }
 
@@ -99,12 +99,12 @@ internal object NbtByteArraySerializer : KSerializer<NbtByteArray> {
     override val descriptor: SerialDescriptor = NbtByteArrayDescriptor
 
     override fun serialize(encoder: Encoder, value: NbtByteArray): Unit =
-        encoder.encodeCollection(descriptor, value.content.size) {
+        encoder.asNbtEncoder().encodeCollection(descriptor, value.content.size) {
             value.content.forEachIndexed { index, element -> encodeByteElement(descriptor, index, element) }
         }
 
     override fun deserialize(decoder: Decoder): NbtByteArray =
-        NbtByteArray(decoder.decodeList(descriptor, CompositeDecoder::decodeByteElement).toByteArray())
+        NbtByteArray(decoder.asNbtDecoder().decodeList(descriptor, CompositeDecoder::decodeByteElement).toByteArray())
 
 }
 
@@ -117,12 +117,12 @@ internal object NbtIntArraySerializer : KSerializer<NbtIntArray> {
     override val descriptor: SerialDescriptor = NbtIntArrayDescriptor
 
     override fun serialize(encoder: Encoder, value: NbtIntArray): Unit =
-        encoder.encodeCollection(descriptor, value.content.size) {
+        encoder.asNbtEncoder().encodeCollection(descriptor, value.content.size) {
             value.content.forEachIndexed { index, element -> encodeIntElement(descriptor, index, element) }
         }
 
     override fun deserialize(decoder: Decoder): NbtIntArray =
-        NbtIntArray(decoder.decodeList(descriptor, CompositeDecoder::decodeIntElement).toIntArray())
+        NbtIntArray(decoder.asNbtDecoder().decodeList(descriptor, CompositeDecoder::decodeIntElement).toIntArray())
 }
 
 internal object NbtLongArraySerializer : KSerializer<NbtLongArray> {
@@ -135,21 +135,21 @@ internal object NbtLongArraySerializer : KSerializer<NbtLongArray> {
     override val descriptor: SerialDescriptor = NbtLongArrayDescriptor
 
     override fun serialize(encoder: Encoder, value: NbtLongArray): Unit =
-        encoder.encodeCollection(descriptor, value.content.size) {
+        encoder.asNbtEncoder().encodeCollection(descriptor, value.content.size) {
             value.content.forEachIndexed { index, element -> encodeLongElement(descriptor, index, element) }
         }
 
     override fun deserialize(decoder: Decoder): NbtLongArray =
-        NbtLongArray(decoder.decodeList(descriptor, CompositeDecoder::decodeLongElement).toLongArray())
+        NbtLongArray(decoder.asNbtDecoder().decodeList(descriptor, CompositeDecoder::decodeLongElement).toLongArray())
 }
 
 internal object NbtByteSerializer : KSerializer<NbtByte> {
 
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("nbt.NbtByte", PrimitiveKind.BYTE)
 
-    override fun serialize(encoder: Encoder, value: NbtByte): Unit = encoder.encodeByte(value.content)
+    override fun serialize(encoder: Encoder, value: NbtByte): Unit = encoder.asNbtEncoder().encodeByte(value.content)
 
-    override fun deserialize(decoder: Decoder): NbtByte = NbtByte(decoder.decodeByte())
+    override fun deserialize(decoder: Decoder): NbtByte = NbtByte(decoder.asNbtDecoder().decodeByte())
 
 }
 
@@ -157,18 +157,18 @@ internal object NbtShortSerializer : KSerializer<NbtShort> {
 
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("nbt.NbtShort", PrimitiveKind.SHORT)
 
-    override fun serialize(encoder: Encoder, value: NbtShort): Unit = encoder.encodeShort(value.content)
+    override fun serialize(encoder: Encoder, value: NbtShort): Unit = encoder.asNbtEncoder().encodeShort(value.content)
 
-    override fun deserialize(decoder: Decoder): NbtShort = NbtShort(decoder.decodeShort())
+    override fun deserialize(decoder: Decoder): NbtShort = NbtShort(decoder.asNbtDecoder().decodeShort())
 }
 
 internal object NbtIntSerializer : KSerializer<NbtInt> {
 
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("nbt.NbtInt", PrimitiveKind.INT)
 
-    override fun serialize(encoder: Encoder, value: NbtInt): Unit = encoder.encodeInt(value.content)
+    override fun serialize(encoder: Encoder, value: NbtInt): Unit = encoder.asNbtEncoder().encodeInt(value.content)
 
-    override fun deserialize(decoder: Decoder): NbtInt = NbtInt(decoder.decodeInt())
+    override fun deserialize(decoder: Decoder): NbtInt = NbtInt(decoder.asNbtDecoder().decodeInt())
 
 }
 
@@ -176,9 +176,9 @@ internal object NbtLongSerializer : KSerializer<NbtLong> {
 
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("nbt.NbtLong", PrimitiveKind.LONG)
 
-    override fun serialize(encoder: Encoder, value: NbtLong): Unit = encoder.encodeLong(value.content)
+    override fun serialize(encoder: Encoder, value: NbtLong): Unit = encoder.asNbtEncoder().encodeLong(value.content)
 
-    override fun deserialize(decoder: Decoder): NbtLong = NbtLong(decoder.decodeLong())
+    override fun deserialize(decoder: Decoder): NbtLong = NbtLong(decoder.asNbtDecoder().decodeLong())
 
 }
 
@@ -186,9 +186,9 @@ internal object NbtFloatSerializer : KSerializer<NbtFloat> {
 
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("nbt.NbtFloat", PrimitiveKind.FLOAT)
 
-    override fun serialize(encoder: Encoder, value: NbtFloat): Unit = encoder.encodeFloat(value.content)
+    override fun serialize(encoder: Encoder, value: NbtFloat): Unit = encoder.asNbtEncoder().encodeFloat(value.content)
 
-    override fun deserialize(decoder: Decoder): NbtFloat = NbtFloat(decoder.decodeFloat())
+    override fun deserialize(decoder: Decoder): NbtFloat = NbtFloat(decoder.asNbtDecoder().decodeFloat())
 
 }
 
@@ -196,9 +196,9 @@ internal object NbtDoubleSerializer : KSerializer<NbtDouble> {
 
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("nbt.NbtDouble", PrimitiveKind.DOUBLE)
 
-    override fun serialize(encoder: Encoder, value: NbtDouble): Unit = encoder.encodeDouble(value.content)
+    override fun serialize(encoder: Encoder, value: NbtDouble): Unit = encoder.asNbtEncoder().encodeDouble(value.content)
 
-    override fun deserialize(decoder: Decoder): NbtDouble = NbtDouble(decoder.decodeDouble())
+    override fun deserialize(decoder: Decoder): NbtDouble = NbtDouble(decoder.asNbtDecoder().decodeDouble())
 
 }
 
@@ -206,9 +206,9 @@ internal object NbtStringSerializer : KSerializer<NbtString> {
 
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("nbt.NbtString", PrimitiveKind.STRING)
 
-    override fun serialize(encoder: Encoder, value: NbtString): Unit = encoder.encodeString(value.content)
+    override fun serialize(encoder: Encoder, value: NbtString): Unit = encoder.asNbtEncoder().encodeString(value.content)
 
-    override fun deserialize(decoder: Decoder): NbtString = NbtString(decoder.decodeString())
+    override fun deserialize(decoder: Decoder): NbtString = NbtString(decoder.asNbtDecoder().decodeString())
 
 }
 
