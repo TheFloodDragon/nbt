@@ -31,6 +31,7 @@ kotlin {
     jvm {
         compilerOptions {
             jvmTarget = JvmTarget.JVM_1_8
+            extraWarnings.set(true)
         }
     }
 }

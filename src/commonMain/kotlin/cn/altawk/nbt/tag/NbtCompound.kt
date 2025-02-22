@@ -93,33 +93,6 @@ public class NbtCompound(
         @JvmStatic
         public fun of(map: Map<String, NbtTag>): NbtCompound = NbtCompound(map.toMutableMap())
 
-        /**
-         * TODO StringNBT
-         */
-        internal fun Appendable.appendNbtString(value: String, forceQuote: Boolean = false): Appendable {
-            fun Appendable.appendQuoted(): Appendable = apply {
-                append('"')
-                value.forEach {
-                    if (it == '"') append("\\\"") else append(it)
-                }
-                append('"')
-            }
-
-            fun Char.isSafeCharacter(): Boolean = when (this) {
-                '-', '_', in 'a'..'z', in 'A'..'Z', in '0'..'9' -> true
-                else -> false
-            }
-
-            return when {
-                forceQuote -> appendQuoted()
-                value.isEmpty() -> append("\"\"")
-                value.all { it.isSafeCharacter() } -> append(value)
-                !value.contains('"') -> append('"').append(value).append('"')
-                !value.contains('\'') -> append('\'').append(value).append('\'')
-                else -> appendQuoted()
-            }
-        }
-
     }
 
 }

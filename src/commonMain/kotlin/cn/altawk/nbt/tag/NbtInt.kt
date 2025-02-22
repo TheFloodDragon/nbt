@@ -8,6 +8,7 @@ import kotlinx.serialization.Serializable
  * @author TheFloodDragon
  * @since 2025/1/5 16:43
  */
+@Serializable(NbtIntSerializer::class)
 public class NbtInt(
     /**
      * The content of the tag.
