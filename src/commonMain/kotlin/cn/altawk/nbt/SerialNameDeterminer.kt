@@ -19,4 +19,13 @@ public interface SerialNameDeterminer {
      */
     public fun determineName(descriptor: SerialDescriptor, index: Int): String
 
+    /**
+     * Default implementation of [SerialNameDeterminer].
+     */
+    public object Default : SerialNameDeterminer {
+        override fun determineName(descriptor: SerialDescriptor, index: Int): String {
+            return descriptor.getElementName(index)
+        }
+    }
+
 }

@@ -1,6 +1,6 @@
 package cn.altawk.nbt.tag
 
-import cn.altawk.nbt.tag.NbtCompound.Companion.appendNbtString
+import cn.altawk.nbt.internal.appendNbtString
 import kotlinx.serialization.Serializable
 
 /**

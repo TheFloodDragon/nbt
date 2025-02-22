@@ -1,7 +1,5 @@
 package cn.altawk.nbt
 
-import cn.altawk.nbt.internal.DefaultNameDeterminer
-
 /**
  * NbtConfiguration
  *
@@ -13,5 +11,5 @@ public class NbtConfiguration internal constructor(
     public val explicitNulls: Boolean = false,
     public val ignoreUnknownKeys: Boolean = true,
     public val prettyPrint: Boolean = false,
-    public val nameDeterminer: SerialNameDeterminer = DefaultNameDeterminer,
+    public val nameDeterminer: SerialNameDeterminer = SerialNameDeterminer.Default,
 )

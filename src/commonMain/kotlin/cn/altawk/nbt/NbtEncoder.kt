@@ -18,7 +18,7 @@ public interface NbtEncoder : Encoder, CompositeEncoder {
     public val nbt: NbtFormat
 
     /**
-     * TODO Document
+     * Encode a [NbtTag].
      */
     public fun encodeNbtTag(tag: NbtTag)
 

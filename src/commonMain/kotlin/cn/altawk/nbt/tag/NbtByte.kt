@@ -1,5 +1,6 @@
 package cn.altawk.nbt.tag
 
+import cn.altawk.nbt.internal.Tokens
 import kotlinx.serialization.Serializable
 
 /**
@@ -49,7 +50,7 @@ public class NbtByte(
     /**
      * Get the string representation of the tag.
      */
-    override fun toString(): String = "${content}b"
+    override fun toString(): String = content.toString() + Tokens.TYPE_BYTE
 
     /**
      * Check if the tag is equal to another object.

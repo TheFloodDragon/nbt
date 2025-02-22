@@ -1,5 +1,6 @@
 package cn.altawk.nbt.tag
 
+import cn.altawk.nbt.internal.Tokens
 import kotlinx.serialization.Serializable
 
 /**
@@ -24,7 +25,7 @@ public class NbtFloat(
     /**
      * Get the string representation of the tag.
      */
-    override fun toString(): String = "${content}f"
+    override fun toString(): String = content.toString() + Tokens.TYPE_FLOAT
 
     /**
      * Check if the tag equals another.

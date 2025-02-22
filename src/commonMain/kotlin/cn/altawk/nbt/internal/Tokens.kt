@@ -9,29 +9,31 @@ package cn.altawk.nbt.internal
 internal object Tokens {
 
     // Pretty Print Defaults
-    const val PRETTY_PRINT_INDENT: String = "    "
     const val PRETTY_PRINT_SPACE: String = " "
+    const val PRETTY_PRINT_INDENT: String = "    "
 
     // Compounds
-    const val COMPOUND_BEGIN: Char = '{'
-    const val COMPOUND_END: Char = '}'
+    const val COMPOUND_BEGIN: String = "{"
+    const val COMPOUND_END: String = "}"
     const val COMPOUND_KEY_TERMINATOR: Char = ':'
 
     // Arrays
-    const val ARRAY_BEGIN: Char = '['
-    const val ARRAY_END: Char = ']'
-    const val ARRAY_SIGNATURE_SEPARATOR: Char = ';'
+    const val ARRAY_BEGIN: String = "["
+    const val ARRAY_END: String = "]"
+    const val ARRAY_SIGNATURE_SEPARATOR: String = ";"
 
-    const val VALUE_SEPARATOR: Char = ','
+    const val VALUE_SEPARATOR: String = ","
 
     const val SINGLE_QUOTE: Char = '\''
     const val DOUBLE_QUOTE: Char = '"'
     const val ESCAPE_MARKER: Char = '\\'
 
+    const val TYPE_INT_ARRAY: Char = 'I'
+    const val TYPE_BYTE_ARRAY: Char = 'B'
+    const val TYPE_LONG_ARRAY: Char = 'L'
     const val TYPE_BYTE: Char = 'b'
     const val TYPE_SHORT: Char = 's'
-    const val TYPE_INT: Char = 'i' // array only
-    const val TYPE_LONG: Char = 'l'
+    const val TYPE_LONG: Char = 'L'
     const val TYPE_FLOAT: Char = 'f'
     const val TYPE_DOUBLE: Char = 'd'
 

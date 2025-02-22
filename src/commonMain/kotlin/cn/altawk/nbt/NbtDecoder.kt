@@ -18,7 +18,8 @@ public interface NbtDecoder : Decoder, CompositeDecoder {
     public val nbt: NbtFormat
 
     /**
-     * TODO Document
+     * Decode a [NbtTag].
      */
     public fun decodeNbtTag(): NbtTag
+
 }

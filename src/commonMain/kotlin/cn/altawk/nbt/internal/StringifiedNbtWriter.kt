@@ -1,11 +1,25 @@
 package cn.altawk.nbt.internal
 
 import cn.altawk.nbt.NbtFormat
-import cn.altawk.nbt.internal.Tokens.SINGLE_QUOTE
-import cn.altawk.nbt.internal.Tokens.ESCAPE_MARKER
+import cn.altawk.nbt.internal.Tokens.ARRAY_BEGIN
+import cn.altawk.nbt.internal.Tokens.ARRAY_END
+import cn.altawk.nbt.internal.Tokens.ARRAY_SIGNATURE_SEPARATOR
+import cn.altawk.nbt.internal.Tokens.COMPOUND_BEGIN
+import cn.altawk.nbt.internal.Tokens.COMPOUND_END
+import cn.altawk.nbt.internal.Tokens.COMPOUND_KEY_TERMINATOR
 import cn.altawk.nbt.internal.Tokens.DOUBLE_QUOTE
+import cn.altawk.nbt.internal.Tokens.ESCAPE_MARKER
 import cn.altawk.nbt.internal.Tokens.PRETTY_PRINT_INDENT
 import cn.altawk.nbt.internal.Tokens.PRETTY_PRINT_SPACE
+import cn.altawk.nbt.internal.Tokens.SINGLE_QUOTE
+import cn.altawk.nbt.internal.Tokens.TYPE_BYTE
+import cn.altawk.nbt.internal.Tokens.TYPE_BYTE_ARRAY
+import cn.altawk.nbt.internal.Tokens.TYPE_DOUBLE
+import cn.altawk.nbt.internal.Tokens.TYPE_FLOAT
+import cn.altawk.nbt.internal.Tokens.TYPE_INT_ARRAY
+import cn.altawk.nbt.internal.Tokens.TYPE_LONG
+import cn.altawk.nbt.internal.Tokens.TYPE_SHORT
+import cn.altawk.nbt.internal.Tokens.VALUE_SEPARATOR
 import cn.altawk.nbt.tag.NbtType
 
 /**
@@ -42,11 +56,8 @@ internal class StringifiedNbtWriter(
 
     private fun beginCollectionEntry() {
         if (!firstEntry) {
-            if (inArray) {
-                builder.append(",$prettySpace")
-            } else {
-                builder.append(',')
-            }
+            builder.append(VALUE_SEPARATOR)
+            if (inArray) builder.append(prettySpace)
         }
 
         if (!inArray) {
@@ -65,39 +76,43 @@ internal class StringifiedNbtWriter(
         inArray = false
     }
 
-    override fun beginRootTag(type: NbtType): Unit = Unit
-
-    override fun beginCompound(): Unit = beginCollection("{", false)
+    override fun beginCompound(): Unit = beginCollection(COMPOUND_BEGIN, false)
 
     override fun beginCompoundEntry(type: NbtType, name: String) {
         beginCollectionEntry()
-        builder.appendNbtString(name).append(":$prettySpace")
+        builder.appendNbtString(name).append(COMPOUND_KEY_TERMINATOR + prettySpace)
     }
 
-    override fun endCompound(): Unit = endCollection("}", true)
+    override fun endCompound(): Unit = endCollection(COMPOUND_END, true)
 
-    override fun beginList(type: NbtTagType, size: Int): Unit = beginCollection("[", false)
+    override fun beginList(type: NbtType, size: Int): Unit = beginCollection(ARRAY_BEGIN, false)
     override fun beginListEntry(): Unit = beginCollectionEntry()
-    override fun endList(): Unit = endCollection("]", true)
+    override fun endList(): Unit = endCollection(ARRAY_END, true)
 
-    override fun beginByteArray(size: Int): Unit = beginCollection("[B;$prettySpace", true)
+    override fun beginByteArray(size: Int): Unit =
+        beginCollection(ARRAY_BEGIN + TYPE_BYTE_ARRAY + ARRAY_SIGNATURE_SEPARATOR + prettySpace, true)
+
     override fun beginByteArrayEntry(): Unit = beginCollectionEntry()
-    override fun endByteArray(): Unit = endCollection("]", false)
+    override fun endByteArray(): Unit = endCollection(ARRAY_END, false)
 
-    override fun beginIntArray(size: Int): Unit = beginCollection("[I;$prettySpace", true)
+    override fun beginIntArray(size: Int): Unit =
+        beginCollection(ARRAY_BEGIN + TYPE_INT_ARRAY + ARRAY_SIGNATURE_SEPARATOR + prettySpace, true)
+
     override fun beginIntArrayEntry(): Unit = beginCollectionEntry()
-    override fun endIntArray(): Unit = endCollection("]", false)
+    override fun endIntArray(): Unit = endCollection(ARRAY_END, false)
 
-    override fun beginLongArray(size: Int): Unit = beginCollection("[L;$prettySpace", true)
+    override fun beginLongArray(size: Int): Unit =
+        beginCollection(ARRAY_BEGIN + TYPE_LONG + ARRAY_SIGNATURE_SEPARATOR + prettySpace, true)
+
     override fun beginLongArrayEntry(): Unit = beginCollectionEntry()
-    override fun endLongArray(): Unit = endCollection("]", false)
+    override fun endLongArray(): Unit = endCollection(ARRAY_END, false)
 
     override fun writeByte(value: Byte) {
-        builder.append(value.toString()).append(if (inArray) 'B' else 'b')
+        builder.append(value.toString()).append(if (inArray) TYPE_BYTE_ARRAY else TYPE_BYTE)
     }
 
     override fun writeShort(value: Short) {
-        builder.append(value.toString()).append('s')
+        builder.append(value.toString()).append(TYPE_SHORT)
     }
 
     override fun writeInt(value: Int) {
@@ -105,43 +120,39 @@ internal class StringifiedNbtWriter(
     }
 
     override fun writeLong(value: Long) {
-        builder.append(value.toString()).append('L')
+        builder.append(value.toString()).append(TYPE_LONG)
     }
 
     override fun writeFloat(value: Float) {
-        builder.append(value.toString()).append('f')
+        builder.append(value.toString()).append(TYPE_FLOAT)
     }
 
     override fun writeDouble(value: Double) {
-        builder.append(value.toString()).append('d')
+        builder.append(value.toString()).append(TYPE_DOUBLE)
     }
 
     override fun writeString(value: String) {
         builder.appendNbtString(value, forceQuote = true)
     }
 
-    companion object {
+}
 
-        private fun Appendable.appendQuoted(): Appendable = apply {
-            append(DOUBLE_QUOTE)
-            value.forEach {
-                if (it == DOUBLE_QUOTE) append(ESCAPE_MARKER)
-                append(it)
-            }
-            append(DOUBLE_QUOTE)
-        }
-
-        internal fun Appendable.appendNbtString(value: String, forceQuote: Boolean = false): Appendable {
-            return when {
-                forceQuote -> appendQuoted()
-                value.isEmpty() -> append(DOUBLE_QUOTE).append(DOUBLE_QUOTE)
-                value.all { Tokens.id(it) } -> append(value)
-                !value.contains(DOUBLE_QUOTE) -> append(DOUBLE_QUOTE).append(value).append(DOUBLE_QUOTE)
-                !value.contains(SINGLE_QUOTE) -> append(SINGLE_QUOTE).append(value).append(SINGLE_QUOTE)
-                else -> appendQuoted()
-            }
-        }
-
+private fun Appendable.appendQuoted(value: String): Appendable = apply {
+    append(DOUBLE_QUOTE)
+    value.forEach {
+        if (it == DOUBLE_QUOTE) append(ESCAPE_MARKER)
+        append(it)
     }
+    append(DOUBLE_QUOTE)
+}
 
+internal fun Appendable.appendNbtString(value: String, forceQuote: Boolean = false): Appendable {
+    return when {
+        forceQuote -> appendQuoted(value)
+        value.isEmpty() -> append(DOUBLE_QUOTE).append(DOUBLE_QUOTE)
+        value.all { Tokens.id(it) } -> append(value)
+        !value.contains(DOUBLE_QUOTE) -> append(DOUBLE_QUOTE).append(value).append(DOUBLE_QUOTE)
+        !value.contains(SINGLE_QUOTE) -> append(SINGLE_QUOTE).append(value).append(SINGLE_QUOTE)
+        else -> appendQuoted(value)
+    }
 }
