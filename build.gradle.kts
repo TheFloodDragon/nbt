@@ -46,8 +46,8 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/TheFloodDragon/nbt")
             credentials {
-                username = System.getenv("GITHUB_USER")
-                password = System.getenv("GITHUB_TOKEN")
+                username = project.findProperty("github.user")?.toString() ?: System.getenv("GITHUB_USER")
+                password = project.findProperty("github.token")?.toString() ?: System.getenv("GITHUB_TOKEN")
             }
         }
     }
