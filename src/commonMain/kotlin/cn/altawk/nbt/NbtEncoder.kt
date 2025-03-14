@@ -22,4 +22,19 @@ public interface NbtEncoder : Encoder, CompositeEncoder {
      */
     public fun encodeNbtTag(tag: NbtTag)
 
+    /**
+     * Encode a [ByteArray].
+     */
+    public fun encodeByteArray(value: ByteArray)
+
+    /**
+     * Encode a [IntArray].
+     */
+    public fun encodeIntArray(value: IntArray)
+
+    /**
+     * Encode a [LongArray].
+     */
+    public fun encodeLongArray(value: LongArray)
+
 }

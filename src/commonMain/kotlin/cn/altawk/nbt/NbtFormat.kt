@@ -73,31 +73,6 @@ public fun NbtFormat(from: NbtFormat = NbtFormat.Default, builderAction: NbtForm
 public class NbtFormatBuilder internal constructor(nbt: NbtFormat) {
 
     /**
-     * Specifies whether default values of Kotlin properties should be encoded.
-     * This option does not affect decoding.
-     */
-    public var encodeDefaults: Boolean = nbt.configuration.encodeDefaults
-
-    /**
-     * Specifies whether `null` values should be encoded for nullable properties and must be present in JSON object
-     * during decoding.
-     *
-     * When this flag is disabled properties with `null` values are not encoded;
-     * during decoding, the absence of a field value is treated as `null` for nullable properties without a default value.
-     */
-    public var explicitNulls: Boolean = nbt.configuration.explicitNulls
-
-    /**
-     * Specifies whether encounters of unknown properties in the input NBT
-     */
-    public var ignoreUnknownKeys: Boolean = nbt.configuration.ignoreUnknownKeys
-
-    /**
-     * Specifies whether resulting JSON should be pretty-printed: formatted and optimized for human readability.
-     */
-    public var prettyPrint: Boolean = nbt.configuration.prettyPrint
-
-    /**
      * Specifies the [SerialNameDeterminer] the coder used
      */
     public var nameDeterminer: SerialNameDeterminer = nbt.configuration.nameDeterminer
@@ -113,8 +88,7 @@ public class NbtFormatBuilder internal constructor(nbt: NbtFormat) {
 
     internal fun build(): NbtConfiguration {
         return NbtConfiguration(
-            encodeDefaults, ignoreUnknownKeys, explicitNulls,
-            prettyPrint, nameDeterminer
+            nameDeterminer
         )
     }
 

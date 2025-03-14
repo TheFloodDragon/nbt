@@ -1,7 +1,5 @@
 package cn.altawk.nbt.internal
 
-import cn.altawk.nbt.tag.NbtType
-
 /**
  * NbtWriter
  *
@@ -18,7 +16,7 @@ internal interface NbtWriter {
     /**
      * Begin a compound entry.
      */
-    fun beginCompoundEntry(type: NbtType, name: String)
+    fun beginCompoundEntry(name: String)
 
     /**
      * End a compound.
@@ -28,7 +26,7 @@ internal interface NbtWriter {
     /**
      * Begin a list.
      */
-    fun beginList(type: NbtType, size: Int)
+    fun beginList(size: Int)
 
     /**
      * Begin a list entry.
@@ -120,4 +118,41 @@ internal interface NbtWriter {
      */
     fun writeString(value: String)
 
+}
+
+/**
+ * Write a byte array.
+ */
+internal fun NbtWriter.writeByteArray(value: ByteArray) {
+    beginByteArray(value.size)
+    for (b in value) {
+        beginByteArrayEntry()
+        writeByte(b)
+    }
+    endByteArray()
+}
+
+/**
+ * Write an int array.
+ */
+internal fun NbtWriter.writeIntArray(value: IntArray) {
+    beginIntArray(value.size)
+    for (i in value) {
+        beginIntArrayEntry()
+        writeInt(i)
+    }
+    endIntArray()
+}
+
+
+/**
+ * Write a long array.
+ */
+internal fun NbtWriter.writeLongArray(value: LongArray) {
+    beginLongArray(value.size)
+    for (l in value) {
+        beginIntArrayEntry()
+        writeLong(l)
+    }
+    endLongArray()
 }
