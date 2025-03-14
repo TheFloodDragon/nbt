@@ -1,5 +1,8 @@
 package cn.altawk.nbt
 
+import cn.altawk.nbt.internal.NbtWriterEncoder
+import cn.altawk.nbt.internal.StringifiedNbtWriter
+import cn.altawk.nbt.internal.TreeNbtWriter
 import cn.altawk.nbt.tag.NbtTag
 import kotlinx.serialization.BinaryFormat
 import kotlinx.serialization.DeserializationStrategy
@@ -24,19 +27,26 @@ public open class NbtFormat(
      */
     public companion object Default : NbtFormat(NbtConfiguration(), EmptySerializersModule())
 
+    /**
+     * Serializes and encodes the given [value] to an [NbtTag] using the given [serializer].
+     */
     public fun <T> encodeToNbtTag(serializer: SerializationStrategy<T>, value: T): NbtTag {
-        TODO("Not yet implemented")
+        lateinit var result: NbtTag
+        NbtWriterEncoder(this, TreeNbtWriter { result = it }).encodeSerializableValue(serializer, value)
+        return result
     }
 
     public fun <T> decodeFromNbtTag(deserializer: DeserializationStrategy<T>, tag: NbtTag): T {
         TODO("Not yet implemented")
     }
 
-    override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
-        TODO("Not yet implemented")
+    override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String {
+        val builder = StringBuilder()
+        NbtWriterEncoder(this, StringifiedNbtWriter(builder)).encodeSerializableValue(serializer, value)
+        return builder.toString()
     }
 
-    override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String {
+    override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
         TODO("Not yet implemented")
     }
 

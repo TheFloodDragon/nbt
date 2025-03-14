@@ -1,12 +1,8 @@
-@file:OptIn(ExperimentalSerializationApi::class, InternalSerializationApi::class)
-
 package cn.altawk.nbt.internal
 
 import cn.altawk.nbt.NbtFormat
 import cn.altawk.nbt.tag.*
 import cn.altawk.nbt.tag.NbtType.*
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -32,15 +28,8 @@ internal class NbtWriterEncoder(
 
     override fun encodeSerializableElement(descriptor: SerialDescriptor, index: Int): Boolean {
         when (descriptor.kind as StructureKind) {
-            StructureKind.CLASS, StructureKind.OBJECT -> {
-                elementName = nbt.configuration.nameDeterminer.determineName(descriptor, index)
-            }
-
-            StructureKind.MAP -> {
-                println(descriptor)
-                if (index % 2 == 0) encodingMapKey = true
-            }
-
+            StructureKind.CLASS, StructureKind.OBJECT -> elementName = nbt.configuration.nameDeterminer.determineName(descriptor, index)
+            StructureKind.MAP -> if (index % 2 == 0) encodingMapKey = true
             else -> Unit
         }
         return true
@@ -103,16 +92,16 @@ internal class NbtWriterEncoder(
 
     override fun encodeNbtTag(tag: NbtTag) {
         when (tag.type) {
-            BYTE -> encodeByte((tag as NbtByte).content)
-            SHORT -> encodeShort((tag as NbtShort).content)
-            INT -> encodeInt((tag as NbtInt).content)
-            LONG -> encodeLong((tag as NbtLong).content)
-            FLOAT -> encodeFloat((tag as NbtFloat).content)
-            DOUBLE -> encodeDouble((tag as NbtDouble).content)
-            STRING -> encodeString((tag as NbtString).content)
-            BYTE_ARRAY -> encodeByteArray((tag as NbtByteArray).content)
-            INT_ARRAY -> encodeIntArray((tag as NbtIntArray).content)
-            LONG_ARRAY -> encodeLongArray((tag as NbtLongArray).content)
+            BYTE -> writer.writeByte((tag as NbtByte).content)
+            SHORT -> writer.writeShort((tag as NbtShort).content)
+            INT -> writer.writeInt((tag as NbtInt).content)
+            LONG -> writer.writeLong((tag as NbtLong).content)
+            FLOAT -> writer.writeFloat((tag as NbtFloat).content)
+            DOUBLE -> writer.writeDouble((tag as NbtDouble).content)
+            STRING -> writer.writeString((tag as NbtString).content)
+            BYTE_ARRAY -> writer.writeByteArray((tag as NbtByteArray).content)
+            INT_ARRAY -> writer.writeIntArray((tag as NbtIntArray).content)
+            LONG_ARRAY -> writer.writeLongArray((tag as NbtLongArray).content)
             LIST -> {
                 writer.beginList((tag as NbtList).size)
                 for (element in tag) {

@@ -17,7 +17,7 @@ public class NbtCompound(
     public override val content: MutableMap<String, NbtTag>
 ) : NbtTag, MutableMap<String, NbtTag> by content {
 
-    public constructor() : this(HashMap())
+    public constructor() : this(LinkedHashMap())
 
     /**
      * Merge tags from another compound. (deeply)

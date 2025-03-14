@@ -27,13 +27,11 @@ import cn.altawk.nbt.internal.Tokens.VALUE_SEPARATOR
 internal class StringifiedNbtWriter(private val builder: Appendable) : NbtWriter {
     private var firstEntry = false
     private var inArray = false
-    private var level = 0
 
     private fun beginCollection(prefix: String, array: Boolean) {
         builder.append(prefix)
         firstEntry = true
         inArray = array
-        level++
     }
 
     private fun beginCollectionEntry() {
@@ -45,7 +43,6 @@ internal class StringifiedNbtWriter(private val builder: Appendable) : NbtWriter
     }
 
     private fun endCollection(suffix: String) {
-        level--
         builder.append(suffix)
 
         firstEntry = false

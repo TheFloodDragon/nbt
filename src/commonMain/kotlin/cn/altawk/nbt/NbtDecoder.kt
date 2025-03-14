@@ -22,4 +22,19 @@ public interface NbtDecoder : Decoder, CompositeDecoder {
      */
     public fun decodeNbtTag(): NbtTag
 
+    /**
+     * Decode a [ByteArray].
+     */
+    public fun decodeByteArray(value: ByteArray)
+
+    /**
+     * Decode a [IntArray].
+     */
+    public fun decodeIntArray(value: IntArray)
+
+    /**
+     * Decode a [LongArray].
+     */
+    public fun decodeLongArray(value: LongArray)
+
 }
