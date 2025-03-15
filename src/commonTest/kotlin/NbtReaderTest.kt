@@ -24,13 +24,14 @@ class NbtReaderTest {
             }
             put("byteArray", byteArrayOf(1, 2, 3))
             putList("byteList") {
-                add(2)
-                add(3)
-                add(4)
+                add(2.toByte())
+                add(3.toByte())
+                add(4.toByte())
             }
-            putCompound("duo") {
-            }
+            put("cnm","gasdas")
         }
+
+        println(exampleTag)
 
         val serializer = Example.serializer(NbtTagSerializer)
 

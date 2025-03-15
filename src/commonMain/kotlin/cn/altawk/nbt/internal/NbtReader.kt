@@ -1,5 +1,7 @@
 package cn.altawk.nbt.internal
 
+import cn.altawk.nbt.tag.NbtTag
+
 /**
  * NbtReader
  *
@@ -9,6 +11,11 @@ package cn.altawk.nbt.internal
 internal interface NbtReader {
 
     /**
+     * Read a tag.
+     */
+    fun readTag(): NbtTag
+
+    /**
      * Begin a compound.
      */
     fun beginCompound()
@@ -16,7 +23,7 @@ internal interface NbtReader {
     /**
      * Begin a compound entry.
      */
-    fun beginCompoundEntry(): CharSequence
+    fun beginCompoundEntry(): String
 
     /**
      * End a compound.

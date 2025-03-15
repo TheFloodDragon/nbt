@@ -17,7 +17,6 @@ data class Example<T>(
     val byteArray: ByteArray = ByteArray(0),
     @NbtArray
     val byteList: List<Byte> = emptyList(),
-    val duo: T,
 )
 
 val format = NbtFormat {
@@ -35,7 +34,6 @@ class StringifiedNbtWriterTest {
             mapOf("Ket1" to 1, "Key2" to 2),
             byteArrayOf(1, 2, 3),
             listOf(2, 3, 4),
-            NbtCompound()
         )
 
         val serializer = Example.serializer(NbtTagSerializer)

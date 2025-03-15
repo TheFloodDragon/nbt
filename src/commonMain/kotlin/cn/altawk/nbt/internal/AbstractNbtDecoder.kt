@@ -10,10 +10,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.builtins.ByteArraySerializer
 import kotlinx.serialization.builtins.IntArraySerializer
 import kotlinx.serialization.builtins.LongArraySerializer
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.encoding.AbstractDecoder
-import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.modules.SerializersModule
 
 /**
@@ -25,14 +22,6 @@ import kotlinx.serialization.modules.SerializersModule
 internal abstract class AbstractNbtDecoder : NbtDecoder, AbstractDecoder() {
 
     override val serializersModule: SerializersModule get() = nbt.serializersModule
-
-    abstract fun beginCompound(descriptor: SerialDescriptor): CompositeDecoder
-    abstract fun beginList(descriptor: SerialDescriptor): CompositeDecoder
-
-    override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder =
-        if (descriptor.kind == StructureKind.LIST) {
-            beginList(descriptor)
-        } else beginCompound(descriptor)
 
     override fun decodeNbtTag(): NbtTag = decodeValue() as NbtTag
     override fun decodeByteArray(): ByteArray = decodeValue() as ByteArray

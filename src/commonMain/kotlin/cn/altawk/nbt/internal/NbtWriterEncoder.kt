@@ -6,7 +6,6 @@ import cn.altawk.nbt.tag.NbtType.*
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.encoding.CompositeEncoder
-import kotlinx.serialization.modules.SerializersModule
 
 /**
  * NbtWriterEncoder
@@ -23,8 +22,6 @@ internal class NbtWriterEncoder(
     private var encodingMapKey: Boolean = false
 
     private val structureTypeStack = ArrayDeque<NbtType>()
-
-    override val serializersModule: SerializersModule get() = nbt.serializersModule
 
     override fun encodeSerializableElement(descriptor: SerialDescriptor, index: Int): Boolean {
         when (descriptor.kind as StructureKind) {
