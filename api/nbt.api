@@ -1,19 +1,12 @@
-public abstract interface annotation class cn/altawk/nbt/NbtArray : java/lang/annotation/Annotation {
-}
-
-public synthetic class cn/altawk/nbt/NbtArray$Impl : cn/altawk/nbt/NbtArray {
-	public fun <init> ()V
-}
-
 public final class cn/altawk/nbt/NbtConfiguration {
 	public fun <init> ()V
 	public final fun getNameDeterminer ()Lcn/altawk/nbt/SerialNameDeterminer;
 }
 
 public abstract interface class cn/altawk/nbt/NbtDecoder : kotlinx/serialization/encoding/CompositeDecoder, kotlinx/serialization/encoding/Decoder {
-	public abstract fun decodeByteArray ([B)V
-	public abstract fun decodeIntArray ([I)V
-	public abstract fun decodeLongArray ([J)V
+	public abstract fun decodeByteArray ()[B
+	public abstract fun decodeIntArray ()[I
+	public abstract fun decodeLongArray ()[J
 	public abstract fun decodeNbtTag ()Lcn/altawk/nbt/tag/NbtTag;
 	public abstract fun getNbt ()Lcn/altawk/nbt/NbtFormat;
 }
@@ -114,12 +107,37 @@ public final class cn/altawk/nbt/NbtPath$RootNode : cn/altawk/nbt/NbtPath$Node {
 }
 
 public abstract interface class cn/altawk/nbt/SerialNameDeterminer {
-	public abstract fun determineName (Lkotlinx/serialization/descriptors/SerialDescriptor;I)Ljava/lang/String;
+	public abstract fun determineName (ILkotlinx/serialization/descriptors/SerialDescriptor;)Ljava/lang/String;
+	public abstract fun mapName (Ljava/lang/String;Lkotlinx/serialization/descriptors/SerialDescriptor;)Ljava/lang/String;
 }
 
 public final class cn/altawk/nbt/SerialNameDeterminer$Default : cn/altawk/nbt/SerialNameDeterminer {
 	public static final field INSTANCE Lcn/altawk/nbt/SerialNameDeterminer$Default;
-	public fun determineName (Lkotlinx/serialization/descriptors/SerialDescriptor;I)Ljava/lang/String;
+	public fun determineName (ILkotlinx/serialization/descriptors/SerialDescriptor;)Ljava/lang/String;
+	public fun mapName (Ljava/lang/String;Lkotlinx/serialization/descriptors/SerialDescriptor;)Ljava/lang/String;
+}
+
+public final class cn/altawk/nbt/exception/NbtDecodingException : cn/altawk/nbt/exception/NbtException {
+	public fun <init> (Ljava/lang/String;Lcn/altawk/nbt/NbtPath;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Lcn/altawk/nbt/NbtPath;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getMessage ()Ljava/lang/String;
+}
+
+public final class cn/altawk/nbt/exception/NbtEncodingException : cn/altawk/nbt/exception/NbtException {
+	public fun <init> (Ljava/lang/String;Lcn/altawk/nbt/NbtPath;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Lcn/altawk/nbt/NbtPath;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getMessage ()Ljava/lang/String;
+}
+
+public abstract class cn/altawk/nbt/exception/NbtException : kotlinx/serialization/SerializationException {
+	public synthetic fun <init> (Ljava/lang/String;Lcn/altawk/nbt/NbtPath;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lcn/altawk/nbt/NbtPath;Ljava/lang/Throwable;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getPath ()Lcn/altawk/nbt/NbtPath;
+}
+
+public final class cn/altawk/nbt/exception/StringTagParseException : java/io/IOException {
+	public fun <init> (Ljava/lang/String;Ljava/lang/CharSequence;I)V
+	public fun getMessage ()Ljava/lang/String;
 }
 
 public final class cn/altawk/nbt/tag/NbtByte : cn/altawk/nbt/tag/NbtTag {
@@ -405,12 +423,17 @@ public final class cn/altawk/nbt/tag/NbtString$Companion {
 }
 
 public abstract interface class cn/altawk/nbt/tag/NbtTag {
+	public static final field Companion Lcn/altawk/nbt/tag/NbtTag$Companion;
 	public abstract fun clone ()Lcn/altawk/nbt/tag/NbtTag;
 	public abstract fun equals (Ljava/lang/Object;)Z
 	public abstract fun getContent ()Ljava/lang/Object;
 	public abstract fun getType ()Lcn/altawk/nbt/tag/NbtType;
 	public abstract fun hashCode ()I
 	public abstract fun toString ()Ljava/lang/String;
+}
+
+public final class cn/altawk/nbt/tag/NbtTag$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public final class cn/altawk/nbt/tag/NbtType : java/lang/Enum {
@@ -435,10 +458,28 @@ public final class cn/altawk/nbt/tag/NbtType : java/lang/Enum {
 }
 
 public final class cn/altawk/nbt/tag/NbtType$Companion {
-	public final fun from (B)Lcn/altawk/nbt/tag/NbtType;
+	public final fun of (B)Lcn/altawk/nbt/tag/NbtType;
 }
 
 public final class cn/altawk/nbt/tag/NbtUtilsKt {
+	public static final fun NbtCompound (Ljava/util/Map;Lkotlin/jvm/functions/Function1;)Lcn/altawk/nbt/tag/NbtCompound;
+	public static synthetic fun NbtCompound$default (Ljava/util/Map;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcn/altawk/nbt/tag/NbtCompound;
+	public static final fun NbtList (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Lcn/altawk/nbt/tag/NbtList;
+	public static synthetic fun NbtList$default (Ljava/util/List;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcn/altawk/nbt/tag/NbtList;
+	public static final fun add (Lcn/altawk/nbt/tag/NbtList;B)Z
+	public static final fun add (Lcn/altawk/nbt/tag/NbtList;D)Z
+	public static final fun add (Lcn/altawk/nbt/tag/NbtList;F)Z
+	public static final fun add (Lcn/altawk/nbt/tag/NbtList;I)Z
+	public static final fun add (Lcn/altawk/nbt/tag/NbtList;J)Z
+	public static final fun add (Lcn/altawk/nbt/tag/NbtList;Ljava/lang/String;)Z
+	public static final fun add (Lcn/altawk/nbt/tag/NbtList;S)Z
+	public static final fun add (Lcn/altawk/nbt/tag/NbtList;Z)Z
+	public static final fun add (Lcn/altawk/nbt/tag/NbtList;[B)Z
+	public static final fun add (Lcn/altawk/nbt/tag/NbtList;[I)Z
+	public static final fun addCompound (Lcn/altawk/nbt/tag/NbtList;Ljava/util/Map;Lkotlin/jvm/functions/Function1;)Z
+	public static synthetic fun addCompound$default (Lcn/altawk/nbt/tag/NbtList;Ljava/util/Map;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Z
+	public static final fun addList (Lcn/altawk/nbt/tag/NbtList;Ljava/util/List;Lkotlin/jvm/functions/Function1;)Z
+	public static synthetic fun addList$default (Lcn/altawk/nbt/tag/NbtList;Ljava/util/List;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Z
 	public static final fun put (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;B)Lcn/altawk/nbt/tag/NbtTag;
 	public static final fun put (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;D)Lcn/altawk/nbt/tag/NbtTag;
 	public static final fun put (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;F)Lcn/altawk/nbt/tag/NbtTag;
@@ -447,5 +488,12 @@ public final class cn/altawk/nbt/tag/NbtUtilsKt {
 	public static final fun put (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;Ljava/lang/String;)Lcn/altawk/nbt/tag/NbtTag;
 	public static final fun put (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;S)Lcn/altawk/nbt/tag/NbtTag;
 	public static final fun put (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;Z)Lcn/altawk/nbt/tag/NbtTag;
+	public static final fun put (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;[B)Lcn/altawk/nbt/tag/NbtTag;
+	public static final fun put (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;[I)Lcn/altawk/nbt/tag/NbtTag;
+	public static final fun put (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;[J)Lcn/altawk/nbt/tag/NbtTag;
+	public static final fun putCompound (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;Ljava/util/Map;Lkotlin/jvm/functions/Function1;)Lcn/altawk/nbt/tag/NbtTag;
+	public static synthetic fun putCompound$default (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;Ljava/util/Map;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcn/altawk/nbt/tag/NbtTag;
+	public static final fun putList (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;Ljava/util/List;Lkotlin/jvm/functions/Function1;)Lcn/altawk/nbt/tag/NbtTag;
+	public static synthetic fun putList$default (Lcn/altawk/nbt/tag/NbtCompound;Ljava/lang/String;Ljava/util/List;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcn/altawk/nbt/tag/NbtTag;
 }
 
