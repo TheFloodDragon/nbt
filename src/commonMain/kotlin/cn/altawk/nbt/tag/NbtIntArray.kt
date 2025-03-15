@@ -35,11 +35,7 @@ public class NbtIntArray(
     /**
      * Get the string representation of the tag.
      */
-    override fun toString(): String = content.joinToString(
-        separator = Tokens.VALUE_SEPARATOR,
-        prefix = Tokens.ARRAY_BEGIN + Tokens.TYPE_INT_ARRAY + Tokens.ARRAY_SIGNATURE_SEPARATOR,
-        postfix = Tokens.ARRAY_END
-    )
+    override fun toString(): String = content.joinToString(separator = ",", prefix = "[I;", postfix = "]")
 
     /**
      * Check if the tag is equal to another object.

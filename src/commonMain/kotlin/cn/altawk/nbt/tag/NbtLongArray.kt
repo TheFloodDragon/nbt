@@ -1,6 +1,5 @@
 package cn.altawk.nbt.tag
 
-import cn.altawk.nbt.internal.Tokens
 import kotlinx.serialization.Serializable
 
 /**
@@ -35,11 +34,7 @@ public class NbtLongArray(
     /**
      * Get the string representation of the tag.
      */
-    override fun toString(): String = content.joinToString(
-        separator = Tokens.VALUE_SEPARATOR,
-        prefix = Tokens.ARRAY_BEGIN + Tokens.TYPE_LONG_ARRAY + Tokens.ARRAY_SIGNATURE_SEPARATOR,
-        postfix = Tokens.ARRAY_END
-    ) { it.toString() + Tokens.TYPE_LONG_ARRAY }
+    override fun toString(): String = content.joinToString(separator = ",", prefix = "[L;", postfix = "]") { "${it}L" }
 
     /**
      * Check if the tag equals another.

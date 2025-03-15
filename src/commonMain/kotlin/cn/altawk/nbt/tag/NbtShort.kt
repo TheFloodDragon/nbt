@@ -1,6 +1,5 @@
 package cn.altawk.nbt.tag
 
-import cn.altawk.nbt.internal.Tokens
 import kotlinx.serialization.Serializable
 
 /**
@@ -25,7 +24,7 @@ public class NbtShort(
     /**
      * Get the string representation of the tag.
      */
-    override fun toString(): String = content.toString() + Tokens.TYPE_SHORT
+    override fun toString(): String = "${content}s"
 
     /**
      * Check if the tag equals another.

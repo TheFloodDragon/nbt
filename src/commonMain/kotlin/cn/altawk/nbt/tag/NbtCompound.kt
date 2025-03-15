@@ -66,11 +66,7 @@ public class NbtCompound(
      * Get the string representation of the tag.
      */
     override fun toString(): String =
-        content.entries.joinToString(
-            separator = Tokens.VALUE_SEPARATOR,
-            prefix = Tokens.COMPOUND_BEGIN,
-            postfix = Tokens.COMPOUND_END
-        ) { (name, value) ->
+        content.entries.joinToString(separator = ",", prefix = "{", postfix = "}") { (name, value) ->
             buildString {
                 appendNbtString(name)
                 append(Tokens.COMPOUND_KEY_TERMINATOR)

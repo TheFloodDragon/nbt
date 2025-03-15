@@ -36,10 +36,10 @@ public class NbtByte(
     /**
      * Convert to its [Boolean] representation: `0b = false`, `1b = true`.
      *
-     * In order to match Minecraft's lenient behavior, all other values convert to `true`.
+     * In order to match Minecraft's lenient behavior, all other values convert to `false`.
      */
     public fun toBooleanStrict(): Boolean {
-        return content != 0.toByte()
+        return content == 1.toByte()
     }
 
     /**
