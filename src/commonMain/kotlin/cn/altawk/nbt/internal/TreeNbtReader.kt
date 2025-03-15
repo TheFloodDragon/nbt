@@ -1,5 +1,6 @@
 package cn.altawk.nbt.internal
 
+import cn.altawk.nbt.internal.NbtReader.Companion.EOF
 import cn.altawk.nbt.tag.*
 
 /**
@@ -102,7 +103,7 @@ internal class TreeNbtReader(tag: NbtTag) : NbtReader {
         }
 
         override fun beginCompoundEntry(): CharSequence {
-            val entry = next ?: return Tokens.EOF
+            val entry = next ?: return EOF
             return entry.key
         }
 

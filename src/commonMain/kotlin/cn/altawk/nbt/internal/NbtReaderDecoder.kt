@@ -11,21 +11,27 @@ import kotlinx.serialization.encoding.CompositeDecoder
  * @author TheFloodDragon
  * @since 2025/3/15 11:05
  */
-internal class NbtReaderDecoder(
+internal open class NbtReaderDecoder(
     override val nbt: NbtFormat,
     val reader: NbtReader
 ) : AbstractNbtDecoder() {
 
     override fun beginCompound(descriptor: SerialDescriptor): CompositeDecoder {
-        TODO("Not yet implemented")
+        println("----------")
+        println(descriptor)
+        println(descriptor.kind)
+        return this
     }
 
     override fun beginList(descriptor: SerialDescriptor): CompositeDecoder {
-        TODO("Not yet implemented")
+        println("========")
+        println(descriptor)
+        println(descriptor.kind)
+        return this
     }
 
     override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
-        TODO("Not yet implemented")
+        return 0
     }
 
     override fun decodeEnum(enumDescriptor: SerialDescriptor): Int {
@@ -48,8 +54,9 @@ internal class NbtReaderDecoder(
     override fun decodeLong() = reader.readLong()
     override fun decodeShort() = reader.readShort()
 
-//    override fun decodeByteArray() = reader.readByteArray()
-//    override fun decodeIntArray() = reader.readIntArray()
-//    override fun decodeLongArray() = reader.readLongArray()
+    override fun decodeByteArray() = reader.readByteArray()
+    override fun decodeIntArray() = reader.readIntArray()
+    override fun decodeLongArray() = reader.readLongArray()
+
 
 }

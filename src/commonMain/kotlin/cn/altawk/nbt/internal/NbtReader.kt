@@ -118,4 +118,63 @@ internal interface NbtReader {
      */
     fun readString(): String
 
+    companion object {
+
+        /**
+         * Unknown size.
+         */
+        const val UNKNOWN_SIZE = -1
+
+        /**
+         * EOF.
+         */
+        const val EOF: String = "\u0000"
+
+    }
+
+}
+
+/**
+ * Read a byte array.
+ */
+internal fun NbtReader.readByteArray(): ByteArray {
+    val size = beginByteArray()
+    return if (size == NbtReader.UNKNOWN_SIZE) {
+        buildList { while (beginByteArrayEntry()) add(readByte()) }.toByteArray()
+    } else {
+        ByteArray(size).also { array ->
+            repeat(size) { array[it] = readByte() }
+            endByteArray()
+        }
+    }
+}
+
+/**
+ * Read an int array.
+ */
+internal fun NbtReader.readIntArray(): IntArray {
+    val size = beginIntArray()
+    return if (size == NbtReader.UNKNOWN_SIZE) {
+        buildList { while (beginIntArrayEntry()) add(readInt()) }.toIntArray()
+    } else {
+        IntArray(size).also { array ->
+            repeat(size) { array[it] = readInt() }
+            endIntArray()
+        }
+    }
+}
+
+/**
+ * Read a long array.
+ */
+internal fun NbtReader.readLongArray(): LongArray {
+    val size = beginLongArray()
+    return if (size == NbtReader.UNKNOWN_SIZE) {
+        buildList { while (beginLongArrayEntry()) add(readLong()) }.toLongArray()
+    } else {
+        LongArray(size).also { array ->
+            repeat(size) { array[it] = readLong() }
+            endLongArray()
+        }
+    }
 }

@@ -6,6 +6,7 @@ public inline fun NbtCompound(map: MutableMap<String, NbtTag> = LinkedHashMap(),
 
 public inline fun NbtList(list: MutableList<NbtTag> = ArrayList(), action: NbtList.() -> Unit): NbtList = NbtList(list).apply(action)
 
+//region NbtCompound put methods
 public inline fun NbtCompound.put(key: String, value: Byte): NbtTag? = this.put(key, NbtByte(value))
 public inline fun NbtCompound.put(key: String, value: Boolean): NbtTag? = this.put(key, NbtByte(value))
 public inline fun NbtCompound.put(key: String, value: Double): NbtTag? = this.put(key, NbtDouble(value))
@@ -29,7 +30,9 @@ public inline fun NbtCompound.putCompound(
     map: MutableMap<String, NbtTag> = LinkedHashMap(),
     action: NbtCompound.() -> Unit
 ): NbtTag? = this.put(key, NbtCompound(map, action))
+//endregion
 
+//region NbtList add methods
 public inline fun NbtList.add(value: Byte): Boolean = this.add(NbtByte(value))
 public inline fun NbtList.add(value: Boolean): Boolean = this.add(NbtByte(value))
 public inline fun NbtList.add(value: Double): Boolean = this.add(NbtDouble(value))
@@ -50,3 +53,4 @@ public inline fun NbtList.addCompound(
     map: MutableMap<String, NbtTag> = LinkedHashMap(),
     action: NbtCompound.() -> Unit
 ): Boolean = this.add(NbtCompound(map, action))
+//endregion

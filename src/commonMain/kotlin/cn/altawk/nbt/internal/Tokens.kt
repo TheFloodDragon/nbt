@@ -41,9 +41,6 @@ internal object Tokens {
     const val LITERAL_FALSE: String = "false"
 
     val NEWLINE: String = System.getProperty("line.separator", "\n")
-    const val EOF: String = "\u0000"
-
-    const val UNKNOWN_SIZE: Int = -1
 
     /**
      * Return if a character is a valid component in an identifier.
