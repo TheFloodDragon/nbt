@@ -8,7 +8,7 @@ import kotlinx.serialization.encoding.Decoder
  * NbtDecoder
  *
  * @author TheFloodDragon
- * @since 2025/1/25 11:36
+ * @since 2025/3/15 11:04
  */
 public interface NbtDecoder : Decoder, CompositeDecoder {
 
@@ -25,16 +25,16 @@ public interface NbtDecoder : Decoder, CompositeDecoder {
     /**
      * Decode a [ByteArray].
      */
-    public fun decodeByteArray(value: ByteArray)
+    public fun decodeByteArray(): ByteArray
 
     /**
      * Decode a [IntArray].
      */
-    public fun decodeIntArray(value: IntArray)
+    public fun decodeIntArray(): IntArray
 
     /**
      * Decode a [LongArray].
      */
-    public fun decodeLongArray(value: LongArray)
+    public fun decodeLongArray(): LongArray
 
 }

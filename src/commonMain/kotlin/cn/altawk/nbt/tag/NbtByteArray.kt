@@ -1,6 +1,5 @@
 package cn.altawk.nbt.tag
 
-import cn.altawk.nbt.internal.Tokens
 import kotlinx.serialization.Serializable
 
 /**
@@ -35,11 +34,9 @@ public class NbtByteArray(
     /**
      * Get the string representation of the tag.
      */
-    override fun toString(): String = content.joinToString(
-        separator = Tokens.VALUE_SEPARATOR,
-        prefix = Tokens.ARRAY_BEGIN + Tokens.TYPE_BYTE_ARRAY + Tokens.ARRAY_SIGNATURE_SEPARATOR,
-        postfix = Tokens.ARRAY_END
-    ) { it.toString() + Tokens.TYPE_BYTE_ARRAY }
+    override fun toString(): String {
+        return content.joinToString(separator = ",", prefix = "[B;", postfix = "]") { "${it}B" }
+    }
 
     /**
      * Check if the tag is equal to another object.

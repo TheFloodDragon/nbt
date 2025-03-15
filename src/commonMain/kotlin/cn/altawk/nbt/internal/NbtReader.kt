@@ -16,7 +16,7 @@ internal interface NbtReader {
     /**
      * Begin a compound entry.
      */
-    fun beginCompoundEntry()
+    fun beginCompoundEntry(): CharSequence
 
     /**
      * End a compound.
@@ -26,7 +26,7 @@ internal interface NbtReader {
     /**
      * Begin a list.
      */
-    fun beginList()
+    fun beginList(): Int
 
     /**
      * Begin a list entry.
@@ -41,7 +41,7 @@ internal interface NbtReader {
     /**
      * Begin a byte array.
      */
-    fun beginByteArray()
+    fun beginByteArray(): Int
 
     /**
      * Begin a byte array entry.
@@ -56,7 +56,7 @@ internal interface NbtReader {
     /**
      * Begin an int array.
      */
-    fun beginIntArray()
+    fun beginIntArray(): Int
 
     /**
      * Begin an int array entry.
@@ -71,7 +71,7 @@ internal interface NbtReader {
     /**
      * Begin a long array.
      */
-    fun beginLongArray()
+    fun beginLongArray(): Int
 
     /**
      * Begin a long array entry.

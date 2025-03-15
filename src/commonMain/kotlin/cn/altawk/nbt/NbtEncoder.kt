@@ -8,7 +8,7 @@ import kotlinx.serialization.encoding.Encoder
  * NbtEncoder
  *
  * @author TheFloodDragon
- * @since 2025/1/25 11:15
+ * @since 2025/3/15 11:04
  */
 public interface NbtEncoder : Encoder, CompositeEncoder {
 

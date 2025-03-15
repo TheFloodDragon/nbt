@@ -1,8 +1,6 @@
 package cn.altawk.nbt
 
-import cn.altawk.nbt.internal.NbtWriterEncoder
-import cn.altawk.nbt.internal.StringifiedNbtWriter
-import cn.altawk.nbt.internal.TreeNbtWriter
+import cn.altawk.nbt.internal.*
 import cn.altawk.nbt.tag.NbtTag
 import kotlinx.serialization.BinaryFormat
 import kotlinx.serialization.DeserializationStrategy
@@ -36,8 +34,11 @@ public open class NbtFormat(
         return result
     }
 
+    /**
+     * Deserializes and decodes the given [tag] to an object of type [T] using the given [deserializer].
+     */
     public fun <T> decodeFromNbtTag(deserializer: DeserializationStrategy<T>, tag: NbtTag): T {
-        TODO("Not yet implemented")
+        return NbtReaderDecoder(this, TreeNbtReader(tag)).decodeSerializableValue(deserializer)
     }
 
     override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String {

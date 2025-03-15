@@ -13,16 +13,16 @@ internal object Tokens {
     const val PRETTY_PRINT_INDENT: String = "    "
 
     // Compounds
-    const val COMPOUND_BEGIN: String = "{"
-    const val COMPOUND_END: String = "}"
+    const val COMPOUND_BEGIN: Char ='{'
+    const val COMPOUND_END: Char = '}'
     const val COMPOUND_KEY_TERMINATOR: Char = ':'
 
     // Arrays
-    const val ARRAY_BEGIN: String = "["
-    const val ARRAY_END: String = "]"
-    const val ARRAY_SIGNATURE_SEPARATOR: String = ";"
+    const val ARRAY_BEGIN: Char = '['
+    const val ARRAY_END: Char = ']'
+    const val ARRAY_SIGNATURE_SEPARATOR: Char = ';'
 
-    const val VALUE_SEPARATOR: String = ","
+    const val VALUE_SEPARATOR: Char = ','
 
     const val SINGLE_QUOTE: Char = '\''
     const val DOUBLE_QUOTE: Char = '"'
@@ -41,7 +41,9 @@ internal object Tokens {
     const val LITERAL_FALSE: String = "false"
 
     val NEWLINE: String = System.getProperty("line.separator", "\n")
-    const val EOF: Char = '\u0000'
+    const val EOF: String = "\u0000"
+
+    const val UNKNOWN_SIZE: Int = -1
 
     /**
      * Return if a character is a valid component in an identifier.

@@ -34,6 +34,8 @@ internal class StringifiedNbtWriter(private val builder: Appendable) : NbtWriter
         inArray = array
     }
 
+    private fun beginCollection(prefix: Char, array: Boolean) = beginCollection(prefix.toString(), array)
+
     private fun beginCollectionEntry() {
         if (!firstEntry) {
             builder.append(VALUE_SEPARATOR)
@@ -42,7 +44,7 @@ internal class StringifiedNbtWriter(private val builder: Appendable) : NbtWriter
         firstEntry = false
     }
 
-    private fun endCollection(suffix: String) {
+    private fun endCollection(suffix: Char) {
         builder.append(suffix)
 
         firstEntry = false
@@ -65,19 +67,19 @@ internal class StringifiedNbtWriter(private val builder: Appendable) : NbtWriter
     override fun endList(): Unit = endCollection(ARRAY_END)
 
     override fun beginByteArray(size: Int): Unit =
-        beginCollection(ARRAY_BEGIN + TYPE_BYTE_ARRAY + ARRAY_SIGNATURE_SEPARATOR, true)
+        beginCollection("$ARRAY_BEGIN$TYPE_BYTE_ARRAY$ARRAY_SIGNATURE_SEPARATOR", true)
 
     override fun beginByteArrayEntry(): Unit = beginCollectionEntry()
     override fun endByteArray(): Unit = endCollection(ARRAY_END)
 
     override fun beginIntArray(size: Int): Unit =
-        beginCollection(ARRAY_BEGIN + TYPE_INT_ARRAY + ARRAY_SIGNATURE_SEPARATOR, true)
+        beginCollection("$ARRAY_BEGIN$TYPE_INT_ARRAY$ARRAY_SIGNATURE_SEPARATOR", true)
 
     override fun beginIntArrayEntry(): Unit = beginCollectionEntry()
     override fun endIntArray(): Unit = endCollection(ARRAY_END)
 
     override fun beginLongArray(size: Int): Unit =
-        beginCollection(ARRAY_BEGIN + TYPE_LONG + ARRAY_SIGNATURE_SEPARATOR, true)
+        beginCollection("$ARRAY_BEGIN$TYPE_LONG$ARRAY_SIGNATURE_SEPARATOR", true)
 
     override fun beginLongArrayEntry(): Unit = beginCollectionEntry()
     override fun endLongArray(): Unit = endCollection(ARRAY_END)

@@ -1,33 +1,19 @@
-import cn.altawk.nbt.NbtArray
-import cn.altawk.nbt.NbtFormat
 import cn.altawk.nbt.tag.NbtCompound
 import cn.altawk.nbt.tag.NbtTag
 import cn.altawk.nbt.tag.NbtTagSerializer
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@Serializable
-@SerialName("Example")
-data class Example<T>(
-    val name: String?,
-    val list: List<String> = emptyList(),
-    val map: Map<String, Int> = emptyMap(),
-    val byteArray: ByteArray = ByteArray(0),
-    @NbtArray
-    val byteList: List<Byte> = emptyList(),
-    val duo: T,
-)
-
-val format = NbtFormat {
-}
-
-class StringifiedNbtWriterTest {
-
+/**
+ * NbtReaderTest
+ *
+ * @author TheFloodDragon
+ * @since 2025/3/15 13:29
+ */
+class NbtReaderTest {
 
     @Test
-    fun Encode() {
+    fun Decode() {
 
         val example = Example<NbtTag>(
             null,

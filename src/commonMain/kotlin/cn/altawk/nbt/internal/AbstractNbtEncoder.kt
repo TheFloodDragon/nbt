@@ -10,12 +10,10 @@ import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.builtins.ByteArraySerializer
 import kotlinx.serialization.builtins.IntArraySerializer
 import kotlinx.serialization.builtins.LongArraySerializer
-import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.encoding.AbstractEncoder
 import kotlinx.serialization.encoding.CompositeEncoder
-import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.modules.SerializersModule
 
 /**
@@ -28,12 +26,7 @@ internal abstract class AbstractNbtEncoder : NbtEncoder, AbstractEncoder() {
 
     override val serializersModule: SerializersModule get() = nbt.serializersModule
 
-    /**
-     * Encodes a boolean [value] associated with an element at the given [index] in [serial descriptor][descriptor].
-     * The element at the given [index] should have [PrimitiveKind.BOOLEAN] kind.
-     */
-    override fun encodeInline(descriptor: SerialDescriptor): Encoder = this
-    override fun encodeEnum(enumDescriptor: SerialDescriptor, index: Int) = encodeString(enumDescriptor.getElementName(index))
+    open fun encodeSerializableElement(descriptor: SerialDescriptor, index: Int): Boolean = true
 
     abstract fun beginCompound(descriptor: SerialDescriptor): CompositeEncoder
 
@@ -45,11 +38,6 @@ internal abstract class AbstractNbtEncoder : NbtEncoder, AbstractEncoder() {
         if (descriptor.kind == StructureKind.LIST) {
             beginList(descriptor, collectionSize)
         } else beginCompound(descriptor)
-
-    /**
-     * TODO 注释
-     */
-    open fun encodeSerializableElement(descriptor: SerialDescriptor, index: Int): Boolean = true
 
     override fun <T : Any?> encodeSerializableElement(
         descriptor: SerialDescriptor,
