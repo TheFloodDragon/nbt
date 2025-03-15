@@ -1,11 +1,14 @@
 package cn.altawk.nbt.tag
 
+import kotlinx.serialization.Serializable
+
 /**
  * NbtTag
  *
  * @author TheFloodDragon
  * @since 2025/1/5 16:46
  */
+@Serializable(NbtTagSerializer::class)
 public sealed interface NbtTag {
 
     /**

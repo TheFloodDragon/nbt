@@ -25,9 +25,9 @@ public enum class NbtType(public val id: Byte) {
     public companion object {
 
         /**
-         * Get the [NbtType] from its [id].
+         * Get the [NbtType] by its [id].
          */
-        public fun from(id: Byte): NbtType? = entries.find { it.id == id }
+        public fun of(id: Byte): NbtType? = entries.find { it.id == id }
 
     }
 

@@ -29,11 +29,6 @@ internal open class NbtReaderDecoder(
 
     override fun decodeElementIndex(descriptor: SerialDescriptor): Int = 0
 
-    override fun decodeEnum(enumDescriptor: SerialDescriptor): Int {
-        // TODO finish this
-        return super.decodeEnum(enumDescriptor)
-    }
-
     override fun decodeBoolean() =
         when (val byte = reader.readByte()) {
             0.toByte() -> false
@@ -64,32 +59,33 @@ internal open class NbtReaderDecoder(
             reader.beginCompound()
         }
 
-        override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
-            var entryKey = reader.beginCompoundEntry()
-
-            return if (entryKey == NbtReader.EOF) {
-                CompositeDecoder.DECODE_DONE
-            } else {
-                var index: Int = descriptor.getElementIndex(entryKey)
-
-                do {
-                    index = descriptor.getElementIndex(entryKey)
-
-                    if (index == CompositeDecoder.UNKNOWN_NAME) {
-                        entryKey = reader.beginCompoundEntry()
-
-                        if (entryKey == NbtReader.EOF) {
-                            index = CompositeDecoder.DECODE_DONE
-                        }
-                    }
-                } while (index == CompositeDecoder.UNKNOWN_NAME)
-
-                index
-            }
+        private fun SerialDescriptor.keyName(): String {
+            return nbt.configuration.nameDeterminer.mapName(reader.beginCompoundEntry(), this)
         }
 
-        override fun endStructure(descriptor: SerialDescriptor): Unit = reader.endCompound()
+        override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
+            var entryKey = descriptor.keyName()
 
+            if (entryKey == NbtReader.EOF) return CompositeDecoder.DECODE_DONE
+
+            var index: Int
+
+            do {
+                index = descriptor.getElementIndex(entryKey)
+
+                if (index == CompositeDecoder.UNKNOWN_NAME) {
+                    entryKey = descriptor.keyName()
+                    // The end of elements decoding
+                    if (entryKey == NbtReader.EOF) {
+                        return CompositeDecoder.DECODE_DONE
+                    }
+                }
+            } while (index == CompositeDecoder.UNKNOWN_NAME)
+
+            return index
+        }
+
+        override fun endStructure(descriptor: SerialDescriptor) = reader.endCompound()
     }
 
     private class MapDecoder(nbt: NbtFormat, reader: NbtReader) : NbtReaderDecoder(nbt, reader) {
@@ -118,9 +114,7 @@ internal open class NbtReaderDecoder(
             if (decodingMapKey) {
                 decodingMapKey = false
                 entryKey
-            } else {
-                super.decodeString()
-            }
+            } else super.decodeString()
 
         override fun endStructure(descriptor: SerialDescriptor) = reader.endCompound()
     }

@@ -25,7 +25,7 @@ internal class NbtWriterEncoder(
 
     override fun encodeSerializableElement(descriptor: SerialDescriptor, index: Int): Boolean {
         when (descriptor.kind as StructureKind) {
-            StructureKind.CLASS, StructureKind.OBJECT -> elementName = nbt.configuration.nameDeterminer.determineName(descriptor, index)
+            StructureKind.CLASS, StructureKind.OBJECT -> elementName = nbt.configuration.nameDeterminer.determineName(index, descriptor)
             StructureKind.MAP -> if (index % 2 == 0) encodingMapKey = true
             else -> Unit
         }

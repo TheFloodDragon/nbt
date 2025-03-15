@@ -2,7 +2,6 @@
 
 package cn.altawk.nbt.tag
 
-import cn.altawk.nbt.NbtArray
 import cn.altawk.nbt.NbtDecoder
 import cn.altawk.nbt.NbtEncoder
 import kotlinx.serialization.*
@@ -92,7 +91,7 @@ internal object NbtByteArraySerializer : KSerializer<NbtByteArray> {
 
     private object NbtByteArrayDescriptor : SerialDescriptor by ListSerializer(Byte.serializer()).descriptor {
         override val serialName: String = "nbt.NbtByteArray"
-        override val annotations: List<Annotation> = listOf(NbtArray())
+        override val annotations: List<Annotation> = listOf()
     }
 
     override val descriptor: SerialDescriptor = NbtByteArrayDescriptor
@@ -110,7 +109,7 @@ internal object NbtByteArraySerializer : KSerializer<NbtByteArray> {
 internal object NbtIntArraySerializer : KSerializer<NbtIntArray> {
     private object NbtIntArrayDescriptor : SerialDescriptor by ListSerializer(Int.serializer()).descriptor {
         override val serialName: String = "nbt.NbtIntArray"
-        override val annotations: List<Annotation> = listOf(NbtArray())
+        override val annotations: List<Annotation> = listOf()
     }
 
     override val descriptor: SerialDescriptor = NbtIntArrayDescriptor
@@ -128,7 +127,7 @@ internal object NbtLongArraySerializer : KSerializer<NbtLongArray> {
 
     private object NbtLongArrayDescriptor : SerialDescriptor by ListSerializer(Long.serializer()).descriptor {
         override val serialName: String = "nbt.NbtLongArray"
-        override val annotations: List<Annotation> = listOf(NbtArray())
+        override val annotations: List<Annotation> = listOf()
     }
 
     override val descriptor: SerialDescriptor = NbtLongArrayDescriptor
