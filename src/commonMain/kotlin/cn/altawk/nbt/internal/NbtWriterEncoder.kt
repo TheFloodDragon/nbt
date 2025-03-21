@@ -33,6 +33,7 @@ internal class NbtWriterEncoder(
     }
 
     override fun encodeElement(descriptor: SerialDescriptor, index: Int): Boolean {
+        if (!::elementName.isInitialized) encodeSerializableElement(descriptor, index)
         when (val structureType = structureTypeStack.last()) {
             COMPOUND -> if (!encodingMapKey) writer.beginCompoundEntry(elementName)
             LIST -> writer.beginListEntry()

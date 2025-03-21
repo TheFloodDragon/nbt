@@ -43,6 +43,7 @@ public inline fun NbtList.add(value: String): Boolean = this.add(NbtString(value
 public inline fun NbtList.add(value: Short): Boolean = this.add(NbtShort(value))
 public inline fun NbtList.add(value: ByteArray): Boolean = this.add(NbtByteArray(value))
 public inline fun NbtList.add(value: IntArray): Boolean = this.add(NbtIntArray(value))
+public inline fun NbtList.add(value: LongArray): Boolean = this.add(NbtLongArray(value))
 
 public inline fun NbtList.addList(
     list: MutableList<NbtTag> = ArrayList(),

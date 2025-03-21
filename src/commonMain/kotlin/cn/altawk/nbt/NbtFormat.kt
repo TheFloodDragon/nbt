@@ -48,8 +48,8 @@ public open class NbtFormat(
         return builder.toString()
     }
 
-    override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, string: String): T {
-        TODO("Not yet implemented")
+    override fun <T> decodeFromString(deserializer: DeserializationStrategy<T>, snbt: String): T {
+        return NbtReaderDecoder(this, StringifiedNbtReader(snbt)).decodeSerializableValue(deserializer)
     }
 
     override fun <T> decodeFromByteArray(deserializer: DeserializationStrategy<T>, bytes: ByteArray): T {
@@ -104,7 +104,7 @@ public class NbtFormatBuilder internal constructor(nbt: NbtFormat) {
     public var nameDeterminer: SerialNameDeterminer = nbt.configuration.nameDeterminer
 
     /**
-     * Module with contextual and polymorphic serializers to be used in the resulting [Json] instance.
+     * Module with contextual and polymorphic serializers to be used in the resulting [NbtFormat] instance.
      *
      * @see SerializersModule
      * @see Contextual

@@ -1,5 +1,6 @@
 import cn.altawk.nbt.tag.*
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 /**
  * NbtReaderTest
@@ -12,7 +13,7 @@ class NbtReaderTest {
     @Test
     fun Decode() {
 
-        val exampleTag = NbtCompound {
+        val tag = NbtCompound {
             put("name", "Good")
             putList("list") {
                 add("1")
@@ -28,22 +29,15 @@ class NbtReaderTest {
                 add(3.toByte())
                 add(4.toByte())
             }
-            put("cnm","gasdas")
-            put("cnm2","c2")
         }
-
-        println(exampleTag)
 
         val serializer = Example.serializer(NbtTagSerializer)
 
-        val example = format.decodeFromNbtTag(serializer, exampleTag)
+        val example = format.decodeFromNbtTag(serializer, tag)
 
-//        val str = format.encodeToString(serializer, exampleTag)
+        val str = format.encodeToString(serializer, example)
 
-        println(example)
-//        println(str)
-
-//        assertEquals(str, tag.toString())
+        assertEquals(str, tag.toString())
     }
 
 }

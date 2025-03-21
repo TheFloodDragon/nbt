@@ -38,6 +38,13 @@ internal class CharBuffer(private val sequence: CharSequence) {
 
     fun hasMore(offset: Int): Boolean = this.index + offset < sequence.length
 
+    fun breakpoint(): Int = this.index
+
+    fun reset(index: Int): CharBuffer {
+        this.index = index
+        return this
+    }
+
     /**
      * Search for the provided token, and advance the reader index past the `until` character.
      *
@@ -94,21 +101,16 @@ internal class CharBuffer(private val sequence: CharSequence) {
     }
 
     /**
-     * If the next non-whitespace character is `token`, advance past it.
+     * Take a character if it matches the provided action.
      *
-     *
-     * This method always consumes whitespace.
-     *
-     * @param token next non-whitespace character to query
-     * @return if the next non-whitespace character is `token`
+     * @param action the action to match
      */
-    fun takeIf(token: Char): Boolean {
+    fun takeWhen(action: (Char) -> Boolean): Char? {
         this.skipWhitespace()
-        if (this.hasMore() && this.peek() == token) {
-            this.advance()
-            return true
+        if (this.hasMore() && action(this.peek())) {
+            return this.take()
         }
-        return false
+        return null
     }
 
     fun skipWhitespace(): CharBuffer = this.apply {
@@ -116,8 +118,6 @@ internal class CharBuffer(private val sequence: CharSequence) {
     }
 
     @Throws(StringTagParseException::class)
-    internal fun makeError(message: String?) {
-        throw StringTagParseException(message, this.sequence, this.index)
-    }
+    internal fun makeError(message: String?): Nothing = throw StringTagParseException(message, this.sequence, this.index)
 
 }

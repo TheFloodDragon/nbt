@@ -460,6 +460,7 @@ public final class cn/altawk/nbt/tag/NbtUtilsKt {
 	public static final fun add (Lcn/altawk/nbt/tag/NbtList;Z)Z
 	public static final fun add (Lcn/altawk/nbt/tag/NbtList;[B)Z
 	public static final fun add (Lcn/altawk/nbt/tag/NbtList;[I)Z
+	public static final fun add (Lcn/altawk/nbt/tag/NbtList;[J)Z
 	public static final fun addCompound (Lcn/altawk/nbt/tag/NbtList;Ljava/util/Map;Lkotlin/jvm/functions/Function1;)Z
 	public static synthetic fun addCompound$default (Lcn/altawk/nbt/tag/NbtList;Ljava/util/Map;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Z
 	public static final fun addList (Lcn/altawk/nbt/tag/NbtList;Ljava/util/List;Lkotlin/jvm/functions/Function1;)Z
