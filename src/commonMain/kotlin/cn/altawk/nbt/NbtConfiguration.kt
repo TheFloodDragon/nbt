@@ -7,5 +7,6 @@ package cn.altawk.nbt
  * @since 2025/1/25 11:32
  */
 public class NbtConfiguration internal constructor(
+    public val explicitNulls: Boolean = false,
     public val nameDeterminer: SerialNameDeterminer = SerialNameDeterminer.Default,
 )

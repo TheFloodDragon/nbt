@@ -54,6 +54,8 @@ internal open class NbtReaderDecoder(
         nbt: NbtFormat,
         reader: NbtReader
     ) : NbtReaderDecoder(nbt, reader) {
+        var forceNull: Boolean = false
+        var postion: Int = 0
 
         init {
             reader.beginCompound()
@@ -64,26 +66,35 @@ internal open class NbtReaderDecoder(
         }
 
         override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
-            var entryKey = descriptor.keyName()
+            if (++postion >= descriptor.elementsCount) return CompositeDecoder.DECODE_DONE
 
-            if (entryKey == NbtReader.EOF) return CompositeDecoder.DECODE_DONE
-
+            var entryKey: String
             var index: Int
+            forceNull = false
 
             do {
+                entryKey = descriptor.keyName()
                 index = descriptor.getElementIndex(entryKey)
 
-                if (index == CompositeDecoder.UNKNOWN_NAME) {
-                    entryKey = descriptor.keyName()
-                    // The end of elements decoding
-                    if (entryKey == NbtReader.EOF) {
-                        return CompositeDecoder.DECODE_DONE
-                    }
+                println(entryKey to index)
+                // The end of elements decoding
+                if (index == CompositeDecoder.UNKNOWN_NAME && entryKey == NbtReader.EOF) {
+                    println(postion)
+                    println(descriptor.getElementDescriptor(postion))
+                    return if (!nbt.configuration.explicitNulls
+                        && !descriptor.isElementOptional(postion)
+                        && descriptor.getElementDescriptor(postion).isNullable
+                    ) {
+                        forceNull = true
+                        postion
+                    } else CompositeDecoder.DECODE_DONE
                 }
             } while (index == CompositeDecoder.UNKNOWN_NAME)
 
             return index
         }
+
+        override fun decodeNotNullMark() = !forceNull && super.decodeNotNullMark()
 
         override fun endStructure(descriptor: SerialDescriptor) = reader.endCompound()
     }

@@ -1,29 +1,95 @@
 //package cn.altawk.nbt.internal
 //
+//import cn.altawk.nbt.internal.NbtReader.Companion.EOF
+//import cn.altawk.nbt.internal.NbtReader.Companion.UNKNOWN_SIZE
+//import cn.altawk.nbt.internal.Tokens.ARRAY_BEGIN
+//import cn.altawk.nbt.internal.Tokens.ARRAY_END
 //import cn.altawk.nbt.internal.Tokens.COMPOUND_BEGIN
 //import cn.altawk.nbt.internal.Tokens.COMPOUND_END
 //import cn.altawk.nbt.internal.Tokens.COMPOUND_KEY_TERMINATOR
-//import cn.altawk.nbt.internal.Tokens.EOF
-//import cn.altawk.nbt.internal.Tokens.UNKNOWN_SIZE
+//import cn.altawk.nbt.internal.Tokens.TYPE_BYTE_ARRAY
+//import cn.altawk.nbt.internal.Tokens.TYPE_INT_ARRAY
+//import cn.altawk.nbt.internal.Tokens.TYPE_LONG_ARRAY
 //import cn.altawk.nbt.internal.Tokens.VALUE_SEPARATOR
+//import cn.altawk.nbt.tag.NbtTag
+//import cn.altawk.nbt.tag.NbtByte
+//import cn.altawk.nbt.tag.NbtShort
+//import cn.altawk.nbt.tag.NbtInt
+//import cn.altawk.nbt.tag.NbtLong
+//import cn.altawk.nbt.tag.NbtFloat
+//import cn.altawk.nbt.tag.NbtDouble
+//import cn.altawk.nbt.tag.NbtString
+//import cn.altawk.nbt.tag.NbtList
+//import cn.altawk.nbt.tag.NbtCompound
+//import cn.altawk.nbt.tag.NbtByteArray
+//import cn.altawk.nbt.tag.NbtIntArray
+//import cn.altawk.nbt.tag.NbtLongArray
+//import java.nio.CharBuffer
 //
 ///**
 // * StringifiedNbtReader
 // *
-// * @author TheFloodDragon
 // * @since 2025/3/15 11:13
 // */
 //internal class StringifiedNbtReader(private val buffer: CharBuffer) : NbtReader {
 //    private var firstEntry = true
+//
+//    override fun readTag(): NbtTag {
+//        return readTag(buffer) ?: throw NbtDecodingException("Unexpected end of input")
+//    }
+//
+//    private fun readTag(buf: CharBuffer): NbtTag? {
+//        when (val peek = buf.take()) {
+//            EOF.first() -> return null
+//            '[' -> when (buf.skipWhitespace().take()) {
+//                'B' -> if (buf.skipWhitespace().take() == ';') {
+//                    return NbtByteArray(buf.takeUntil(',').toByteArray())
+//                }
+//                'I' -> if (buf.skipWhitespace().take() == ';') NbtIntArray(buf.takeUntil(',').toIntArray()) else NbtList()
+//                'L' -> if (buf.skipWhitespace().take() == ';') NbtLongArray(buf.takeUntil(',').toLongArray()) else NbtList()
+//                ']' -> NbtList()
+//                else -> NbtList()
+//            }
+//            '{' -> return NbtCompound().apply { readCompoundEntries(this) }
+//            '\'', '"' -> return NbtString(buf.takeUntil(peek))
+//            else -> {
+//                buf.bufferUnquotedString()
+//                return when {
+//                    buf.isEmpty() -> null
+//                    FLOAT_A.matches(buf) -> NbtFloat(buf.toString().toFloat())
+//                    FLOAT_B.matches(buf) -> NbtFloat(buf.toString().toFloat())
+//                    BYTE.matches(buf) -> NbtByte(buf.toString().toByte())
+//                    LONG.matches(buf) -> NbtLong(buf.toString().toLong())
+//                    SHORT.matches(buf) -> NbtShort(buf.toString().toShort())
+//                    INT.matches(buf) -> NbtInt(buf.toString().toInt())
+//                    DOUBLE_A.matches(buf) -> NbtDouble(buf.toString().toDouble())
+//                    DOUBLE_B.matches(buf) -> NbtDouble(buf.toString().toDouble())
+//                    "true".contentEquals(buf, true) -> NbtByte(1)
+//                    "false".contentEquals(buf, true) -> NbtByte(0)
+//                    else -> NbtString(buf.toString())
+//                }
+//            }
+//        }
+//    }
+//
+//    private fun readCompoundEntries(compound: NbtCompound) {
+//        beginCompound()
+//        while (true) {
+//            val key = beginCompoundEntry()
+//            if (key == EOF) break
+//            val value = readTag(buffer) ?: throw NbtDecodingException("Unexpected end of input")
+//            compound.put(key, value)
+//        }
+//        endCompound()
+//    }
 //
 //    override fun beginCompound() {
 //        buffer.skipWhitespace().expect(COMPOUND_BEGIN)
 //        firstEntry = true
 //    }
 //
-//    override fun beginCompoundEntry(): CharSequence {
+//    override fun beginCompoundEntry(): String {
 //        buffer.skipWhitespace()
-//
 //        return if (buffer.peek() == COMPOUND_END) EOF else {
 //            if (firstEntry) {
 //                firstEntry = false
@@ -31,8 +97,7 @@
 //                val char = buffer.take()
 //                if (char != VALUE_SEPARATOR) throw buffer.makeError("Expected ',' or '}', but got '$char'")
 //            }
-//
-//            return buffer.skipWhitespace().takeUntil(COMPOUND_KEY_TERMINATOR)
+//            buffer.skipWhitespace().takeUntil(COMPOUND_KEY_TERMINATOR)
 //        }
 //    }
 //
@@ -44,115 +109,100 @@
 //        buffer.skipWhitespace().expect('[')
 //        buffer.skipWhitespace().expect(type, true)
 //        buffer.skipWhitespace().expect(';')
-//
 //        firstEntry = true
-//
 //        return if (buffer.skipWhitespace().peek() == ']') 0 else UNKNOWN_SIZE
 //    }
 //
 //    private fun beginCollectionEntry(): Boolean {
-//        buffer.skipWhitespace()
-//
-//        return if (buffer.peek() == ']') {
-//            false
+//        val isEnd = buffer.skipWhitespace().peek() == ARRAY_END
+//        if (firstEntry) {
+//            firstEntry = false
 //        } else {
-//            if (firstEntry) {
-//                firstEntry = false
-//            } else {
-//                val char = buffer.take()
-//                if (char != ',') throw buffer.makeError("Expected ',' or ']', but got '$char'")
-//            }
-//            true
+//            val char = buffer.take()
+//            if (char != VALUE_SEPARATOR) throw buffer.makeError("Expected ',' or ']', but got '$char'")
 //        }
+//        return isEnd
 //    }
 //
 //    private fun endCollection() {
-//        buffer.skipWhitespace().expect(']')
+//        buffer.skipWhitespace().expect(ARRAY_END)
 //    }
 //
-//    override fun beginList() {
-//        buffer.skipWhitespace().expect('[')
+//    override fun beginList(): Int {
+//        buffer.skipWhitespace().expect(ARRAY_BEGIN)
 //        buffer.skipWhitespace()
-//
 //        firstEntry = true
-//
-//        val type = source.peekTagType() ?: TAG_End
-//        val size = if (type == TAG_End) 0 else NbtReader.UNKNOWN_SIZE
-//
-//        return NbtReader.ListInfo(type, size)
+//        return if (buffer.peek() == EOF) 0 else NbtReader.UNKNOWN_SIZE
 //    }
 //
-//    override fun beginListEntry(): Boolean {
-//        TODO("Not yet implemented")
-//    }
+//    override fun beginListEntry() = beginCollectionEntry()
 //
-//    override fun endList() {
-//        TODO("Not yet implemented")
-//    }
+//    override fun endList() = endCollection()
 //
-//    override fun beginByteArray() {
-//        TODO("Not yet implemented")
-//    }
+//    override fun beginByteArray(): Int = beginArray(TYPE_BYTE_ARRAY)
+//    override fun beginByteArrayEntry() = beginCollectionEntry()
+//    override fun endByteArray() = endCollection()
 //
-//    override fun beginByteArrayEntry(): Boolean {
-//        TODO("Not yet implemented")
-//    }
+//    override fun beginIntArray() = beginArray(TYPE_INT_ARRAY)
+//    override fun beginIntArrayEntry() = beginCollectionEntry()
+//    override fun endIntArray() = endCollection()
 //
-//    override fun endByteArray() {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override fun beginIntArray() {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override fun beginIntArrayEntry(): Boolean {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override fun endIntArray() {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override fun beginLongArray() {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override fun beginLongArrayEntry(): Boolean {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override fun endLongArray() {
-//        TODO("Not yet implemented")
-//    }
+//    override fun beginLongArray() = beginArray(TYPE_LONG_ARRAY)
+//    override fun beginLongArrayEntry() = beginCollectionEntry()
+//    override fun endLongArray() = endCollection()
 //
 //    override fun readByte(): Byte {
-//        TODO("Not yet implemented")
+//        buffer.skipWhitespace().bufferUnquotedString()
+//        return when {
+//            buffer.contentEquals("true", true) -> 1
+//            buffer.contentEquals("false", true) -> 0
+//            else -> {
+//                if (!BYTE.matches(buffer)) throw NbtDecodingException("Expected Byte, but was '$buffer'")
+//                buffer.setLength(buffer.length - 1)
+//                buffer.toString().toByte()
+//            }
+//        }
 //    }
 //
 //    override fun readShort(): Short {
-//        TODO("Not yet implemented")
+//        buffer.skipWhitespace().bufferUnquotedString()
+//        if (!SHORT.matches(buffer)) throw NbtDecodingException("Expected Short, but was '$buffer'")
+//        buffer.setLength(buffer.length - 1)
+//        return buffer.toString().toShort()
 //    }
 //
 //    override fun readInt(): Int {
-//        TODO("Not yet implemented")
+//        buffer.skipWhitespace().bufferUnquotedString()
+//        if (!INT.matches(buffer)) throw NbtDecodingException("Expected Int, but was '$buffer'")
+//        buffer.setLength(buffer.length - 1)
+//        return buffer.toString().toInt()
 //    }
 //
 //    override fun readLong(): Long {
-//        TODO("Not yet implemented")
+//        buffer.skipWhitespace().bufferUnquotedString()
+//        if (!LONG.matches(buffer)) throw NbtDecodingException("Expected Long, but was '$buffer'")
+//        buffer.setLength(buffer.length - 1)
+//        return buffer.toString().toLong()
 //    }
 //
 //    override fun readFloat(): Float {
-//        TODO("Not yet implemented")
+//        buffer.skipWhitespace().bufferUnquotedString()
+//        if (!FLOAT_A.matches(buffer) && !FLOAT_B.matches(buffer)) throw NbtDecodingException("Expected Float, but was '$buffer'")
+//        buffer.setLength(buffer.length - 1)
+//        return buffer.toString().toFloat()
 //    }
 //
 //    override fun readDouble(): Double {
-//        TODO("Not yet implemented")
+//        buffer.skipWhitespace().bufferUnquotedString()
+//        if (!DOUBLE_A.matches(buffer) && !DOUBLE_B.matches(buffer)) throw NbtDecodingException("Expected Double, but was '$buffer'")
+//        buffer.setLength(buffer.length - 1)
+//        return buffer.toString().toDouble()
 //    }
 //
 //    override fun readString(): String {
-//        TODO("Not yet implemented")
+//        buffer.skipWhitespace()
+//        val quote = buffer.take()
+//        if (quote != '\'' && quote != '"') throw NbtDecodingException("Expected String, but was '$buffer'")
+//        return buffer.takeUntil(quote)
 //    }
-//
-//
 //}

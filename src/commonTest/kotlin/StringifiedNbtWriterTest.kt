@@ -1,5 +1,4 @@
 import cn.altawk.nbt.NbtFormat
-import cn.altawk.nbt.tag.NbtCompound
 import cn.altawk.nbt.tag.NbtTag
 import cn.altawk.nbt.tag.NbtTagSerializer
 import kotlinx.serialization.SerialName
@@ -17,6 +16,7 @@ data class Example<T>(
     val byteList: List<Byte> = emptyList(),
     val description: String? = null,
     val website: String?,
+    val tn: Byte?,
 )
 
 val format = NbtFormat {
@@ -34,6 +34,7 @@ class StringifiedNbtWriterTest {
             mapOf("Ket1" to 1, "Key2" to 2),
             byteArrayOf(1, 2, 3),
             listOf(2, 3, 4),
+            null,
             null,
             null,
         )

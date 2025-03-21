@@ -46,7 +46,7 @@ internal class CharBuffer(private val sequence: CharSequence) {
      * @throws StringTagParseException if `until` is not present in the remaining string
      */
     @Throws(StringTagParseException::class)
-    fun takeUntil(until: Char): CharSequence {
+    fun takeUntil(until: Char): String {
         val u = until.lowercaseChar()
         var endIdx = -1
         var idx = this.index
@@ -63,7 +63,7 @@ internal class CharBuffer(private val sequence: CharSequence) {
             throw this.makeError("No occurrence of $u was found")
         }
 
-        val result = sequence.subSequence(this.index, endIdx)
+        val result = sequence.substring(this.index, endIdx)
         this.index = endIdx + 1
         return result
     }

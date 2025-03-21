@@ -84,6 +84,15 @@ public fun NbtFormat(from: NbtFormat = NbtFormat.Default, builderAction: NbtForm
 public class NbtFormatBuilder internal constructor(nbt: NbtFormat) {
 
     /**
+     * Specifies whether `null` values should be encoded for nullable properties and must be present in JSON object
+     * during decoding.
+     *
+     * When this flag is disabled properties with `null` values are not encoded;
+     * during decoding, the absence of a field value is treated as `null` for nullable properties without a default value.
+     */
+    public var explicitNulls: Boolean = nbt.configuration.explicitNulls
+
+    /**
      * Specifies the [SerialNameDeterminer] the coder used
      */
     public var nameDeterminer: SerialNameDeterminer = nbt.configuration.nameDeterminer
@@ -99,7 +108,7 @@ public class NbtFormatBuilder internal constructor(nbt: NbtFormat) {
 
     internal fun build(): NbtConfiguration {
         return NbtConfiguration(
-            nameDeterminer
+            explicitNulls, nameDeterminer
         )
     }
 

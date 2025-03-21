@@ -30,7 +30,6 @@ class NbtReaderTest {
             }
             put("cnm","gasdas")
             put("cnm2","c2")
-            put("cnm3","c3")
         }
 
         println(exampleTag)

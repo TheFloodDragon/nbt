@@ -56,7 +56,7 @@ internal abstract class AbstractNbtEncoder : NbtEncoder, AbstractEncoder() {
         serializer: SerializationStrategy<T>,
         value: T?
     ) {
-        if (encodeSerializableElement(descriptor, index) && value != null) {
+        if (encodeSerializableElement(descriptor, index) && (value != null || nbt.configuration.explicitNulls)) {
             super.encodeNullableSerializableElement(descriptor, index, serializer, value)
         }
     }
