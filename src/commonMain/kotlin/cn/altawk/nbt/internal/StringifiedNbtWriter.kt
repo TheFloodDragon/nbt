@@ -8,6 +8,7 @@ import cn.altawk.nbt.internal.Tokens.COMPOUND_END
 import cn.altawk.nbt.internal.Tokens.COMPOUND_KEY_TERMINATOR
 import cn.altawk.nbt.internal.Tokens.DOUBLE_QUOTE
 import cn.altawk.nbt.internal.Tokens.ESCAPE_MARKER
+import cn.altawk.nbt.internal.Tokens.PRETTY_PRINT_SPACE
 import cn.altawk.nbt.internal.Tokens.SINGLE_QUOTE
 import cn.altawk.nbt.internal.Tokens.TYPE_BYTE
 import cn.altawk.nbt.internal.Tokens.TYPE_BYTE_ARRAY
@@ -25,31 +26,50 @@ import cn.altawk.nbt.internal.Tokens.VALUE_SEPARATOR
  * @author TheFloodDragon
  * @since 2025/2/22 15:23
  */
-internal class StringifiedNbtWriter(private val builder: Appendable) : NbtWriter {
+internal class StringifiedNbtWriter(private val builder: Appendable, val prettyPrint: Boolean) : NbtWriter {
     private var firstEntry = false
     private var inArray = false
+    private var level = 0
 
     private fun beginArray(prefix: String) {
         builder.append(prefix)
+        if (prettyPrint) builder.append(PRETTY_PRINT_SPACE)
+
         firstEntry = true
         inArray = true
+        level++
     }
 
     private fun beginCollection(prefix: Char) {
         builder.append(prefix)
+
         firstEntry = true
         inArray = false
+        level++
     }
 
     private fun beginCollectionEntry() {
         if (!firstEntry) {
             builder.append(VALUE_SEPARATOR)
+            if (prettyPrint && inArray) builder.append(PRETTY_PRINT_SPACE)
         }
+
+        if (prettyPrint && !inArray) appendPrettyNewLine()
 
         firstEntry = false
     }
 
     private fun endCollection(suffix: Char) {
+        level--
+        appendPrettyNewLine()
+        builder.append(suffix)
+
+        firstEntry = false
+        inArray = false
+    }
+
+    private fun endArray(suffix: Char) {
+        level--
         builder.append(suffix)
 
         firstEntry = false
@@ -61,6 +81,7 @@ internal class StringifiedNbtWriter(private val builder: Appendable) : NbtWriter
     override fun beginCompoundEntry(name: String) {
         beginCollectionEntry()
         builder.appendNbtString(name).append(COMPOUND_KEY_TERMINATOR)
+        if (prettyPrint) builder.append(PRETTY_PRINT_SPACE)
     }
 
     override fun endCompound(): Unit = endCollection(COMPOUND_END)
@@ -74,17 +95,17 @@ internal class StringifiedNbtWriter(private val builder: Appendable) : NbtWriter
     override fun beginByteArray(size: Int): Unit = beginArray("$ARRAY_BEGIN$TYPE_BYTE_ARRAY$ARRAY_SIGNATURE_SEPARATOR")
 
     override fun beginByteArrayEntry(): Unit = beginCollectionEntry()
-    override fun endByteArray(): Unit = endCollection(ARRAY_END)
+    override fun endByteArray(): Unit = endArray(ARRAY_END)
 
     override fun beginIntArray(size: Int): Unit = beginArray("$ARRAY_BEGIN$TYPE_INT_ARRAY$ARRAY_SIGNATURE_SEPARATOR")
 
     override fun beginIntArrayEntry(): Unit = beginCollectionEntry()
-    override fun endIntArray(): Unit = endCollection(ARRAY_END)
+    override fun endIntArray(): Unit = endArray(ARRAY_END)
 
     override fun beginLongArray(size: Int): Unit = beginArray("$ARRAY_BEGIN$TYPE_LONG_ARRAY$ARRAY_SIGNATURE_SEPARATOR")
 
     override fun beginLongArrayEntry(): Unit = beginCollectionEntry()
-    override fun endLongArray(): Unit = endCollection(ARRAY_END)
+    override fun endLongArray(): Unit = endArray(ARRAY_END)
 
     override fun writeByte(value: Byte) {
         builder.append(value.toString()).append(if (inArray) TYPE_BYTE_ARRAY else TYPE_BYTE)
@@ -112,6 +133,13 @@ internal class StringifiedNbtWriter(private val builder: Appendable) : NbtWriter
 
     override fun writeString(value: String) {
         builder.appendNbtString(value, forceQuote = true)
+    }
+
+    private fun appendPrettyNewLine() {
+        if (prettyPrint) {
+            builder.appendLine()
+            repeat(level) { builder.append(PRETTY_PRINT_SPACE) }
+        }
     }
 
 }

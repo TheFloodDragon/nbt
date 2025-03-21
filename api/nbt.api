@@ -1,6 +1,8 @@
 public final class cn/altawk/nbt/NbtConfiguration {
 	public fun <init> ()V
+	public final fun getExplicitNulls ()Z
 	public final fun getNameDeterminer ()Lcn/altawk/nbt/SerialNameDeterminer;
+	public final fun getPrettyPrint ()Z
 }
 
 public abstract interface class cn/altawk/nbt/NbtDecoder : kotlinx/serialization/encoding/CompositeDecoder, kotlinx/serialization/encoding/Decoder {
@@ -36,9 +38,13 @@ public final class cn/altawk/nbt/NbtFormat$Default : cn/altawk/nbt/NbtFormat {
 }
 
 public final class cn/altawk/nbt/NbtFormatBuilder {
+	public final fun getExplicitNulls ()Z
 	public final fun getNameDeterminer ()Lcn/altawk/nbt/SerialNameDeterminer;
+	public final fun getPrettyPrint ()Z
 	public final fun getSerializersModule ()Lkotlinx/serialization/modules/SerializersModule;
+	public final fun setExplicitNulls (Z)V
 	public final fun setNameDeterminer (Lcn/altawk/nbt/SerialNameDeterminer;)V
+	public final fun setPrettyPrint (Z)V
 	public final fun setSerializersModule (Lkotlinx/serialization/modules/SerializersModule;)V
 }
 
@@ -47,40 +53,23 @@ public final class cn/altawk/nbt/NbtFormatKt {
 	public static synthetic fun NbtFormat$default (Lcn/altawk/nbt/NbtFormat;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcn/altawk/nbt/NbtFormat;
 }
 
-public final class cn/altawk/nbt/NbtPath : java/util/List, kotlin/jvm/internal/markers/KMappedMarker {
-	public fun <init> (Ljava/util/List;)V
-	public fun add (ILcn/altawk/nbt/NbtPath$Node;)V
-	public synthetic fun add (ILjava/lang/Object;)V
+public final class cn/altawk/nbt/NbtPath : java/util/Collection, kotlin/jvm/internal/markers/KMappedMarker {
+	public fun <init> (Ljava/util/Collection;)V
 	public fun add (Lcn/altawk/nbt/NbtPath$Node;)Z
 	public synthetic fun add (Ljava/lang/Object;)Z
-	public fun addAll (ILjava/util/Collection;)Z
 	public fun addAll (Ljava/util/Collection;)Z
 	public fun clear ()V
 	public fun contains (Lcn/altawk/nbt/NbtPath$Node;)Z
 	public final fun contains (Ljava/lang/Object;)Z
 	public fun containsAll (Ljava/util/Collection;)Z
-	public fun get (I)Lcn/altawk/nbt/NbtPath$Node;
-	public synthetic fun get (I)Ljava/lang/Object;
 	public fun getSize ()I
-	public fun indexOf (Lcn/altawk/nbt/NbtPath$Node;)I
-	public final fun indexOf (Ljava/lang/Object;)I
 	public fun isEmpty ()Z
 	public fun iterator ()Ljava/util/Iterator;
-	public fun lastIndexOf (Lcn/altawk/nbt/NbtPath$Node;)I
-	public final fun lastIndexOf (Ljava/lang/Object;)I
-	public fun listIterator ()Ljava/util/ListIterator;
-	public fun listIterator (I)Ljava/util/ListIterator;
-	public fun remove (I)Lcn/altawk/nbt/NbtPath$Node;
-	public synthetic fun remove (I)Ljava/lang/Object;
 	public fun remove (Ljava/lang/Object;)Z
 	public fun removeAll (Ljava/util/Collection;)Z
-	public fun replaceAll (Ljava/util/function/UnaryOperator;)V
+	public fun removeIf (Ljava/util/function/Predicate;)Z
 	public fun retainAll (Ljava/util/Collection;)Z
-	public fun set (ILcn/altawk/nbt/NbtPath$Node;)Lcn/altawk/nbt/NbtPath$Node;
-	public synthetic fun set (ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun size ()I
-	public fun sort (Ljava/util/Comparator;)V
-	public fun subList (II)Ljava/util/List;
 	public fun toArray ()[Ljava/lang/Object;
 	public fun toArray ([Ljava/lang/Object;)[Ljava/lang/Object;
 }
@@ -99,11 +88,6 @@ public final class cn/altawk/nbt/NbtPath$NameNode : cn/altawk/nbt/NbtPath$Node {
 
 public abstract interface class cn/altawk/nbt/NbtPath$Node {
 	public abstract fun getType ()Lcn/altawk/nbt/tag/NbtType;
-}
-
-public final class cn/altawk/nbt/NbtPath$RootNode : cn/altawk/nbt/NbtPath$Node {
-	public fun <init> (Lcn/altawk/nbt/tag/NbtType;)V
-	public fun getType ()Lcn/altawk/nbt/tag/NbtType;
 }
 
 public abstract interface class cn/altawk/nbt/SerialNameDeterminer {

@@ -76,7 +76,6 @@ internal open class NbtReaderDecoder(
                 entryKey = descriptor.keyName()
                 index = descriptor.getElementIndex(entryKey)
 
-                println(entryKey to index)
                 // The end of elements decoding
                 if (index == CompositeDecoder.UNKNOWN_NAME && entryKey == NbtReader.EOF) {
                     println(postion)

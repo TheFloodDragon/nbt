@@ -43,7 +43,8 @@ public open class NbtFormat(
 
     override fun <T> encodeToString(serializer: SerializationStrategy<T>, value: T): String {
         val builder = StringBuilder()
-        NbtWriterEncoder(this, StringifiedNbtWriter(builder)).encodeSerializableValue(serializer, value)
+        val writer = StringifiedNbtWriter(builder, configuration.prettyPrint)
+        NbtWriterEncoder(this, writer).encodeSerializableValue(serializer, value)
         return builder.toString()
     }
 
@@ -84,6 +85,11 @@ public fun NbtFormat(from: NbtFormat = NbtFormat.Default, builderAction: NbtForm
 public class NbtFormatBuilder internal constructor(nbt: NbtFormat) {
 
     /**
+     * Specifies whether resulting Stringified NBT should be pretty-printed.
+     */
+    public var prettyPrint: Boolean = nbt.configuration.prettyPrint
+
+    /**
      * Specifies whether `null` values should be encoded for nullable properties and must be present in JSON object
      * during decoding.
      *
@@ -108,7 +114,7 @@ public class NbtFormatBuilder internal constructor(nbt: NbtFormat) {
 
     internal fun build(): NbtConfiguration {
         return NbtConfiguration(
-            explicitNulls, nameDeterminer
+            prettyPrint, explicitNulls, nameDeterminer
         )
     }
 
