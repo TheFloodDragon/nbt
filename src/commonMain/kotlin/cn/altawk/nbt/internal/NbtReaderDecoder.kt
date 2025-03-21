@@ -54,42 +54,41 @@ internal open class NbtReaderDecoder(
         nbt: NbtFormat,
         reader: NbtReader
     ) : NbtReaderDecoder(nbt, reader) {
-        var forceNull: Boolean = false
-        var postion: Int = 0
+        private var position: Int = 0
+        private var usedIndexes = ArrayList<Int>()
+        private var forceNull: Boolean = false
 
         init {
             reader.beginCompound()
         }
 
-        private fun SerialDescriptor.keyName(): String {
-            return nbt.configuration.nameDeterminer.mapName(reader.beginCompoundEntry(), this)
-        }
-
         override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
-            if (++postion >= descriptor.elementsCount) return CompositeDecoder.DECODE_DONE
-
             var entryKey: String
             var index: Int
             forceNull = false
 
             do {
-                entryKey = descriptor.keyName()
+                // Mapped entry key
+                entryKey = nbt.configuration.nameDeterminer.mapName(reader.beginCompoundEntry(), descriptor)
                 index = descriptor.getElementIndex(entryKey)
 
                 // The end of elements decoding
-                if (index == CompositeDecoder.UNKNOWN_NAME && entryKey == NbtReader.EOF) {
-                    println(postion)
-                    println(descriptor.getElementDescriptor(postion))
-                    return if (!nbt.configuration.explicitNulls
-                        && !descriptor.isElementOptional(postion)
-                        && descriptor.getElementDescriptor(postion).isNullable
-                    ) {
-                        forceNull = true
-                        postion
-                    } else CompositeDecoder.DECODE_DONE
+                if (entryKey == NbtReader.EOF) {
+                    while (++position < descriptor.elementsCount) {
+                        if (position !in usedIndexes // Skip already used indexes
+                            && !nbt.configuration.explicitNulls
+                            && !descriptor.isElementOptional(position) // Skip optional elements
+                            && descriptor.getElementDescriptor(position).isNullable
+                        ) {
+                            forceNull = true
+                            return position
+                        }
+                    }
+                    return CompositeDecoder.DECODE_DONE
                 }
             } while (index == CompositeDecoder.UNKNOWN_NAME)
 
+            usedIndexes.add(index)
             return index
         }
 
@@ -136,12 +135,7 @@ internal open class NbtReaderDecoder(
 
         private var index = -1
 
-        override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
-            if (reader.beginListEntry()) {
-                index++
-                return index
-            } else return CompositeDecoder.DECODE_DONE
-        }
+        override fun decodeElementIndex(descriptor: SerialDescriptor): Int = if (reader.beginListEntry()) ++index else CompositeDecoder.DECODE_DONE
 
         override fun endStructure(descriptor: SerialDescriptor): Unit = reader.endList()
     }

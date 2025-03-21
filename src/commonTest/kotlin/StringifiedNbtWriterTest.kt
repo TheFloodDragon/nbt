@@ -11,12 +11,12 @@ import kotlin.test.assertEquals
 data class Example<T>(
     val name: String,
     val list: List<String> = emptyList(),
+    val tn: Byte?,
     val map: Map<String, Int> = emptyMap(),
     val byteArray: ByteArray = ByteArray(0),
     val byteList: List<Byte> = emptyList(),
     val description: String? = null,
     val website: String?,
-    val tn: Byte?,
 )
 
 val format = NbtFormat {
@@ -31,10 +31,10 @@ class StringifiedNbtWriterTest {
         val example = Example<NbtTag>(
             "Good",
             listOf("1", "2"),
+            null,
             mapOf("Ket1" to 1, "Key2" to 2),
             byteArrayOf(1, 2, 3),
             listOf(2, 3, 4),
-            null,
             null,
             null,
         )

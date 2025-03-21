@@ -26,7 +26,7 @@ import cn.altawk.nbt.internal.Tokens.VALUE_SEPARATOR
  * @author TheFloodDragon
  * @since 2025/2/22 15:23
  */
-internal class StringifiedNbtWriter(private val builder: Appendable, val prettyPrint: Boolean) : NbtWriter {
+internal class StringifiedNbtWriter(private val builder: Appendable, private val prettyPrint: Boolean) : NbtWriter {
     private var firstEntry = false
     private var inArray = false
     private var level = 0
@@ -68,15 +68,15 @@ internal class StringifiedNbtWriter(private val builder: Appendable, val prettyP
         inArray = false
     }
 
-    private fun endArray(suffix: Char) {
+    private fun endArray() {
         level--
-        builder.append(suffix)
+        builder.append(ARRAY_END)
 
         firstEntry = false
         inArray = false
     }
 
-    override fun beginCompound(): Unit = beginCollection(COMPOUND_BEGIN)
+    override fun beginCompound() = beginCollection(COMPOUND_BEGIN)
 
     override fun beginCompoundEntry(name: String) {
         beginCollectionEntry()
@@ -84,28 +84,28 @@ internal class StringifiedNbtWriter(private val builder: Appendable, val prettyP
         if (prettyPrint) builder.append(PRETTY_PRINT_SPACE)
     }
 
-    override fun endCompound(): Unit = endCollection(COMPOUND_END)
+    override fun endCompound() = endCollection(COMPOUND_END)
 
-    override fun beginList(size: Int): Unit = beginCollection(ARRAY_BEGIN)
+    override fun beginList(size: Int) = beginCollection(ARRAY_BEGIN)
 
-    override fun beginListEntry(): Unit = beginCollectionEntry()
+    override fun beginListEntry() = beginCollectionEntry()
 
-    override fun endList(): Unit = endCollection(ARRAY_END)
+    override fun endList() = endCollection(ARRAY_END)
 
-    override fun beginByteArray(size: Int): Unit = beginArray("$ARRAY_BEGIN$TYPE_BYTE_ARRAY$ARRAY_SIGNATURE_SEPARATOR")
+    override fun beginByteArray(size: Int) = beginArray("$ARRAY_BEGIN$TYPE_BYTE_ARRAY$ARRAY_SIGNATURE_SEPARATOR")
 
-    override fun beginByteArrayEntry(): Unit = beginCollectionEntry()
-    override fun endByteArray(): Unit = endArray(ARRAY_END)
+    override fun beginByteArrayEntry() = beginCollectionEntry()
+    override fun endByteArray() = endArray()
 
-    override fun beginIntArray(size: Int): Unit = beginArray("$ARRAY_BEGIN$TYPE_INT_ARRAY$ARRAY_SIGNATURE_SEPARATOR")
+    override fun beginIntArray(size: Int) = beginArray("$ARRAY_BEGIN$TYPE_INT_ARRAY$ARRAY_SIGNATURE_SEPARATOR")
 
-    override fun beginIntArrayEntry(): Unit = beginCollectionEntry()
-    override fun endIntArray(): Unit = endArray(ARRAY_END)
+    override fun beginIntArrayEntry() = beginCollectionEntry()
+    override fun endIntArray() = endArray()
 
-    override fun beginLongArray(size: Int): Unit = beginArray("$ARRAY_BEGIN$TYPE_LONG_ARRAY$ARRAY_SIGNATURE_SEPARATOR")
+    override fun beginLongArray(size: Int) = beginArray("$ARRAY_BEGIN$TYPE_LONG_ARRAY$ARRAY_SIGNATURE_SEPARATOR")
 
-    override fun beginLongArrayEntry(): Unit = beginCollectionEntry()
-    override fun endLongArray(): Unit = endArray(ARRAY_END)
+    override fun beginLongArrayEntry() = beginCollectionEntry()
+    override fun endLongArray() = endArray()
 
     override fun writeByte(value: Byte) {
         builder.append(value.toString()).append(if (inArray) TYPE_BYTE_ARRAY else TYPE_BYTE)

@@ -11,19 +11,7 @@
 //import cn.altawk.nbt.internal.Tokens.TYPE_INT_ARRAY
 //import cn.altawk.nbt.internal.Tokens.TYPE_LONG_ARRAY
 //import cn.altawk.nbt.internal.Tokens.VALUE_SEPARATOR
-//import cn.altawk.nbt.tag.NbtTag
-//import cn.altawk.nbt.tag.NbtByte
-//import cn.altawk.nbt.tag.NbtShort
-//import cn.altawk.nbt.tag.NbtInt
-//import cn.altawk.nbt.tag.NbtLong
-//import cn.altawk.nbt.tag.NbtFloat
-//import cn.altawk.nbt.tag.NbtDouble
-//import cn.altawk.nbt.tag.NbtString
-//import cn.altawk.nbt.tag.NbtList
-//import cn.altawk.nbt.tag.NbtCompound
-//import cn.altawk.nbt.tag.NbtByteArray
-//import cn.altawk.nbt.tag.NbtIntArray
-//import cn.altawk.nbt.tag.NbtLongArray
+//import cn.altawk.nbt.tag.*
 //import java.nio.CharBuffer
 //
 ///**
@@ -45,11 +33,13 @@
 //                'B' -> if (buf.skipWhitespace().take() == ';') {
 //                    return NbtByteArray(buf.takeUntil(',').toByteArray())
 //                }
+//
 //                'I' -> if (buf.skipWhitespace().take() == ';') NbtIntArray(buf.takeUntil(',').toIntArray()) else NbtList()
 //                'L' -> if (buf.skipWhitespace().take() == ';') NbtLongArray(buf.takeUntil(',').toLongArray()) else NbtList()
 //                ']' -> NbtList()
 //                else -> NbtList()
 //            }
+//
 //            '{' -> return NbtCompound().apply { readCompoundEntries(this) }
 //            '\'', '"' -> return NbtString(buf.takeUntil(peek))
 //            else -> {

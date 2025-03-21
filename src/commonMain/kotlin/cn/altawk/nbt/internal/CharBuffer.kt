@@ -60,7 +60,7 @@ internal class CharBuffer(private val sequence: CharSequence) {
             ++idx
         }
         if (endIdx == -1) {
-            throw this.makeError("No occurrence of $u was found")
+            this.makeError("No occurrence of $u was found")
         }
 
         val result = sequence.substring(this.index, endIdx)
@@ -82,13 +82,13 @@ internal class CharBuffer(private val sequence: CharSequence) {
     fun expect(expectedChar: Char, ignoreCase: Boolean = false): CharBuffer = this.apply {
         this.skipWhitespace()
         if (!this.hasMore()) {
-            throw this.makeError("Expected character '$expectedChar' but got EOF")
+            this.makeError("Expected character '$expectedChar' but got EOF")
         }
         if (
             (ignoreCase && this.peek().lowercaseChar() != expectedChar.lowercaseChar())
             || this.peek() != expectedChar
         ) {
-            throw this.makeError("Expected character '" + expectedChar + "' but got '" + this.peek() + "'")
+            this.makeError("Expected character '" + expectedChar + "' but got '" + this.peek() + "'")
         }
         this.take()
     }
@@ -115,8 +115,9 @@ internal class CharBuffer(private val sequence: CharSequence) {
         while (this.hasMore() && Character.isWhitespace(this.peek())) this.advance()
     }
 
-    internal fun makeError(message: String?): StringTagParseException {
-        return StringTagParseException(message, this.sequence, this.index)
+    @Throws(StringTagParseException::class)
+    internal fun makeError(message: String?) {
+        throw StringTagParseException(message, this.sequence, this.index)
     }
 
 }
