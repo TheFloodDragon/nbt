@@ -101,13 +101,13 @@ public final class cn/altawk/nbt/SerialNameDeterminer$Default : cn/altawk/nbt/Se
 	public fun mapName (Ljava/lang/String;Lkotlinx/serialization/descriptors/SerialDescriptor;)Ljava/lang/String;
 }
 
-public final class cn/altawk/nbt/exception/NbtDecodingException : cn/altawk/nbt/exception/NbtException {
+public class cn/altawk/nbt/exception/NbtDecodingException : cn/altawk/nbt/exception/NbtException {
 	public fun <init> (Ljava/lang/String;Lcn/altawk/nbt/NbtPath;Ljava/lang/Throwable;)V
 	public synthetic fun <init> (Ljava/lang/String;Lcn/altawk/nbt/NbtPath;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getMessage ()Ljava/lang/String;
 }
 
-public final class cn/altawk/nbt/exception/NbtEncodingException : cn/altawk/nbt/exception/NbtException {
+public class cn/altawk/nbt/exception/NbtEncodingException : cn/altawk/nbt/exception/NbtException {
 	public fun <init> (Ljava/lang/String;Lcn/altawk/nbt/NbtPath;Ljava/lang/Throwable;)V
 	public synthetic fun <init> (Ljava/lang/String;Lcn/altawk/nbt/NbtPath;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getMessage ()Ljava/lang/String;
@@ -119,7 +119,7 @@ public abstract class cn/altawk/nbt/exception/NbtException : kotlinx/serializati
 	public final fun getPath ()Lcn/altawk/nbt/NbtPath;
 }
 
-public final class cn/altawk/nbt/exception/StringTagParseException : java/io/IOException {
+public final class cn/altawk/nbt/exception/StringifiedNbtParseException : cn/altawk/nbt/exception/NbtDecodingException {
 	public fun <init> (Ljava/lang/String;Ljava/lang/CharSequence;I)V
 	public fun getMessage ()Ljava/lang/String;
 }

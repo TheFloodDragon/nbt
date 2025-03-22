@@ -13,7 +13,7 @@ internal object Tokens {
     const val PRETTY_PRINT_INDENT: String = "    "
 
     // Compounds
-    const val COMPOUND_BEGIN: Char ='{'
+    const val COMPOUND_BEGIN: Char = '{'
     const val COMPOUND_END: Char = '}'
     const val COMPOUND_KEY_TERMINATOR: Char = ':'
 

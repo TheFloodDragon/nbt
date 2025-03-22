@@ -138,7 +138,7 @@ internal class StringifiedNbtWriter(private val builder: Appendable, private val
     private fun appendPrettyNewLine() {
         if (prettyPrint) {
             builder.appendLine()
-            repeat(level) { builder.append(PRETTY_PRINT_SPACE) }
+            repeat(level) { _ -> builder.append(PRETTY_PRINT_SPACE) }
         }
     }
 

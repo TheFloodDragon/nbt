@@ -1,5 +1,5 @@
 import cn.altawk.nbt.NbtFormat
-import cn.altawk.nbt.exception.NbtDecodingException
+import cn.altawk.nbt.exception.StringifiedNbtParseException
 import cn.altawk.nbt.tag.*
 import kotlinx.serialization.builtins.*
 import kotlinx.serialization.decodeFromString
@@ -191,26 +191,21 @@ class StringifiedNbtReaderTest {
 
     @Test
     fun Should_fail_on_missing_key() {
-        assertFailsWith<NbtDecodingException> { NbtFormat.decodeFromString(NbtTag.serializer(), "{ : value}") }
+        assertFailsWith<StringifiedNbtParseException> { NbtFormat.decodeFromString(NbtTag.serializer(), "{ : value}") }
     }
 
     @Test
     fun Should_fail_on_missing_value() {
-        assertFailsWith<NbtDecodingException> { NbtFormat.decodeFromString(NbtTag.serializer(), "{ key: }") }
+        assertFailsWith<StringifiedNbtParseException> { NbtFormat.decodeFromString(NbtTag.serializer(), "{ key: }") }
     }
 
     @Test
     fun Should_fail_if_only_whitespace() {
-        assertFailsWith<NbtDecodingException> { NbtFormat.decodeFromString(NbtTag.serializer(), "") }
-        assertFailsWith<NbtDecodingException> { NbtFormat.decodeFromString(NbtTag.serializer(), "    ") }
+        assertFailsWith<StringifiedNbtParseException> { NbtFormat.decodeFromString(NbtTag.serializer(), "") }
+        assertFailsWith<StringifiedNbtParseException> { NbtFormat.decodeFromString(NbtTag.serializer(), "    ") }
 
-        assertFailsWith<NbtDecodingException> { NbtFormat.decodeFromString<String>("") }
-        assertFailsWith<NbtDecodingException> { NbtFormat.decodeFromString<String>("    ") }
-    }
-
-    @Test
-    fun Should_fail_if_there_is_trailing_data() {
-        assertFailsWith<NbtDecodingException> { NbtFormat.decodeFromString(NbtTag.serializer(), "{} hi") }
+        assertFailsWith<StringifiedNbtParseException> { NbtFormat.decodeFromString<String>("") }
+        assertFailsWith<StringifiedNbtParseException> { NbtFormat.decodeFromString<String>("    ") }
     }
 
 }

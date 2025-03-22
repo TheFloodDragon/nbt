@@ -1,5 +1,6 @@
 package cn.altawk.nbt.internal
 
+import cn.altawk.nbt.exception.StringifiedNbtParseException
 import cn.altawk.nbt.internal.NbtReader.Companion.EOF
 import cn.altawk.nbt.internal.NbtReader.Companion.UNKNOWN_SIZE
 import cn.altawk.nbt.internal.Tokens.ARRAY_BEGIN
@@ -36,40 +37,33 @@ internal class StringifiedNbtReader(private val buffer: CharBuffer) : NbtReader 
 
     private var firstEntry = true
 
-    override fun readTag(): NbtTag = when (buffer.skipWhitespace().peek()) {
-        COMPOUND_BEGIN -> readCompoundTag()
-        ARRAY_BEGIN -> {
-            val breakpoint = buffer.breakpoint()
-            buffer.advance()
-            val possibleType = buffer.skipWhitespace().take()
-            if (buffer.hasMore() && buffer.skipWhitespace().peek() == ARRAY_SIGNATURE_SEPARATOR) {
-                buffer.reset(breakpoint)
-                when (possibleType) {
-                    TYPE_BYTE_ARRAY -> NbtByteArray(readByteArray())
-                    TYPE_INT_ARRAY -> NbtIntArray(readIntArray())
-                    TYPE_LONG_ARRAY -> NbtLongArray(readLongArray())
-                    else -> buffer.makeError("Unknown error!")
-                }
-            } else {
-                buffer.reset(breakpoint); readListTag()
+    override fun readTag(): NbtTag {
+        if (!buffer.skipWhitespace().hasMore()) buffer.makeError("Expected value, but got nothing")
+        return when (buffer.peek()) {
+            COMPOUND_BEGIN -> readCompoundTag()
+            ARRAY_BEGIN -> buffer.tempt {
+                advance()
+                val possibleType = skipWhitespace().take()
+                if (hasMore() && skipWhitespace().peek() == ARRAY_SIGNATURE_SEPARATOR) {
+                    when (possibleType) {
+                        TYPE_BYTE_ARRAY -> NbtByteArray(readByteArray())
+                        TYPE_INT_ARRAY -> NbtIntArray(readIntArray())
+                        TYPE_LONG_ARRAY -> NbtLongArray(readLongArray())
+                        else -> buffer.makeError("Unknown array type '$possibleType' !")
+                    }
+                } else readListTag()
             }
-        }
-
-        DOUBLE_QUOTE, SINGLE_QUOTE -> NbtString(buffer.bufferQuotedString())
-        else -> {
-            val content = buffer.readIdString()
-            when (content.last()) {
-                TYPE_BYTE -> NbtByte(byte(content))
-                TYPE_SHORT -> NbtShort(short(content))
-                TYPE_LONG -> NbtLong(long(content))
-                TYPE_FLOAT -> NbtFloat(float(content))
-                TYPE_DOUBLE -> NbtDouble(double(content))
-                else -> when {
-                    content.all { Tokens.numeric(it) } -> if ('.' in content) NbtDouble(double(content)) else NbtInt(int(content))
-                    content.contentEquals(LITERAL_TRUE, true) -> NbtByte(1)
-                    content.contentEquals(LITERAL_FALSE, true) -> NbtByte(0)
-                    else -> NbtString(content)
-                }
+            // definitely a string tag
+            DOUBLE_QUOTE, SINGLE_QUOTE -> NbtString(unescape(buffer.takeUntil(buffer.take())))
+            else -> when (val content = scalar()) {
+                is String -> NbtString(content)
+                is Int -> NbtInt(content)
+                is Byte -> NbtByte(content)
+                is Double -> NbtDouble(content)
+                is Long -> NbtLong(content)
+                is Short -> NbtShort(content)
+                is Float -> NbtFloat(content)
+                else -> buffer.makeError("Unknown scalar '$content' !")
             }
         }
     }
@@ -104,16 +98,27 @@ internal class StringifiedNbtReader(private val buffer: CharBuffer) : NbtReader 
 
     override fun beginCompoundEntry(): String {
         buffer.skipWhitespace()
-        return if (buffer.peek() == COMPOUND_END) EOF else {
+        if (buffer.peek() == COMPOUND_END) return EOF else {
             if (firstEntry) {
                 firstEntry = false
             } else {
                 val char = buffer.take()
                 if (char != VALUE_SEPARATOR) buffer.makeError("Expected ',' or '}', but got '$char'")
             }
-            val key = readString()
+
+            val key = try {
+                readString()
+            } catch (_: StringifiedNbtParseException) {
+                buffer.makeError("Expected key but got nothing") // 抛出空键异常
+            }
+            // 校验键值对分隔符 ":"
             buffer.skipWhitespace().expect(COMPOUND_KEY_TERMINATOR)
-            key
+            // 校验空值
+            buffer.tempt {
+                val peek = skipWhitespace().peek()
+                if (peek == VALUE_SEPARATOR || peek == COMPOUND_END) makeError("Expected value, but got nothing")
+            }
+            return key
         }
     }
 
@@ -168,63 +173,110 @@ internal class StringifiedNbtReader(private val buffer: CharBuffer) : NbtReader 
     override fun beginLongArrayEntry() = beginCollectionEntry()
     override fun endLongArray() = endCollection()
 
+    override fun readByte() = (scalar() as Number).toByte()
 
-    override fun readByte() = byte(buffer.readIdString())
+    override fun readShort() = (scalar() as Number).toShort()
 
-    private fun byte(content: String): Byte = when {
-        content.contentEquals(LITERAL_TRUE, true) -> 1
-        content.contentEquals(LITERAL_FALSE, true) -> 0
-        else -> content.dropTypedLast(TYPE_BYTE).toByteOrNull() ?: buffer.makeError("Expected Byte, but was '$content'")
-    }
+    override fun readInt() = (scalar() as Number).toInt()
 
-    override fun readShort() = short(buffer.readNumericString())
+    override fun readLong() = (scalar() as Number).toLong()
 
-    private fun short(content: String): Short = content.dropTypedLast(TYPE_SHORT).toShortOrNull() ?: buffer.makeError("Expected Short, but was '$content'")
+    override fun readFloat() = (scalar() as Number).toFloat()
 
-    override fun readInt() = int(buffer.readNumericString())
-
-    private fun int(content: String): Int = content.toIntOrNull() ?: buffer.makeError("Expected Int, but was '$content'")
-
-    override fun readLong() = long(buffer.readNumericString())
-
-    private fun long(content: String): Long = content.dropTypedLast(TYPE_LONG).toLongOrNull() ?: buffer.makeError("Expected Long, but was '$content'")
-
-    override fun readFloat() = float(buffer.readNumericString())
-
-    private fun float(content: String): Float = content.dropTypedLast(TYPE_FLOAT).toFloatOrNull() ?: buffer.makeError("Expected Float, but was '$content'")
-
-    override fun readDouble() = double(buffer.readNumericString())
-
-    private fun double(content: String): Double = content.dropTypedLast(TYPE_DOUBLE).toDoubleOrNull() ?: buffer.makeError("Expected Double, but was '$content'")
+    override fun readDouble() = (scalar() as Number).toDouble()
 
     override fun readString(): String {
-        return when (buffer.skipWhitespace().peek()) {
-            DOUBLE_QUOTE, SINGLE_QUOTE -> buffer.bufferQuotedString()
-            else -> buffer.readIdString()
+        if (!buffer.skipWhitespace().hasMore()) buffer.makeError("Expected String, but was EOF")
+        return when (buffer.peek()) {
+            DOUBLE_QUOTE, SINGLE_QUOTE -> unescape(buffer.takeUntil(buffer.take()))
+            else -> scalar().toString().takeUnless { it.isEmpty() || it.isBlank() } ?: buffer.makeError("Expected String, but was EOF")
         }
     }
 
-    fun CharBuffer.bufferQuotedString() = buildString {
-        val quote = take()
-        val backslash = ESCAPE_MARKER
-
-        while (true) {
-            when (val char = take()) {
-                quote -> break
-                backslash -> when (val esc = take()) {
-                    quote, backslash -> append(esc)
-                    else -> makeError("Invalid escape: \\$esc")
-                }
-
-                else -> append(char)
+    /**
+     * A tag that is definitely some sort of scalar.
+     *
+     * Does not detect quoted strings, so those should have been parsed already.
+     *
+     * @return a parsed value
+     */
+    private fun scalar(): Any {
+        val builder = StringBuilder()
+        var noLongerNumericAt = -1
+        while (buffer.skipWhitespace().hasMore()) {
+            var current = buffer.peek()
+            if (current == ESCAPE_MARKER) { // escape -- we are significantly more lenient than original format at the moment
+                buffer.advance()
+                current = buffer.take()
+            } else if (Tokens.id(current)) {
+                buffer.advance()
+            } else { // end of value
+                break
+            }
+            builder.append(current)
+            if (noLongerNumericAt == -1 && !Tokens.numeric(current)) {
+                noLongerNumericAt = builder.length
             }
         }
+
+        val length = builder.length
+        val built = builder.toString()
+        if (noLongerNumericAt == length && length > 1) {
+            when (built.last().lowercaseChar()) {
+                TYPE_BYTE -> return built.dropLast(1).toByteOrNull() ?: buffer.makeError("Expected Byte, but was '$built'")
+                TYPE_SHORT -> return built.dropLast(1).toShortOrNull() ?: buffer.makeError("Expected Short, but was '$built'")
+                TYPE_LONG.lowercaseChar() -> return built.dropLast(1).toLongOrNull() ?: buffer.makeError("Expected Long, but was '$built'")
+                TYPE_FLOAT -> {
+                    val floatValue = built.dropLast(1).toFloatOrNull() ?: buffer.makeError("Expected Float, but was '$built'")
+                    // don't accept NaN and Infinity
+                    if (floatValue.isFinite()) return floatValue
+                }
+
+                TYPE_DOUBLE -> {
+                    val doubleValue = built.dropLast(1).toDoubleOrNull() ?: buffer.makeError("Expected Double, but was '$built'")
+                    // don't accept NaN and Infinity
+                    if (doubleValue.isFinite()) return doubleValue
+                }
+            }
+        } else if (noLongerNumericAt == -1) { // if we run out of content without an explicit value separator, then we're either an integer or string tag -- all others have a character at the end
+            val number = built.toIntOrNull()
+            // if the string is a valid representation of a number.
+            if (number != null) return number else {
+                if (built.indexOf('.') != -1) { // see if we have an unsuffixed double; always needs a dot
+                    return built.toDoubleOrNull() ?: buffer.makeError("Expected Double, but was '$built'")
+                }
+            }
+        }
+
+        if (built.equals(LITERAL_TRUE, true)) {
+            return 1.toByte()
+        } else if (built.equals(LITERAL_FALSE, true)) {
+            return 0.toByte()
+        }
+        return built
     }
 
-    fun CharBuffer.readNumericString() = buildString { while (true) append(this@readNumericString.takeWhen { Tokens.numeric(it) } ?: break) }
+    /**
+     * Remove simple escape sequences from a string.
+     *
+     * @param withEscapes input string with escapes
+     * @return string with escapes processed
+     */
+    private fun unescape(withEscapes: String): String {
+        var escapeIdx = withEscapes.indexOf(ESCAPE_MARKER)
+        // nothing to unescape
+        if (escapeIdx == -1) return withEscapes
 
-    fun CharBuffer.readIdString() = buildString { while (true) append(this@readIdString.takeWhen { Tokens.id(it) } ?: break) }
-
-    private fun String.dropTypedLast(type: Char) = if (this.last().equals(type, true)) this.dropLast(1) else this
+        var lastEscape = 0
+        return buildString(withEscapes.length) {
+            do {
+                append(withEscapes, lastEscape, escapeIdx)
+                lastEscape = escapeIdx + 1
+            } while ((withEscapes.indexOf(ESCAPE_MARKER, lastEscape + 1)
+                    .also { escapeIdx = it }) != -1
+            ) // add one extra character to make sure we don't include escaped backslashes
+            append(withEscapes.substring(lastEscape))
+        }
+    }
 
 }

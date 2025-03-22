@@ -22,7 +22,7 @@ data class Example<T>(
 val format = NbtFormat {
 }
 
-class StringifiedNbtWriterTest {
+class NbtWriterTest {
 
 
     @Test

@@ -1,6 +1,6 @@
 package cn.altawk.nbt.internal
 
-import cn.altawk.nbt.exception.StringTagParseException
+import cn.altawk.nbt.exception.StringifiedNbtParseException
 
 /**
  * CharBuffer
@@ -38,21 +38,14 @@ internal class CharBuffer(private val sequence: CharSequence) {
 
     fun hasMore(offset: Int): Boolean = this.index + offset < sequence.length
 
-    fun breakpoint(): Int = this.index
-
-    fun reset(index: Int): CharBuffer {
-        this.index = index
-        return this
-    }
-
     /**
      * Search for the provided token, and advance the reader index past the `until` character.
      *
      * @param until case-insensitive token
      * @return the string starting at the current position (inclusive) and going until the location of `until`, exclusive
-     * @throws StringTagParseException if `until` is not present in the remaining string
+     * @throws StringifiedNbtParseException if `until` is not present in the remaining string
      */
-    @Throws(StringTagParseException::class)
+    @Throws(StringifiedNbtParseException::class)
     fun takeUntil(until: Char): String {
         val u = until.lowercaseChar()
         var endIdx = -1
@@ -83,9 +76,9 @@ internal class CharBuffer(private val sequence: CharSequence) {
      *
      * @param expectedChar expected character
      * @return this
-     * @throws StringTagParseException if EOF or non-matching value is found
+     * @throws StringifiedNbtParseException if EOF or non-matching value is found
      */
-    @Throws(StringTagParseException::class)
+    @Throws(StringifiedNbtParseException::class)
     fun expect(expectedChar: Char, ignoreCase: Boolean = false): CharBuffer = this.apply {
         this.skipWhitespace()
         if (!this.hasMore()) {
@@ -100,24 +93,17 @@ internal class CharBuffer(private val sequence: CharSequence) {
         this.take()
     }
 
-    /**
-     * Take a character if it matches the provided action.
-     *
-     * @param action the action to match
-     */
-    fun takeWhen(action: (Char) -> Boolean): Char? {
-        this.skipWhitespace()
-        if (this.hasMore() && action(this.peek())) {
-            return this.take()
-        }
-        return null
+    fun <T> tempt(action: CharBuffer.() -> T): T {
+        val newBuffer = CharBuffer(sequence)
+        newBuffer.index = this.index
+        return action(newBuffer)
     }
 
     fun skipWhitespace(): CharBuffer = this.apply {
         while (this.hasMore() && Character.isWhitespace(this.peek())) this.advance()
     }
 
-    @Throws(StringTagParseException::class)
-    internal fun makeError(message: String?): Nothing = throw StringTagParseException(message, this.sequence, this.index)
+    @Throws(StringifiedNbtParseException::class)
+    internal fun makeError(message: String): Nothing = throw StringifiedNbtParseException(message, this.sequence, this.index)
 
 }

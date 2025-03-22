@@ -16,7 +16,7 @@ public sealed class NbtException(
     cause: Throwable? = null,
 ) : SerializationException(message, cause)
 
-public class NbtEncodingException(
+public open class NbtEncodingException(
     message: String,
     path: NbtPath? = null,
     cause: Throwable? = null,
@@ -26,7 +26,7 @@ public class NbtEncodingException(
 
 }
 
-public class NbtDecodingException(
+public open class NbtDecodingException(
     message: String,
     path: NbtPath? = null,
     cause: Throwable? = null,
