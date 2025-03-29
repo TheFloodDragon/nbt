@@ -18,6 +18,10 @@ public class NbtPath(private val path: List<Node>) : List<NbtPath.Node> by path 
 
     override fun equals(other: Any?): Boolean = if (other is NbtPath) this.path == other.path else false
 
+    public operator fun plus(element: Iterable<Node>): NbtPath = NbtPath(this.path.plus(element))
+
+    public operator fun plus(element: Node): NbtPath = NbtPath(this.path.plus(element))
+
     /**
      * Node - 节点
      */

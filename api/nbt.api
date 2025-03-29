@@ -77,6 +77,8 @@ public final class cn/altawk/nbt/NbtPath : java/util/List, kotlin/jvm/internal/m
 	public final fun lastIndexOf (Ljava/lang/Object;)I
 	public fun listIterator ()Ljava/util/ListIterator;
 	public fun listIterator (I)Ljava/util/ListIterator;
+	public final fun plus (Lcn/altawk/nbt/NbtPath$Node;)Lcn/altawk/nbt/NbtPath;
+	public final fun plus (Ljava/lang/Iterable;)Lcn/altawk/nbt/NbtPath;
 	public fun remove (I)Lcn/altawk/nbt/NbtPath$Node;
 	public synthetic fun remove (I)Ljava/lang/Object;
 	public fun remove (Ljava/lang/Object;)Z

@@ -15,10 +15,9 @@ class NbtPathTest {
             NbtPath.NameNode("hello"),
             NbtPath.NameNode("world"),
             NbtPath.NameNode("list"),
-            NbtPath.IndexNode(1),
-            NbtPath.NameNode("name"),
+            NbtPath.IndexNode(1)
         )
-    )
+    ) += NbtPath.NameNode("name")
 
     val pathText = "hello.world.list[1].name"
 
