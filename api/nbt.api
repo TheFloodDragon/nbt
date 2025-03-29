@@ -21,13 +21,11 @@ public abstract interface class cn/altawk/nbt/NbtEncoder : kotlinx/serialization
 	public abstract fun getNbt ()Lcn/altawk/nbt/NbtFormat;
 }
 
-public class cn/altawk/nbt/NbtFormat : kotlinx/serialization/BinaryFormat, kotlinx/serialization/StringFormat {
+public class cn/altawk/nbt/NbtFormat : kotlinx/serialization/StringFormat {
 	public static final field Default Lcn/altawk/nbt/NbtFormat$Default;
 	public fun <init> (Lcn/altawk/nbt/NbtConfiguration;Lkotlinx/serialization/modules/SerializersModule;)V
-	public fun decodeFromByteArray (Lkotlinx/serialization/DeserializationStrategy;[B)Ljava/lang/Object;
 	public final fun decodeFromNbtTag (Lkotlinx/serialization/DeserializationStrategy;Lcn/altawk/nbt/tag/NbtTag;)Ljava/lang/Object;
 	public fun decodeFromString (Lkotlinx/serialization/DeserializationStrategy;Ljava/lang/String;)Ljava/lang/Object;
-	public fun encodeToByteArray (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)[B
 	public final fun encodeToNbtTag (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)Lcn/altawk/nbt/tag/NbtTag;
 	public fun encodeToString (Lkotlinx/serialization/SerializationStrategy;Ljava/lang/Object;)Ljava/lang/String;
 	public final fun getConfiguration ()Lcn/altawk/nbt/NbtConfiguration;
@@ -53,41 +51,71 @@ public final class cn/altawk/nbt/NbtFormatKt {
 	public static synthetic fun NbtFormat$default (Lcn/altawk/nbt/NbtFormat;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcn/altawk/nbt/NbtFormat;
 }
 
-public final class cn/altawk/nbt/NbtPath : java/util/Collection, kotlin/jvm/internal/markers/KMappedMarker {
-	public fun <init> (Ljava/util/Collection;)V
+public final class cn/altawk/nbt/NbtPath : java/util/List, kotlin/jvm/internal/markers/KMappedMarker {
+	public fun <init> (Ljava/lang/String;)V
+	public fun <init> (Ljava/util/List;)V
+	public fun add (ILcn/altawk/nbt/NbtPath$Node;)V
+	public synthetic fun add (ILjava/lang/Object;)V
 	public fun add (Lcn/altawk/nbt/NbtPath$Node;)Z
 	public synthetic fun add (Ljava/lang/Object;)Z
+	public fun addAll (ILjava/util/Collection;)Z
 	public fun addAll (Ljava/util/Collection;)Z
 	public fun clear ()V
 	public fun contains (Lcn/altawk/nbt/NbtPath$Node;)Z
 	public final fun contains (Ljava/lang/Object;)Z
 	public fun containsAll (Ljava/util/Collection;)Z
+	public fun equals (Ljava/lang/Object;)Z
+	public fun get (I)Lcn/altawk/nbt/NbtPath$Node;
+	public synthetic fun get (I)Ljava/lang/Object;
 	public fun getSize ()I
+	public fun hashCode ()I
+	public fun indexOf (Lcn/altawk/nbt/NbtPath$Node;)I
+	public final fun indexOf (Ljava/lang/Object;)I
 	public fun isEmpty ()Z
 	public fun iterator ()Ljava/util/Iterator;
+	public fun lastIndexOf (Lcn/altawk/nbt/NbtPath$Node;)I
+	public final fun lastIndexOf (Ljava/lang/Object;)I
+	public fun listIterator ()Ljava/util/ListIterator;
+	public fun listIterator (I)Ljava/util/ListIterator;
+	public fun remove (I)Lcn/altawk/nbt/NbtPath$Node;
+	public synthetic fun remove (I)Ljava/lang/Object;
 	public fun remove (Ljava/lang/Object;)Z
 	public fun removeAll (Ljava/util/Collection;)Z
-	public fun removeIf (Ljava/util/function/Predicate;)Z
+	public fun replaceAll (Ljava/util/function/UnaryOperator;)V
 	public fun retainAll (Ljava/util/Collection;)Z
+	public fun set (ILcn/altawk/nbt/NbtPath$Node;)Lcn/altawk/nbt/NbtPath$Node;
+	public synthetic fun set (ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun size ()I
+	public fun sort (Ljava/util/Comparator;)V
+	public fun subList (II)Ljava/util/List;
 	public fun toArray ()[Ljava/lang/Object;
 	public fun toArray ([Ljava/lang/Object;)[Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class cn/altawk/nbt/NbtPath$IndexNode : cn/altawk/nbt/NbtPath$Node {
-	public fun <init> (ILcn/altawk/nbt/tag/NbtType;)V
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lcn/altawk/nbt/NbtPath$IndexNode;
+	public static synthetic fun copy$default (Lcn/altawk/nbt/NbtPath$IndexNode;IILjava/lang/Object;)Lcn/altawk/nbt/NbtPath$IndexNode;
+	public fun equals (Ljava/lang/Object;)Z
 	public final fun getIndex ()I
-	public fun getType ()Lcn/altawk/nbt/tag/NbtType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class cn/altawk/nbt/NbtPath$NameNode : cn/altawk/nbt/NbtPath$Node {
-	public fun <init> (Ljava/lang/String;Lcn/altawk/nbt/tag/NbtType;)V
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcn/altawk/nbt/NbtPath$NameNode;
+	public static synthetic fun copy$default (Lcn/altawk/nbt/NbtPath$NameNode;Ljava/lang/String;ILjava/lang/Object;)Lcn/altawk/nbt/NbtPath$NameNode;
+	public fun equals (Ljava/lang/Object;)Z
 	public final fun getName ()Ljava/lang/String;
-	public fun getType ()Lcn/altawk/nbt/tag/NbtType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public abstract interface class cn/altawk/nbt/NbtPath$Node {
-	public abstract fun getType ()Lcn/altawk/nbt/tag/NbtType;
 }
 
 public abstract interface class cn/altawk/nbt/SerialNameDeterminer {

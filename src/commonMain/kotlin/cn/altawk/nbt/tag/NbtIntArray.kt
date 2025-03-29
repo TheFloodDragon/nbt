@@ -1,6 +1,5 @@
 package cn.altawk.nbt.tag
 
-import cn.altawk.nbt.internal.Tokens
 import kotlinx.serialization.Serializable
 
 /**

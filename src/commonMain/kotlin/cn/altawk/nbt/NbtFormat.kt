@@ -2,7 +2,6 @@ package cn.altawk.nbt
 
 import cn.altawk.nbt.internal.*
 import cn.altawk.nbt.tag.NbtTag
-import kotlinx.serialization.BinaryFormat
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.StringFormat
@@ -18,7 +17,7 @@ import kotlinx.serialization.modules.SerializersModule
 public open class NbtFormat(
     public val configuration: NbtConfiguration,
     override val serializersModule: SerializersModule
-) : StringFormat, BinaryFormat {
+) : StringFormat {
 
     /**
      * The default instance of [NbtFormat] with default configuration.
@@ -52,14 +51,6 @@ public open class NbtFormat(
         return NbtReaderDecoder(this, StringifiedNbtReader(snbt)).decodeSerializableValue(deserializer)
     }
 
-    override fun <T> decodeFromByteArray(deserializer: DeserializationStrategy<T>, bytes: ByteArray): T {
-        TODO("Not yet implemented")
-    }
-
-    override fun <T> encodeToByteArray(serializer: SerializationStrategy<T>, value: T): ByteArray {
-        TODO("Not yet implemented")
-    }
-
 }
 
 /**
@@ -82,6 +73,7 @@ public fun NbtFormat(from: NbtFormat = NbtFormat.Default, builderAction: NbtForm
  * }
  * ```
  */
+@Suppress("unused")
 public class NbtFormatBuilder internal constructor(nbt: NbtFormat) {
 
     /**

@@ -1,27 +1,42 @@
 package cn.altawk.nbt
 
-import cn.altawk.nbt.tag.NbtType
+import cn.altawk.nbt.internal.NbtPathBuilder
 
 /**
  * NbtPath
  *
  * @author TheFloodDragon
- * @since 2025/2/22 18:02
+ * @since 2025/3/29 17:18
  */
-public class NbtPath(private val path: Collection<Node>) : Collection<NbtPath.Node> by path {
+public class NbtPath(private val path: List<Node>) : List<NbtPath.Node> by path {
 
-    public sealed interface Node {
-        public val type: NbtType
-    }
+    public constructor(path: String) : this(NbtPathBuilder.fromString(path))
 
-    public class NameNode(
-        public val name: String,
-        override val type: NbtType,
+    override fun toString(): String = NbtPathBuilder.toString(this.path)
+
+    override fun hashCode(): Int = this.path.hashCode()
+
+    override fun equals(other: Any?): Boolean = if (other is NbtPath) this.path == other.path else false
+
+    /**
+     * Node - 节点
+     */
+    public sealed interface Node
+
+    /**
+     * NameNode - 名称节点 (用于 Compound 类型)
+     */
+    public data class NameNode(
+        /** 名称 **/
+        public val name: String
     ) : Node
 
-    public class IndexNode(
-        public val index: Int,
-        override val type: NbtType,
+    /**
+     * IndexNode - 索引节点 (用于 List 类型)
+     */
+    public data class IndexNode(
+        /** 索引 **/
+        public val index: Int
     ) : Node
 
 }
