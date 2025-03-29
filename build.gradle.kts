@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     kotlin("multiplatform") version libs.versions.kotlin
     kotlin("plugin.serialization") version libs.versions.kotlin
@@ -29,13 +31,13 @@ kotlin {
         }
     }
 
-}
+    jvm {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_1_8
+            extraWarnings.set(true)
+        }
+    }
 
-java {
-    withJavadocJar()
-    withSourcesJar()
-    targetCompatibility = JavaVersion.VERSION_1_8
-    sourceCompatibility = JavaVersion.VERSION_1_8
 }
 
 publishing {
