@@ -29,9 +29,6 @@ kotlin {
         }
     }
 
-    compilerOptions {
-        extraWarnings.set(true)
-    }
 }
 
 java {
