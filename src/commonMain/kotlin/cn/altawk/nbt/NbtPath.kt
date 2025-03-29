@@ -10,6 +10,8 @@ import cn.altawk.nbt.internal.NbtPathBuilder
  */
 public class NbtPath(private val path: List<Node>) : List<NbtPath.Node> by path {
 
+    public constructor(vararg nodes: Node) : this(nodes.toList())
+
     public constructor(path: String) : this(NbtPathBuilder.fromString(path))
 
     override fun toString(): String = NbtPathBuilder.toString(this.path)

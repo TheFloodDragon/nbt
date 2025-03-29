@@ -54,6 +54,7 @@ public final class cn/altawk/nbt/NbtFormatKt {
 public final class cn/altawk/nbt/NbtPath : java/util/List, kotlin/jvm/internal/markers/KMappedMarker {
 	public fun <init> (Ljava/lang/String;)V
 	public fun <init> (Ljava/util/List;)V
+	public fun <init> ([Lcn/altawk/nbt/NbtPath$Node;)V
 	public fun add (ILcn/altawk/nbt/NbtPath$Node;)V
 	public synthetic fun add (ILjava/lang/Object;)V
 	public fun add (Lcn/altawk/nbt/NbtPath$Node;)Z

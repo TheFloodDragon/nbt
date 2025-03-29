@@ -11,13 +11,11 @@ import kotlin.test.assertEquals
 class NbtPathTest {
 
     val path = NbtPath(
-        listOf(
-            NbtPath.NameNode("hello"),
-            NbtPath.NameNode("world"),
-            NbtPath.NameNode("list"),
-            NbtPath.IndexNode(1)
-        )
-    ) += NbtPath.NameNode("name")
+        NbtPath.NameNode("hello"),
+        NbtPath.NameNode("world"),
+        NbtPath.NameNode("list"),
+        NbtPath.IndexNode(1)
+    ).plus(NbtPath.NameNode("name"))
 
     val pathText = "hello.world.list[1].name"
 
