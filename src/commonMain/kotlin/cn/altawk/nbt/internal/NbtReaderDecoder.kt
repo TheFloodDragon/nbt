@@ -75,8 +75,8 @@ internal open class NbtReaderDecoder(
                 // The end of elements decoding
                 if (entryKey == NbtReader.EOF) {
                     while (++position < descriptor.elementsCount) {
-                        if (position !in usedIndexes // Skip already used indexes
-                            && !nbt.configuration.explicitNulls
+                        if (!nbt.configuration.explicitNulls
+                            && position !in usedIndexes // Skip already used indexes
                             && !descriptor.isElementOptional(position) // Skip optional elements
                             && descriptor.getElementDescriptor(position).isNullable
                         ) {

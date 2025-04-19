@@ -25,7 +25,12 @@ internal class NbtWriterEncoder(
 
     override fun encodeSerializableElement(descriptor: SerialDescriptor, index: Int): Boolean {
         when (descriptor.kind as StructureKind) {
-            StructureKind.CLASS, StructureKind.OBJECT -> elementName = nbt.configuration.nameDeterminer.determineName(index, descriptor)
+            StructureKind.CLASS, StructureKind.OBJECT -> {
+                val determined = nbt.configuration.nameDeterminer.determineName(index, descriptor)
+                // Do not encode if the element name is EOF
+                if (determined == NbtReader.EOF) return false
+                elementName = determined
+            }
             StructureKind.MAP -> if (index % 2 == 0) encodingMapKey = true
             else -> Unit
         }
@@ -33,7 +38,9 @@ internal class NbtWriterEncoder(
     }
 
     override fun encodeElement(descriptor: SerialDescriptor, index: Int): Boolean {
-        if (!::elementName.isInitialized) encodeSerializableElement(descriptor, index)
+        if (!encodeSerializableElement(descriptor, index)) {
+            return false
+        }
         when (val structureType = structureTypeStack.last()) {
             COMPOUND -> if (!encodingMapKey) writer.beginCompoundEntry(elementName)
             LIST -> writer.beginListEntry()

@@ -52,34 +52,48 @@ public final class cn/altawk/nbt/NbtFormatKt {
 }
 
 public final class cn/altawk/nbt/NbtPath : java/util/List, kotlin/jvm/internal/markers/KMappedMarker {
-	public fun <init> (Ljava/lang/String;)V
-	public fun <init> (Ljava/util/List;)V
-	public fun <init> ([Lcn/altawk/nbt/NbtPath$Node;)V
 	public fun add (ILcn/altawk/nbt/NbtPath$Node;)V
 	public synthetic fun add (ILjava/lang/Object;)V
 	public fun add (Lcn/altawk/nbt/NbtPath$Node;)Z
 	public synthetic fun add (Ljava/lang/Object;)Z
 	public fun addAll (ILjava/util/Collection;)Z
 	public fun addAll (Ljava/util/Collection;)Z
+	public static final synthetic fun box-impl (Ljava/util/List;)Lcn/altawk/nbt/NbtPath;
 	public fun clear ()V
+	public static fun constructor-impl (Ljava/lang/String;)Ljava/util/List;
+	public static fun constructor-impl (Ljava/util/List;)Ljava/util/List;
+	public static fun constructor-impl ([Lcn/altawk/nbt/NbtPath$Node;)Ljava/util/List;
 	public fun contains (Lcn/altawk/nbt/NbtPath$Node;)Z
 	public final fun contains (Ljava/lang/Object;)Z
+	public static fun contains-impl (Ljava/util/List;Lcn/altawk/nbt/NbtPath$Node;)Z
 	public fun containsAll (Ljava/util/Collection;)Z
+	public static fun containsAll-impl (Ljava/util/List;Ljava/util/Collection;)Z
 	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/util/List;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/util/List;Ljava/util/List;)Z
 	public fun get (I)Lcn/altawk/nbt/NbtPath$Node;
 	public synthetic fun get (I)Ljava/lang/Object;
+	public static fun get-impl (Ljava/util/List;I)Lcn/altawk/nbt/NbtPath$Node;
 	public fun getSize ()I
+	public static fun getSize-impl (Ljava/util/List;)I
 	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/util/List;)I
 	public fun indexOf (Lcn/altawk/nbt/NbtPath$Node;)I
 	public final fun indexOf (Ljava/lang/Object;)I
+	public static fun indexOf-impl (Ljava/util/List;Lcn/altawk/nbt/NbtPath$Node;)I
 	public fun isEmpty ()Z
+	public static fun isEmpty-impl (Ljava/util/List;)Z
 	public fun iterator ()Ljava/util/Iterator;
+	public static fun iterator-impl (Ljava/util/List;)Ljava/util/Iterator;
 	public fun lastIndexOf (Lcn/altawk/nbt/NbtPath$Node;)I
 	public final fun lastIndexOf (Ljava/lang/Object;)I
+	public static fun lastIndexOf-impl (Ljava/util/List;Lcn/altawk/nbt/NbtPath$Node;)I
 	public fun listIterator ()Ljava/util/ListIterator;
 	public fun listIterator (I)Ljava/util/ListIterator;
-	public final fun plus (Lcn/altawk/nbt/NbtPath$Node;)Lcn/altawk/nbt/NbtPath;
-	public final fun plus (Ljava/lang/Iterable;)Lcn/altawk/nbt/NbtPath;
+	public static fun listIterator-impl (Ljava/util/List;)Ljava/util/ListIterator;
+	public static fun listIterator-impl (Ljava/util/List;I)Ljava/util/ListIterator;
+	public static final fun plus-A2bnD8o (Ljava/util/List;Lcn/altawk/nbt/NbtPath$Node;)Ljava/util/List;
+	public static final fun plus-A2bnD8o (Ljava/util/List;Ljava/lang/Iterable;)Ljava/util/List;
 	public fun remove (I)Lcn/altawk/nbt/NbtPath$Node;
 	public synthetic fun remove (I)Ljava/lang/Object;
 	public fun remove (Ljava/lang/Object;)Z
@@ -88,12 +102,15 @@ public final class cn/altawk/nbt/NbtPath : java/util/List, kotlin/jvm/internal/m
 	public fun retainAll (Ljava/util/Collection;)Z
 	public fun set (ILcn/altawk/nbt/NbtPath$Node;)Lcn/altawk/nbt/NbtPath$Node;
 	public synthetic fun set (ILjava/lang/Object;)Ljava/lang/Object;
-	public final fun size ()I
+	public synthetic fun size ()I
 	public fun sort (Ljava/util/Comparator;)V
 	public fun subList (II)Ljava/util/List;
+	public static fun subList-impl (Ljava/util/List;II)Ljava/util/List;
 	public fun toArray ()[Ljava/lang/Object;
 	public fun toArray ([Ljava/lang/Object;)[Ljava/lang/Object;
 	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/util/List;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/util/List;
 }
 
 public final class cn/altawk/nbt/NbtPath$IndexNode : cn/altawk/nbt/NbtPath$Node {
@@ -121,6 +138,17 @@ public final class cn/altawk/nbt/NbtPath$NameNode : cn/altawk/nbt/NbtPath$Node {
 public abstract interface class cn/altawk/nbt/NbtPath$Node {
 }
 
+public abstract class cn/altawk/nbt/NbtTransformingSerializer : kotlinx/serialization/KSerializer {
+	public fun <init> (Lkotlinx/serialization/KSerializer;Z)V
+	public synthetic fun <init> (Lkotlinx/serialization/KSerializer;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	protected final fun getTSerializer ()Lkotlinx/serialization/KSerializer;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	protected fun transformDeserialize (Lcn/altawk/nbt/tag/NbtTag;)Lcn/altawk/nbt/tag/NbtTag;
+	protected fun transformSerialize (Lcn/altawk/nbt/tag/NbtTag;)Lcn/altawk/nbt/tag/NbtTag;
+}
+
 public abstract interface class cn/altawk/nbt/SerialNameDeterminer {
 	public abstract fun determineName (ILkotlinx/serialization/descriptors/SerialDescriptor;)Ljava/lang/String;
 	public abstract fun mapName (Ljava/lang/String;Lkotlinx/serialization/descriptors/SerialDescriptor;)Ljava/lang/String;
@@ -133,21 +161,21 @@ public final class cn/altawk/nbt/SerialNameDeterminer$Default : cn/altawk/nbt/Se
 }
 
 public class cn/altawk/nbt/exception/NbtDecodingException : cn/altawk/nbt/exception/NbtException {
-	public fun <init> (Ljava/lang/String;Lcn/altawk/nbt/NbtPath;Ljava/lang/Throwable;)V
-	public synthetic fun <init> (Ljava/lang/String;Lcn/altawk/nbt/NbtPath;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/Throwable;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getMessage ()Ljava/lang/String;
 }
 
 public class cn/altawk/nbt/exception/NbtEncodingException : cn/altawk/nbt/exception/NbtException {
-	public fun <init> (Ljava/lang/String;Lcn/altawk/nbt/NbtPath;Ljava/lang/Throwable;)V
-	public synthetic fun <init> (Ljava/lang/String;Lcn/altawk/nbt/NbtPath;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/Throwable;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getMessage ()Ljava/lang/String;
 }
 
 public abstract class cn/altawk/nbt/exception/NbtException : kotlinx/serialization/SerializationException {
-	public synthetic fun <init> (Ljava/lang/String;Lcn/altawk/nbt/NbtPath;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public synthetic fun <init> (Ljava/lang/String;Lcn/altawk/nbt/NbtPath;Ljava/lang/Throwable;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun getPath ()Lcn/altawk/nbt/NbtPath;
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/Throwable;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getPath-C2-FKJA ()Ljava/util/List;
 }
 
 public final class cn/altawk/nbt/exception/StringifiedNbtParseException : cn/altawk/nbt/exception/NbtDecodingException {

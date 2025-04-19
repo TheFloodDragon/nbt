@@ -16,6 +16,6 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.TheFloodDragon.nbt:nbt-jvm:-SNAPSHOT") { isTransitive = false }
+    implementation("com.github.Altawk.nbt:nbt-jvm:1.0.0") { isTransitive = false }
 }
 ```
